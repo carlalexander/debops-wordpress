@@ -1,0 +1,38 @@
+---
+
+# ---- Install and configure HHVM server ----
+
+- name: Add HHVM repository key
+  apt_key:
+    url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{ hhvm_keyserver_fingerprint }}'
+    state: 'present'
+
+- name: Add HHVM repository
+  apt_repository:
+    repo: 'deb http://dl.hhvm.com/ubuntu {{ ansible_distribution_release }} main'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: Install HHVM package
+  apt:
+    name: 'hhvm'
+    force: 'yes'
+    state: 'latest'
+
+- name: Configure php.ini for HHVM
+  template:
+    src: 'etc/hhvm/php.ini.j2'
+    dest: '/etc/hhvm/php.ini'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Restart hhvm' ]
+
+- name: Configure server.ini for HHVM
+  template:
+    src: 'etc/hhvm/server.ini.j2'
+    dest: '/etc/hhvm/server.ini'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Restart hhvm' ]

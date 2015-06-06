@@ -1,0 +1,26 @@
+---
+
+- name: Create install location for WP-CLI
+  file:
+    dest: '{{ wpcli_share_path }}'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '755'
+
+
+- name: Install WP-CLI
+  command: 'curl {{ wpcli_phar_url }} -o {{ wpcli_share_path }}/{{ wpcli_bin_name }}'
+  args:
+    creates: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
+
+- name: Set execute bits on WP-CLI
+  file:
+    path: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
+    mode: '0755'
+
+- name: Symlink WP-CLI
+  file:
+    dest: '{{ wpcli_bin_path }}/{{ wpcli_bin_name }}'
+    src: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
+    state: 'link'

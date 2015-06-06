@@ -1,0 +1,17 @@
+# This file is managed by Ansible, all changes will be lost
+
+START=yes
+NFILES=131072
+MEMLOCK=82000
+INSTANCE=$(uname -n)
+VARNISH_VCL_CONF=/etc/varnish/default.vcl
+VARNISH_LISTEN_ADDRESS=
+VARNISH_LISTEN_PORT={{ varnish_listen }}
+VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1
+VARNISH_ADMIN_LISTEN_PORT={{ varnish_admin_listen }}
+VARNISH_MALLOC={{ varnish_memory_allocation }}
+DAEMON_OPTS="-a *:${VARNISH_LISTEN_PORT} \
+             -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+             -f ${VARNISH_VCL_CONF} \
+             -S /etc/varnish/secret \
+             -s malloc,${VARNISH_MALLOC}"

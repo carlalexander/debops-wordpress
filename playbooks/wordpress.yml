@@ -1,0 +1,10 @@
+---
+
+- include: common.yml
+
+- name: Manage WordPress web server
+  hosts: 'wordpress'
+  sudo: True
+
+  roles:
+    - { role: wordpress, tags: wordpress }

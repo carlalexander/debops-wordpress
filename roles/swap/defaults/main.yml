@@ -1,0 +1,17 @@
+---
+
+# Automatically create a swap file if there's no assigned swap memory
+swap_autocreate: True
+
+# Name of the file used as a swap file
+swap_filename: 'swapfile'
+
+# Size of the swap file. Default is double the size of system memory total.
+swap_size: '{{ 2 * ansible_memtotal_mb|int }}MB'
+
+# Configures how often your system swaps data out of RAM to the swap space.
+swap_swappiness: '10'
+
+# Configures how much the system will choose to cache inode and dentry information
+# over other data.
+swap_vfs_cache_pressure: '50'

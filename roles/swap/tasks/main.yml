@@ -1,0 +1,58 @@
+---
+
+- name: Check if we have a swap file
+  stat:
+    path: '/{{ swap_filename}}'
+  register: swap_file_present
+
+- name: Create swap file
+  command: 'fallocate -l {{ swap_size }} /{{ swap_filename}}'
+  args:
+    creates: '/{{ swap_filename}}'
+  register: swap_created
+  when: ansible_swaptotal_mb == 0 and swap_autocreate
+
+- name: Set swap file permissions
+  file:
+    path: '/{{ swap_filename }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  when: ((ansible_swaptotal_mb == 0 and swap_autocreate) or
+         (swap_file_present is defined and swap_file_present.stat.exists))
+
+- name: Set up swap space
+  command: 'mkswap /{{ swap_filename }}'
+  when: swap_created is defined and swap_created.changed
+
+- name: Enable swap space
+  command: 'swapon /{{ swap_filename }}'
+  when: swap_created is defined and swap_created.changed
+
+- name: Add swap file to /etc/fstab
+  lineinfile:
+    dest: '/etc/fstab'
+    line: '/{{ swap_filename }}   none    swap    sw    0   0'
+    state: 'present'
+  when: ((ansible_swaptotal_mb == 0 and swap_autocreate) or
+         (swap_file_present is defined and swap_file_present.stat.exists))
+
+- name: Configure swappiness
+  lineinfile:
+    dest: '/etc/sysctl.conf'
+    line: 'vm.swappiness = {{ swap_swappiness }}'
+    regexp: '^vm.swappiness[\s]?='
+    state: 'present'
+  notify: [ 'Reload sysctl' ]
+  when: ((ansible_swaptotal_mb == 0 and swap_autocreate) or
+         (swap_file_present is defined and swap_file_present.stat.exists))
+
+- name: Configure vfs_cache_pressure
+  lineinfile:
+    dest: '/etc/sysctl.conf'
+    line: 'vm.vfs_cache_pressure = {{ swap_vfs_cache_pressure }}'
+    regexp: '^vm.vfs_cache_pressure[\s]?='
+    state: 'present'
+  notify: [ 'Reload sysctl' ]
+  when: ((ansible_swaptotal_mb == 0 and swap_autocreate) or
+         (swap_file_present is defined and swap_file_present.stat.exists))

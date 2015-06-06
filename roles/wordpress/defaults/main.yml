@@ -1,0 +1,82 @@
+---
+
+# ---- Basic options ----
+
+# Should WordPress role manage its own dependencies?
+wordpress_dependencies: True
+
+# Length of randomly generated passwords (it's a string)
+wordpress_password_length: '20'
+
+
+# ---- Database ----
+
+# WordPress database hostname
+wordpress_database_hostname: 'localhost'
+
+# WordPress database name
+wordpress_database_name: 'wordpress'
+
+# WordPress database username
+wordpress_database_username: 'wordpress'
+
+# WordPress database password
+wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/mariadb/' + wordpress_database_username + '/password length=' + wordpress_password_length) }}"
+
+
+# ---- Nginx ----
+
+# Enable or disable the use of public key infrastructure with nginx
+wordpress_nginx_pki: False
+
+# List of IP addresses or network ranges in CIDR format, allowed to access
+# WordPress. Leave empty to allow access from all IP addresses/networks
+wordpress_nginx_allow: []
+
+
+# ---- PHP ----
+
+# Additional PHP packages installed with PHP5
+wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-dev' ]
+
+# Max upload size for nginx and php5
+wordpress_php5_upload_size: '32M'
+
+# Maximum number of PHP5 processes for WordPress
+wordpress_php5_max_children: '10'
+
+
+# ---- Varnish ----
+
+# Port that varnish is listening to.
+wordpress_varnish_listen: '6081'
+
+# Port used by the varnish backend server (WordPress in this case)
+wordpress_varnish_backend_port: '8080'
+
+
+# ---- WordPress Configuration ----
+
+# WordPress admin email
+wordpress_admin_email: 'admin@example.com'
+
+# WordPress admin username
+wordpress_admin_username: 'admin'
+
+# Password for MariaDB root user
+wordpress_admin_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/wordpress/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
+
+# Object cache key salt
+wordpress_cache_key_salt: '{{ wordpress_url }}_'
+
+# WordPress root directory
+wordpress_root: '/var/www/{{ wordpress_url }}'
+
+# WordPress table prefix
+wordpress_table_prefix: 'wp_'
+
+# WordPress Site Title
+wordpress_title: '{{ wordpress_url }}'
+
+# WordPress URL address
+wordpress_url: '{{ inventory_hostname }}'

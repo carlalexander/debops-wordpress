@@ -1,0 +1,144 @@
+---
+
+# ---- Install and configure MariaDB server ----
+
+  # We want to have our configuration enabled as soon as possible for UTF-8
+  # support, this check lets us know if MariaDB server has just been installed
+  # and we can quicky apply our own configuration and restart the server before
+  # any more changes.
+- name: Check if MariaDB server is installed
+  stat:
+    path: '/usr/bin/mysqld_safe'
+  register: mariadb_installed
+
+- name: Add MariaDB repository key
+  apt_key:
+    url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{ mariadb_keyserver_fingerprint }}'
+    state: 'present'
+
+- name: Add MariaDB repositories
+  apt_repository:
+    repo: '{{ item }}'
+    state: 'present'
+    update_cache: 'yes'
+  with_items: [ 'deb http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ansible_distribution_release }} main', 'deb-src http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ansible_distribution_release }} main' ]
+
+- name: Install MariaDB-related packages
+  apt:
+    name: '{{ item }}'
+    state: 'latest'
+    install_recommends: False
+  register: mariadb_install_status
+  with_items: [ 'python-mysqldb', 'mariadb-server', 'automysqlbackup', 'ssl-cert' ]
+
+- name: Add MariaDB system user to specified groups
+  user:
+    name: 'mysql'
+    groups: '{{ mariadb_mysqld_append_groups | join(",") | default(omit) }}'
+    append: True
+    createhome: False
+  when: mariadb_pki is defined and mariadb_pki
+  notify: [ 'Restart mariadb' ]
+
+- name: Apply /etc/mysql/conf.d/mysqld.cnf configuration
+  template:
+    src: 'etc/mysql/conf.d/mysqld.cnf.j2'
+    dest: '/etc/mysql/conf.d/mysqld.cnf'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Reload mariadb' ]
+
+- name: Apply /etc/mysql/conf.d/client.cnf configuration
+  template:
+    src: 'etc/mysql/conf.d/client.cnf.j2'
+    dest: '/etc/mysql/conf.d/client.cnf'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Reload mariadb' ]
+
+- name: Restart MariaDB service on first install
+  service:
+    name: 'mysql'
+    state: 'restarted'
+  when: ((mariadb_installed is defined and not mariadb_installed.stat.exists) and
+         (mariadb_install_status is defined and mariadb_install_status.changed))
+
+
+# ---- Secure MariaDB installation ----
+
+- name: Update mysql root password for all root accounts
+  mysql_user:
+    name: 'root'
+    host: '{{ item }}'
+    password: '{{ mariadb_root_password }}'
+  with_items: [ '{{ ansible_hostname }}', '127.0.0.1', '::1', 'localhost' ]
+
+- name: Create /root/.my.cnf file with root password credentials
+  template:
+    src: 'root/my.cnf.j2'
+    dest: '/root/.my.cnf'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+
+- name: Delete anonymous mysql user
+  mysql_user:
+    user: ""
+    host: '{{ item }}'
+    state: 'absent'
+  with_items: [ '{{ ansible_hostname }}', 'localhost' ]
+
+- name: Remove test database
+  mysql_db:
+    db: 'test'
+    state: 'absent'
+
+
+# ---- Configure MariaDB database backup ----
+
+- name: Setup automysqlbackup configuration
+  template:
+    src: 'etc/default/automysqlbackup.j2'
+    dest: '/etc/default/automysqlbackup'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: Create mysqldump section in /etc/mysql/debian.cnf
+  lineinfile:
+    regexp: '^\[mysqldump\]'
+    dest:   '/etc/mysql/debian.cnf'
+    line:   '[mysqldump]'
+    state:  'present'
+
+- name: Enable events table backup in mysqldump
+  lineinfile:
+    insertafter: '[mysqldump]'
+    regexp: '^events\s'
+    dest:   '/etc/mysql/debian.cnf'
+    line:   'events = true'
+    state:  'present'
+
+
+# ---- Manage MariaDB databases and users ----
+
+- name: Manage MariaDB databases
+  mysql_db:
+    name: '{{ item.name }}'
+    state: '{{ item.state | default("present") }}'
+  with_items: mariadb_databases
+  when: item.name is defined and item.name
+
+- name: Manage MariaDB users
+  mysql_user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | default(lookup("password", secret + "/credentials/" + ansible_fqdn + "/mariadb/" + item.name + "/password length=" + mariadb_password_length)) }}'
+    state: '{{ item.state | default("present") }}'
+    priv: '{{ item.priv | default(item.name + ".*:ALL") }}'
+    append_privs: '{{ item.append_privs | default("no") }}'
+    host: '{{ item.host | default("localhost") }}'
+  with_items: mariadb_users
+  when: (item.name is defined and item.name)
+

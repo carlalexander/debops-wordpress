@@ -1,0 +1,140 @@
+---
+
+wordpress_varnish_server:
+  by_role: 'wordpress'
+  enabled: True
+  default: False
+  type: 'custom'
+  name: [ 'varnish.{{ wordpress_url }}' ]
+  custom: |
+    server {
+      listen 80;
+
+      server_name {{ wordpress_url }};
+
+      access_log /var/log/nginx/varnish.{{ wordpress_url }}_access.log;
+      error_log /var/log/nginx/varnish.{{ wordpress_url }}_error.log;
+
+      client_max_body_size  {{ wordpress_php5_upload_size }};
+
+      location / {
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto {% if wordpress_nginx_ssl %}https{% else %}http{% endif %};
+        proxy_set_header X-Forwarded-Port {% if wordpress_nginx_ssl %}443{% else %}80{% endif %};
+        proxy_set_header Host $host;
+        proxy_pass http://varnish;
+      }
+    }
+
+wordpress_web_server:
+  by_role: 'wordpress'
+  enabled: True
+  default: False
+  type: 'php5'
+  listen: [ '{{ wordpress_varnish_backend_port }}' ]
+  filename: '{{ wordpress_url }}'
+  name: [ '{{ wordpress_url }}' ]
+  root: '{{ wordpress_root }}'
+
+  options: |
+    client_max_body_size  {{ wordpress_php5_upload_size }};
+    gzip_comp_level 5;
+    gzip_min_length 256;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types application/atom+xml
+      application/javascript
+      application/json
+      application/ld+json
+      application/manifest+json
+      application/rdf+xml
+      application/rss+xml
+      application/schema+json
+      application/vnd.geo+json
+      application/vnd.ms-fontobject
+      application/x-font-ttf
+      application/x-javascript
+      application/x-web-app-manifest+json
+      application/xhtml+xml
+      application/xml
+      font/eot
+      font/opentype
+      image/bmp
+      image/svg+xml
+      image/vnd.microsoft.icon
+      image/x-icon
+      text/cache-manifest
+      text/css
+      text/javascript
+      text/plain
+      text/vcard
+      text/vnd.rim.location.xloc
+      text/vtt
+      text/x-component
+      text/x-cross-domain-policy
+      text/xml;
+
+    rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+
+  location:
+    '/': 'try_files $uri $uri/ /index.php?$args;'
+
+    '~ /(\.|wp-config.php|readme.html|license.txt)': 'return 404;'
+
+    '= /robots.txt': |
+      access_log off;
+      log_not_found off;
+      try_files /robots.txt /index.php;
+
+    '~* ^.+\.(css|js|ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$': |
+      access_log off;
+      expires max;
+      add_header Cache-Control "public";
+
+  location_allow:
+    '/': '{{ wordpress_nginx_allow }}'
+
+  php5: 'php'
+
+  php5_options: |
+    {% if wordpress_allow is defined and wordpress_allow %}
+    {% for address in wordpress_allow %}
+    allow {{ address }};
+    {% endfor %}
+    deny all;
+    {% endif %}
+
+wordpress_php_upstream:
+  enabled: True
+  name: 'php'
+  server:
+   - 'unix:/var/run/hhvm/hhvm.sock'
+   - 'unix:/var/run/php5-fpm-wordpress.sock backup'
+
+wordpress_varnish_upstream:
+  enabled: True
+  name: 'varnish'
+  server: [ '127.0.0.1' ]
+  port: '{{ wordpress_varnish_listen }}'
+
+wordpress_php5_pool:
+  enabled: True
+  name: 'wordpress'
+  user: 'www-data'
+  group: 'www-data'
+  pm_max_children: '{{ wordpress_php5_max_children }}'
+  php_value:
+    post_max_size: '{{ wordpress_upload_size }}'
+    upload_max_filesize: '{{ wordpress_upload_size }}'
+
+wordpress_varnish_purge_allow: [ '{{ wordpress_url }}', 'localhost', '127.0.0.1', '::1' ]
+
+wordpress_varnish_vcl_recv_conditions:
+  'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
+  'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'
+
+wordpress_varnish_vcl_recv_remove_cookies: [ 'wordpress-settings-[0-9]+?=[^;]+(; )?', 'wordpress-settings-time-[0-9]+?=[^;]+(; )?', 'wordpress_test_cookie=[^;]+(; )?', 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', '_gat=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
+
+wordpress_varnish_vcl_backend_response_conditions:
+  'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'

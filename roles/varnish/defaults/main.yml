@@ -1,0 +1,72 @@
+---
+
+# ---- Varnish Server Configuration ----
+
+# Port that Varnish listens to for requests
+varnish_listen: '6081'
+
+# Port for Varnish admin
+varnish_admin_listen: '6082'
+
+# How much memory is reserved for the Varnish cache
+varnish_memory_allocation: '256m'
+
+# Varnish NCSA-style logging enabled/disabled
+varnish_ncsa_enabled: 1
+
+# --- Backend Configuration ----
+
+# Backend server details
+varnish_backend_host: '127.0.0.1'
+varnish_backend_port: '8080'
+
+# How many connections to the backend are allowed
+varnish_backend_max_connections: 300
+
+# How long to wait before we receive a response from the backend
+varnish_backend_first_byte_timeout: '300s'
+
+# How long to wait for a connection to the backend
+varnish_backend_connect_timeout: '5s'
+
+# How long to wait between two subsequent successful reads from the backend
+varnish_backend_between_bytes_timeout: '2s'
+
+# How long time to wait between polls to the backend
+varnish_backend_probe_interval: '5s'
+
+# How long to wait before timing out the probe to the backend
+varnish_backend_probe_timeout: '1s'
+
+# How many of the latest polls to consider when determining if the backend is healty
+varnish_backend_probe_window: 5
+
+# How many of the window last polls must be good for the backend to be declared healthy
+varnish_backend_probe_threshold: 3
+
+
+# ---- Varnish Caching Configuration ----
+
+# Determines if the cache should store static files. This consumes a lot more memory. Disable this
+# if your dynamic pages are getting evicted too fast.
+# Read more here: https://ma.ttias.be/stop-caching-static-files/
+varnish_cache_static_files: True
+
+# Normalizing query parameters lets Varnish cache variations of the same URL. This might cause some issues
+# with some script minimization systems.
+varnish_normalize_query_parameters: True
+
+# List of addresses that are allowed to purge the Varnish cache
+varnish_purge_allow: [ 'localhost', '127.0.0.1', '::1' ]
+
+# Dictionary conditions that will run at the end the vcl_recv subroutine
+varnish_vcl_recv_conditions: []
+
+# Regular expression for query parameters that need to be removed during the vcl_recv subroutine
+varnish_vcl_recv_remove_parameters: 'utm_(campaign|medium|source|term)|gclid|cx|ie|cof|siteurl'
+
+# List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
+varnish_vcl_recv_remove_cookies: [ 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
+
+# Dictionary conditions that will run at the end the vcl_recv subroutine
+varnish_vcl_backend_response_conditions: []

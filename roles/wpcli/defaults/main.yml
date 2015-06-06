@@ -1,0 +1,13 @@
+---
+
+# Default name of the wp-cli binary
+wpcli_bin_name: 'wp'
+
+# Default location to the wp-cli binary
+wpcli_bin_path: '/usr/local/bin'
+
+# Default location of the PHAR file
+wpcli_phar_url: 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
+
+# Default share location of the wp-cli binary
+wpcli_share_path: '/usr/share/wp-cli'

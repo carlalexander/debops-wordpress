@@ -1,0 +1,37 @@
+---
+
+# ---- Install and configure Varnish server ----
+
+- name: Add Varnish repository key
+  apt_key:
+    url: 'https://repo.varnish-cache.org/GPG-key.txt'
+    state: 'present'
+
+- name: Add Varnish repository
+  apt_repository:
+    repo: 'deb https://repo.varnish-cache.org/ubuntu/ {{ ansible_distribution_release }} varnish-4.0'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: Install Varnish package
+  apt:
+    name: 'varnish'
+    state: 'latest'
+
+- name: Configure Varnish
+  template:
+    src: 'etc/default/varnish.j2'
+    dest: '/etc/default/varnish'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Restart varnish' ]
+
+- name: Configure default.vcl for Varnish
+  template:
+    src: 'etc/varnish/default.vcl.j2'
+    dest: '/etc/varnish/default.vcl'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Restart varnish' ]

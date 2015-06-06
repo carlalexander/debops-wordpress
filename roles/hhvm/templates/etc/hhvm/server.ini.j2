@@ -1,0 +1,13 @@
+; This file is managed by Ansible, all changes will be lost
+
+; php options
+
+pid = {{ hhvm_pid }}
+
+; hhvm specific
+
+{% if hhvm_server_settings is defined %}
+{% for setting in hhvm_server_settings.keys() %}
+hhvm.{{ setting }} = {{ hhvm_server_settings[setting] }}
+{% endfor  %}
+{% endif %}

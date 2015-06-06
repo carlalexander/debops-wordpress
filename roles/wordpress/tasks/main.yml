@@ -1,0 +1,49 @@
+---
+
+# ---- Install and configure WordPress ----
+
+- name: Create WordPress directory
+  file:
+    path: '{{ wordpress_root }}'
+    state: 'directory'
+    owner: 'www-data'
+    group: 'www-data'
+    mode: '0755'
+
+- name: Check if WordPress is installed
+  command: 'wp core is-installed'
+  sudo_user: 'www-data'
+  args:
+      chdir: '{{ wordpress_root }}'
+  register: wordpress_installed
+  failed_when: False
+
+- name: Download WordPress
+  command: 'wp core download --path={{ wordpress_root }}'
+  sudo_user: 'www-data'
+  args:
+      chdir: '{{ wordpress_root }}'
+      creates: '{{ wordpress_root }}/index.php'
+  when: wordpress_installed is defined and wordpress_installed.rc == 1
+
+- name: Configure WordPress
+  command: 'wp core config --dbhost="{{ wordpress_database_hostname }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_username }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
+  sudo_user: 'www-data'
+  args:
+      chdir: '{{ wordpress_root }}'
+      creates: '{{ wordpress_root }}/wp-config.php'
+  when: wordpress_installed is defined and wordpress_installed.rc == 1
+
+- name: Install WordPress
+  command: 'wp core install --url="{{ wordpress_url }}" --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
+  sudo_user: 'www-data'
+  args:
+      chdir: "{{ wordpress_root }}"
+  when: wordpress_installed is defined and wordpress_installed.rc == 1
+
+- name: Schedule regular calls to wp-cron.php
+  cron:
+    name: 'Call wp-cron.php at {{ wordpress_url }}'
+    job: 'curl -s {{ wordpress_url }}/wp-cron.php'
+    user: 'www-data'
+    cron_file: '{{ wordpress_url | replace(".", "_") }}'

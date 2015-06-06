@@ -1,0 +1,15 @@
+; This file is managed by Ansible, all changes will be lost
+
+; php options
+
+session.save_handler = files
+session.save_path = /var/lib/php5
+session.gc_maxlifetime = 1440
+
+; hhvm specific
+
+{% if hhvm_php_settings is defined %}
+{% for setting in hhvm_php_settings.keys() %}
+hhvm.{{ setting }} = {{ hhvm_php_settings[setting] }}
+{% endfor %}
+{% endif %}

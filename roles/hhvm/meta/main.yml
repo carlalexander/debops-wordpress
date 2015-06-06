@@ -1,0 +1,6 @@
+---
+
+dependencies:
+
+  - role: debops.monit
+    monit_process_list: [ '{{ hhvm_monit_process }}' ]
