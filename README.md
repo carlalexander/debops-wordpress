@@ -124,16 +124,16 @@ Before you begin, you have to make sure that you've created an [SSH key in Digit
 
 You want to click on `Create droplet` in the Digital Ocean control panel
 
-[picture top of page]
+![Top of the page](https://cldup.com/XgYCnEdxDi-3000x3000.png)
 
 Replace `debops-wordpress` with the name that you want for your server. DebOps will use that name to
 store all server specific passwords in the `secret` directory.
 
-[picture middle of the page]
+![Middle of the page](https://cldup.com/sxP782VXgk-3000x3000.png)
 
 Select a region that fits best for you. You don't need to select anything under `Available Settings`.
 
-[picture bottom of the page]
+![Bottom of the page](https://cldup.com/TbpF9QZJx--3000x3000.png)
 
 The last step is to select your Linux. The default Ubuntu version (14.04 x64) is the best option here. Make
 sure to also select an SSH key for the server.
