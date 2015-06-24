@@ -27,7 +27,7 @@ wordpress_varnish_server:
       }
     }
 
-wordpress_web_server:
+wordpress_backend_server:
   by_role: 'wordpress'
   enabled: True
   default: False
