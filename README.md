@@ -28,7 +28,7 @@ If you've never used DebOps or Ansible before, please refer to the "[Installatio
 ## Usage
 
 To configure a server, you need to add it to the `hosts` file in the `inventory` folder
-under both the `[all_server]` and `[wordpress]`.
+under both the `[all_servers]` and `[wordpress]`.
 
 ```ini
 # inventory/hosts
