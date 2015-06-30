@@ -18,14 +18,16 @@ examples and other information.
 
 ## Installation
 
+*If you've never used DebOps or Ansible before, please refer to the "[Installation](https://github.com/carlalexander/debops-wordpress/wiki/Installation)" page of the wiki.*
+
 To create a "DebOps for WordPress" project, you just need to:
 
  1. Get a copy of this repo to your computer.
  2. Make sure that DebOps is up to date by running `debops-update`.
 
-If you've never used DebOps or Ansible before, please refer to the "[Installation](https://github.com/carlalexander/debops-wordpress/wiki/Installation)" page of the wiki.
-
 ## Usage
+
+*If you've never used DebOps or Ansible before, please refer to the "[Configuring your server](https://github.com/carlalexander/debops-wordpress/wiki/Configuring-your-server)" page of the wiki.*
 
 To configure a server, you need to add it to the `hosts` file in the `inventory` folder
 under both the `[all_servers]` and `[wordpress]`.
@@ -46,8 +48,6 @@ Once that's done, you just need to run two command lines. Each of them can take 
 $ debops
 $ debops wordpress
 ```
-
-If you've never used DebOps or Ansible before, please refer to the "[Configuring your server](https://github.com/carlalexander/debops-wordpress/wiki/Configuring-your-server)" page of the wiki.
 
 ## Acknowledgements
 
