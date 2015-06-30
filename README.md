@@ -9,7 +9,7 @@ require little to no system adminstrator knowledge.
 It takes care of everything for you. It does more than just install WordPress for you. It
 also takes care of all server configuration and maintenance tasks.
 
-All that you need to do is type in two command lines and wait for the magic to happen.
+All that you need to do is type in two commands (after installation) and wait for the magic to happen.
 
 ## Documentation
 
