@@ -54,6 +54,21 @@ wordpress_varnish_listen: '6081'
 # Port used by the varnish backend server (WordPress in this case)
 wordpress_varnish_backend_port: '8080'
 
+# List of addresses that are allowed to purge the Varnish cache
+wordpress_varnish_purge_allow: [ '{{ wordpress_url }}', 'localhost', '127.0.0.1', '::1' ]
+
+# Dictionary conditions that will run at the end the vcl_recv subroutine
+wordpress_varnish_vcl_recv_conditions:
+  'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
+  'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'
+
+# List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
+wordpress_varnish_vcl_recv_remove_cookies: [ 'wordpress-settings-[0-9]+?=[^;]+(; )?', 'wordpress-settings-time-[0-9]+?=[^;]+(; )?', 'wordpress_test_cookie=[^;]+(; )?', 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', '_gat=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
+
+# Dictionary conditions that will run at the end the vcl_recv subroutine
+wordpress_varnish_vcl_backend_response_conditions:
+  'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
+
 
 # ---- WordPress Configuration ----
 

@@ -127,14 +127,3 @@ wordpress_php5_pool:
   php_value:
     post_max_size: '{{ wordpress_upload_size }}'
     upload_max_filesize: '{{ wordpress_upload_size }}'
-
-wordpress_varnish_purge_allow: [ '{{ wordpress_url }}', 'localhost', '127.0.0.1', '::1' ]
-
-wordpress_varnish_vcl_recv_conditions:
-  'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
-  'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'
-
-wordpress_varnish_vcl_recv_remove_cookies: [ 'wordpress-settings-[0-9]+?=[^;]+(; )?', 'wordpress-settings-time-[0-9]+?=[^;]+(; )?', 'wordpress_test_cookie=[^;]+(; )?', 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', '_gat=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
-
-wordpress_varnish_vcl_backend_response_conditions:
-  'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
