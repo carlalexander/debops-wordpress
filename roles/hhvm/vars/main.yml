@@ -1,11 +1,17 @@
 ---
 
+# HHVM process files
+hhvm_pid: '/var/run/hhvm/pid'
+hhvm_hhbc: '/var/run/hhvm/hhvm.hhbc'
+hhvm_sock: '/var/run/hhvm/hhvm.sock'
+
+# HHVM monit process
 hhvm_monit_process:
   pid: 'hhvm/pid'
   process: 'hhvm'
   start: '/etc/init.d/hhvm start'
   stop: '/etc/init.d/hhvm stop'
   script: |
-    if failed unixsocket /var/run/hhvm/hhvm.sock then restart
+    if failed unixsocket {{ hhvm_sock }} then restart
     if mem > 400.0 MB for 1 cycles then restart
     if 5 restarts with 5 cycles then timeout

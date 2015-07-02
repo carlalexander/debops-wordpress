@@ -10,8 +10,6 @@ hhvm_monit: False
 
 # ---- HHVM configuration ----
 
-hhvm_pid: '/var/run/hhvm/pid'
-
 # HHVM php.ini settings
 hhvm_php_settings:
   'log.level': 'Warning'
@@ -21,11 +19,10 @@ hhvm_php_settings:
 
 # HHVM server.ini settings
 hhvm_server_settings:
-  'server.file_socket': '/var/run/hhvm/hhvm.sock'
-  'server.type': 'fastcgi'
-  'server.default_document': 'index.php'
+  'header': 'true'
   'log.use_log_file': 'true'
   'log.file': '/var/log/hhvm/error.log'
-  'header': 'true'
-  'repo.central.path': 'var/run/hhvm/hhvm.hhbc'
-  'server.file_socket': ' /var/run/hhvm/hhvm.sock'
+  'repo.central.path': '{{ hhvm_hhbc }}'
+  'server.default_document': 'index.php'
+  'server.file_socket': '{{ hhvm_sock }}'
+  'server.type': 'fastcgi'
