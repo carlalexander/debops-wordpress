@@ -104,6 +104,13 @@ wordpress_backend_server:
     {% endfor %}
     deny all;
     {% endif %}
+    set $php_https off;
+
+    if ($http_x_forwarded_proto = "https") {
+      set $php_https on;
+    }
+
+    fastcgi_param HTTPS $php_https;
 
 wordpress_php_upstream:
   enabled: True
