@@ -132,5 +132,5 @@ wordpress_php5_pool:
   group: 'www-data'
   pm_max_children: '{{ wordpress_php5_max_children }}'
   php_value:
-    post_max_size: '{{ wordpress_upload_size }}'
-    upload_max_filesize: '{{ wordpress_upload_size }}'
+    post_max_size: '{{ wordpress_php5_upload_size }}'
+    upload_max_filesize: '{{ wordpress_php5_upload_size }}'
