@@ -37,7 +37,7 @@ wordpress_nginx_allow: []
 # ---- PHP ----
 
 # Additional PHP packages installed with PHP5
-wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-dev' ]
+wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-curl', 'php5-dev' ]
 
 # Max upload size for nginx and php5
 wordpress_php5_upload_size: '32M'
