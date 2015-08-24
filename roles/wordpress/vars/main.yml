@@ -4,28 +4,26 @@ wordpress_varnish_server:
   by_role: 'wordpress'
   enabled: True
   default: False
-  type: 'custom'
-  name: [ 'varnish.{{ wordpress_url }}' ]
-  custom: |
-    server {
-      listen 80;
+  filename: 'varnish.{{ wordpress_url }}'
+  name: [ '{{ wordpress_url }}' ]
+  ssl: '{{ wordpress_ssl }}'
+  pki_crt: '{{ wordpress_nginx_crt }}'
+  pki_key: '{{ wordpress_nginx_key }}'
+  root: False
+  index: False
+  deny_hidden: False
+  favicon: False
+  options: |
+    client_max_body_size  {{ wordpress_php5_upload_size }};
 
-      server_name {{ wordpress_url }};
-
-      access_log /var/log/nginx/varnish.{{ wordpress_url }}_access.log;
-      error_log /var/log/nginx/varnish.{{ wordpress_url }}_error.log;
-
-      client_max_body_size  {{ wordpress_php5_upload_size }};
-
-      location / {
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto http;
-        proxy_set_header X-Forwarded-Port 80;
-        proxy_set_header Host $host;
-        proxy_pass http://varnish;
-      }
-    }
+  location:
+    '/': |
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto {% if wordpress_ssl is defined and wordpress_ssl %}https{% else %}http{% endif %};
+      proxy_set_header X-Forwarded-Port {% if wordpress_ssl is defined and wordpress_ssl %}443{% else %}80{% endif %};
+      proxy_set_header Host $host;
+      proxy_pass http://varnish;
 
 wordpress_backend_server:
   by_role: 'wordpress'
@@ -33,6 +31,7 @@ wordpress_backend_server:
   default: False
   type: 'php5'
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
+  ssl: False
   filename: '{{ wordpress_url }}'
   name: [ '{{ wordpress_url }}' ]
   root: '{{ wordpress_root }}'
@@ -134,3 +133,10 @@ wordpress_php5_pool:
   php_value:
     post_max_size: '{{ wordpress_php5_upload_size }}'
     upload_max_filesize: '{{ wordpress_php5_upload_size }}'
+
+wordpress_ssl_files:
+  - src: '{{ wordpress_ssl_crt }}'
+    dest: '{{ wordpress_nginx_crt }}'
+
+  - src: '{{ wordpress_ssl_key }}'
+    dest: '{{ wordpress_nginx_key }}'

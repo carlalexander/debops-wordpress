@@ -26,8 +26,9 @@ wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + a
 
 # ---- Nginx ----
 
-# Enable or disable the use of public key infrastructure with nginx
-wordpress_nginx_pki: False
+# Relative path to the SSL certificate files used by debops.nginx
+wordpress_nginx_crt: 'certs/{{ wordpress_url }}.crt'
+wordpress_nginx_key: 'private/{{ wordpress_url }}.key'
 
 # List of IP addresses or network ranges in CIDR format, allowed to access
 # WordPress. Leave empty to allow access from all IP addresses/networks
@@ -44,6 +45,16 @@ wordpress_php5_upload_size: '32M'
 
 # Maximum number of PHP5 processes for WordPress
 wordpress_php5_max_children: '10'
+
+
+# ---- SSL ----
+
+# Whether our WordPress site is using SSL or not
+wordpress_ssl: False
+
+# Path to the SSL certificate files
+wordpress_ssl_crt: ''
+wordpress_ssl_key: ''
 
 
 # ---- Varnish ----

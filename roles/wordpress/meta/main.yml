@@ -9,12 +9,15 @@ dependencies:
     tags: [ 'mysql', 'wordpress' ]
 
   - role: debops.nginx
-    nginx_pki: '{{ wordpress_nginx_pki }}'
     nginx_webroot_create: False
     nginx_servers: [ '{{ wordpress_varnish_server }}', '{{ wordpress_backend_server }}' ]
     nginx_upstreams: [ '{{ wordpress_php_upstream }}', '{{ wordpress_varnish_upstream }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
     tags: [ 'mysql', 'wordpress', 'nginx' ]
+
+  - role: debops.pki
+    pki_copy_private_files: '{{ wordpress_ssl_files }}'
+    when: wordpress_ssl is defined and wordpress_ssl
 
   - role: debops.redis
 
