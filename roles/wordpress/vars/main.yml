@@ -80,7 +80,7 @@ wordpress_backend_server:
   location:
     '/': 'try_files $uri $uri/ /index.php?$args;'
 
-    '~ /(\.|wp-config.php|readme.html|license.txt)': 'return 404;'
+    '~ /(\.|wp-config.php|readme.html|license.txt|wp-cli.local.yml|wp-cli.yml)': 'return 404;'
 
     '= /robots.txt': |
       access_log off;
