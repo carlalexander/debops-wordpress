@@ -6,6 +6,8 @@ wordpress_varnish_server:
   default: False
   filename: 'varnish.{{ wordpress_url }}'
   name: [ '{{ wordpress_url }}' ]
+  listen: [ '80' ]
+  listen_ssl: [ '443' ]
   ssl: '{{ wordpress_ssl }}'
   pki_crt: '{{ wordpress_nginx_crt }}'
   pki_key: '{{ wordpress_nginx_key }}'
