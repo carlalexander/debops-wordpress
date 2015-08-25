@@ -123,8 +123,9 @@ wordpress_php_upstream:
 wordpress_varnish_upstream:
   enabled: True
   name: 'varnish'
-  server: [ '127.0.0.1' ]
-  port: '{{ wordpress_varnish_listen }}'
+  server:
+   - '127.0.0.1:{{ wordpress_varnish_listen }}'
+   - '127.0.0.1:{{ wordpress_varnish_backend_port }} backup'
 
 wordpress_php5_pool:
   enabled: True
