@@ -10,6 +10,14 @@
     group: 'www-data'
     mode: '0755'
 
+- name: Configure wp-cli
+  template:
+    src: 'var/www/wp-cli.local.yml.j2'
+    dest: '{{ wordpress_root }}/wp-cli.local.yml'
+    owner: 'www-data'
+    group: 'www-data'
+    mode: '0644'
+
 - name: Check if WordPress is installed
   command: 'wp core is-installed'
   sudo_user: 'www-data'
@@ -19,7 +27,7 @@
   failed_when: False
 
 - name: Download WordPress
-  command: 'wp core download --path={{ wordpress_root }}'
+  command: 'wp core download'
   sudo_user: 'www-data'
   args:
       chdir: '{{ wordpress_root }}'
@@ -35,7 +43,7 @@
   when: wordpress_installed is defined and wordpress_installed.rc == 1
 
 - name: Install WordPress
-  command: 'wp core install --url="{{ wordpress_url }}" --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
+  command: 'wp core install --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
   sudo_user: 'www-data'
   args:
       chdir: "{{ wordpress_root }}"
