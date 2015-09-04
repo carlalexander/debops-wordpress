@@ -5,7 +5,7 @@ wordpress_varnish_server:
   enabled: True
   default: False
   filename: 'varnish.{{ wordpress_url }}'
-  name: [ '{{ wordpress_url }}' ]
+  name: '{{ wordpress_nginx_server_name }}'
   listen: [ '80' ]
   listen_ssl: [ '443' ]
   ssl: '{{ wordpress_ssl }}'
@@ -35,7 +35,7 @@ wordpress_backend_server:
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
   ssl: False
   filename: '{{ wordpress_url }}'
-  name: [ '{{ wordpress_url }}' ]
+  name: '{{ wordpress_nginx_server_name }}'
   root: '{{ wordpress_root }}'
 
   options: |
@@ -77,6 +77,13 @@ wordpress_backend_server:
       text/xml;
 
     rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+    {% if wordpress_multisite and not wordpress_multisite_subdomains %}
+
+    if (!-e $request_filename) {
+      rewrite ^(/[^/]+)?(/wp-.*) $2 last;
+      rewrite ^(/[^/]+)?(/.*\.php) $2 last;
+    }
+    {% endif %}
 
   location:
     '/': 'try_files $uri $uri/ /index.php?$args;'

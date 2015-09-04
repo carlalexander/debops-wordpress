@@ -26,13 +26,16 @@ wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + a
 
 # ---- Nginx ----
 
+# List of IP addresses or network ranges in CIDR format, allowed to access
+# WordPress. Leave empty to allow access from all IP addresses/networks
+wordpress_nginx_allow: []
+
 # Relative path to the SSL certificate files used by debops.nginx
 wordpress_nginx_crt: 'certs/{{ wordpress_url }}.crt'
 wordpress_nginx_key: 'private/{{ wordpress_url }}.key'
 
-# List of IP addresses or network ranges in CIDR format, allowed to access
-# WordPress. Leave empty to allow access from all IP addresses/networks
-wordpress_nginx_allow: []
+# List of domain names that the nginx server responds to.
+wordpress_nginx_server_name: [ '{{ wordpress_url }}' ]
 
 
 # ---- PHP ----
@@ -106,3 +109,15 @@ wordpress_title: '{{ wordpress_url }}'
 
 # WordPress URL address
 wordpress_url: '{{ inventory_hostname }}'
+
+
+# ---- WordPress Multisite Configuration ----
+
+# Whether the WordPress installation is multisite or not
+wordpress_multisite: False
+
+# The base path of each site URL in the network
+wordpress_multisite_path: '/'
+
+# Whether to configure the multisite installation using subdomains or not
+wordpress_multisite_subdomains: False

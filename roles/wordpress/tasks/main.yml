@@ -47,7 +47,16 @@
   sudo_user: 'www-data'
   args:
       chdir: "{{ wordpress_root }}"
-  when: wordpress_installed is defined and wordpress_installed.rc == 1
+  when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
+         (wordpress_multisite is defined and not wordpress_multisite))
+
+- name: Install WordPress Multisite
+  command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {% if wordpress_multisite_subdomains %}--subdomains{% endif %} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
+  sudo_user: 'www-data'
+  args:
+      chdir: "{{ wordpress_root }}"
+  when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
+         (wordpress_multisite is defined and wordpress_multisite))
 
 - name: Schedule regular calls to wp-cron.php
   cron:
