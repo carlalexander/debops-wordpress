@@ -32,6 +32,9 @@ varnish_backend_connect_timeout: '5s'
 # How long to wait between two subsequent successful reads from the backend
 varnish_backend_between_bytes_timeout: '2s'
 
+# The value of the host header of the poll
+varnish_backend_probe_host: 'localhost'
+
 # How long time to wait between polls to the backend
 varnish_backend_probe_interval: '5s'
 

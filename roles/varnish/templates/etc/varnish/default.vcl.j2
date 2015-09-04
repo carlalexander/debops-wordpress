@@ -16,7 +16,7 @@ backend webserver {
     # We prefer to only do a HEAD /
     .request =
       "HEAD / HTTP/1.1"
-      "Host: localhost"
+      "Host: {{ varnish_backend_probe_host }}"
       "Connection: close";
 
     .interval  = {{ varnish_backend_probe_interval }};

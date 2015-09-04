@@ -44,6 +44,7 @@ dependencies:
   - role: varnish
     varnish_listen: '{{ wordpress_varnish_listen }}'
     varnish_backend_port: '{{ wordpress_varnish_backend_port }}'
+    varnish_backend_probe_host: '{{ wordpress_url }}'
     varnish_normalize_query_parameters: False
     varnish_purge_allow: '{{ wordpress_varnish_purge_allow }}'
     varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions }}'
