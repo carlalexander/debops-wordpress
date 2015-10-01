@@ -4,7 +4,7 @@
 
 "DebOps for WordPress" is a tool that gives anyone in the WordPress community
 access to a fast and secure WordPress server. It's meant to be easy to use and
-require little to no system adminstrator knowledge.
+require little to no system administrator knowledge.
 
 It takes care of everything for you. It does more than just install WordPress for you. It
 also takes care of all server configuration and maintenance tasks.
