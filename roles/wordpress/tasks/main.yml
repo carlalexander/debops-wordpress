@@ -35,7 +35,7 @@
   when: wordpress_installed is defined and wordpress_installed.rc == 1
 
 - name: Configure WordPress
-  command: 'wp core config --dbhost="{{ wordpress_database_hostname }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_username }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
+  command: 'wp core config --dbhost="{{ wordpress_database_server }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_user }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
   sudo_user: 'www-data'
   args:
       chdir: '{{ wordpress_root }}'
