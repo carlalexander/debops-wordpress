@@ -1,75 +1,191 @@
 ---
+# Default variables
+# =================
 
-# ---- Varnish Server Configuration ----
+# .. contents:: Sections
+#    :local:
+#
+# ------------------------------------
+#   Varnish packages and installation
+# ------------------------------------
 
+# .. envvar:: varnish_upstream
+#
+# By default ``carlalexander.varnish`` installs varnish from distribution
+# repositories when possible. When set to True varnish will be installed from
+# upstream even if it is available in distribution repositories.
+varnish_upstream: False
+
+# .. envvar:: varnish_upstream_key
+#
+# APT GPG key id used to sign the upstream Varnish packages.
+varnish_upstream_key: 'E98C6BBBA1CBC5C3EB2DF21C60E7C096C4DEFFEB'
+
+
+# .. envvar:: varnish_upstream_repository
+#
+# Address of the Varnish upstream APT repository.
+varnish_upstream_repository: 'deb https://repo.varnish-cache.org/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} varnish-{{ varnish_upstream_version }}'
+
+
+# .. envvar:: varnish_upstream_version
+#
+# Upstream version to install.
+# https://repo.varnish-cache.org/debian/dists/jessie/
+varnish_upstream_version: '4.0'
+
+
+# ------------------------------------
+#   Varnish server configuration
+# ------------------------------------
+
+# .. envvar:: varnish_listen
+#
 # Port that Varnish listens to for requests
 varnish_listen: '6081'
 
+
+# .. envvar:: varnish_admin_listen
+#
 # Port for Varnish admin
 varnish_admin_listen: '6082'
 
+
+# .. envvar:: varnish_memory_allocation
+#
 # How much memory is reserved for the Varnish cache
 varnish_memory_allocation: '256m'
 
+
+# .. envvar:: varnish_ncsa_enabled
+#
 # Varnish NCSA-style logging enabled/disabled
 varnish_ncsa_enabled: 1
 
-# --- Backend Configuration ----
 
-# Backend server details
+# ------------------------------------
+#   Backend Configuration ----
+# ------------------------------------
+
+# .. envvar:: varnish_backend_host
+#
+# Backend server host.
 varnish_backend_host: '127.0.0.1'
+
+
+# .. envvar:: varnish_backend_port
+#
+# Backend server port.
 varnish_backend_port: '8080'
 
-# How many connections to the backend are allowed
+
+# .. envvar:: varnish_backend_max_connections
+#
+# How many connections to the backend are allowed.
 varnish_backend_max_connections: 300
 
-# How long to wait before we receive a response from the backend
+
+# .. envvar:: varnish_backend_first_byte_timeout
+#
+# How long to wait before we receive a response from the backend.
 varnish_backend_first_byte_timeout: '300s'
 
-# How long to wait for a connection to the backend
+
+# .. envvar:: varnish_backend_connect_timeout
+#
+# How long to wait for a connection to the backend.
 varnish_backend_connect_timeout: '5s'
 
-# How long to wait between two subsequent successful reads from the backend
+
+# .. envvar:: varnish_backend_between_bytes_timeout
+#
+# How long to wait between two subsequent successful reads from the backend.
 varnish_backend_between_bytes_timeout: '2s'
 
-# The value of the host header of the poll
+
+# .. envvar:: varnish_backend_probe_host
+#
+# The value of the host header of the poll.
 varnish_backend_probe_host: 'localhost'
 
-# How long time to wait between polls to the backend
+
+# .. envvar:: varnish_backend_probe_interval
+#
+# How long time to wait between polls to the backend.
 varnish_backend_probe_interval: '5s'
 
-# How long to wait before timing out the probe to the backend
+
+# .. envvar:: varnish_backend_probe_timeout
+#
+# How long to wait before timing out the probe to the backend.
 varnish_backend_probe_timeout: '1s'
 
-# How many of the latest polls to consider when determining if the backend is healty
+
+# .. envvar:: varnish_backend_probe_window
+#
+# How many of the latest polls to consider when determining if the backend is healthy.
 varnish_backend_probe_window: 5
 
-# How many of the window last polls must be good for the backend to be declared healthy
+
+# .. envvar:: varnish_backend_probe_threshold
+#
+# How many of the window last polls must be good for the backend to be declared healthy.
 varnish_backend_probe_threshold: 3
 
 
-# ---- Varnish Caching Configuration ----
+# ------------------------------------
+#   Varnish caching configuration
+# ------------------------------------
 
+# .. envvar:: varnish_cache_static_files
+#
 # Determines if the cache should store static files. This consumes a lot more memory. Disable this
 # if your dynamic pages are getting evicted too fast.
 # Read more here: https://ma.ttias.be/stop-caching-static-files/
 varnish_cache_static_files: True
 
-# Normalizing query parameters lets Varnish cache variations of the same URL. This might cause some issues
-# with some script minimization systems.
+
+# .. envvar:: varnish_normalize_query_parameters
+#
+# Normalizing query parameters lets Varnish cache variations of the same URL.
+# This might cause some issues with some script minimization systems.
 varnish_normalize_query_parameters: True
 
-# List of addresses that are allowed to purge the Varnish cache
+
+# .. envvar:: varnish_purge_allow
+#
+# List of addresses that are allowed to purge the Varnish cache.
 varnish_purge_allow: [ 'localhost', '127.0.0.1', '::1' ]
 
-# Dictionary conditions that will run at the end the vcl_recv subroutine
-varnish_vcl_recv_conditions: []
 
-# Regular expression for query parameters that need to be removed during the vcl_recv subroutine
+# .. envvar:: varnish_vcl_recv_conditions
+#
+# Dictionary conditions that will run at the end the vcl_recv subroutine.
+varnish_vcl_recv_conditions: {}
+
+
+# .. envvar:: varnish_vcl_recv_remove_parameters
+#
+# Regular expression for query parameters that need to be removed during the vcl_recv subroutine.
 varnish_vcl_recv_remove_parameters: 'utm_(campaign|medium|source|term)|gclid|cx|ie|cof|siteurl'
 
-# List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
-varnish_vcl_recv_remove_cookies: [ 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
 
-# Dictionary conditions that will run at the end the vcl_recv subroutine
-varnish_vcl_backend_response_conditions: []
+# .. envvar:: varnish_vcl_recv_remove_cookies
+#
+# List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
+varnish_vcl_recv_remove_cookies:
+  - 'has_js=[^;]+(; )?'
+  - '__utm.=[^;]+(; )?'
+  - '_ga=[^;]+(; )?'
+  - 'utmctr=[^;]+(; )?'
+  - 'utmcmd.=[^;]+(; )?'
+  - 'utmccn.=[^;]+(; )?'
+  - '__gads=[^;]+(; )?'
+  - '__qc.=[^;]+(; )?'
+  - '__atuv.=[^;]+(; )?'
+
+
+# .. envvar:: varnish_vcl_backend_response_conditions
+#
+# Dictionary conditions that will run at the end the vcl_recv subroutine.
+varnish_vcl_backend_response_conditions: {}
