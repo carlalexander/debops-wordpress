@@ -6,45 +6,44 @@ dependencies:
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
 
   - role: debops.php5
+    tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     php5_packages: '{{ wordpress_php5_packages }}'
     php5_pools: [ '{{ wordpress_php5_pool }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
-    tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
 
   - role: debops.nginx
+    tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_webroot_create: False
     nginx_servers: [ '{{ wordpress_varnish_server }}', '{{ wordpress_backend_server }}' ]
     nginx_upstreams: [ '{{ wordpress_php_upstream }}', '{{ wordpress_varnish_upstream }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
-    tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
 
   - role: debops.pki
+    tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     pki_copy_private_files: '{{ wordpress_ssl_files }}'
     when: wordpress_ssl is defined and wordpress_ssl
-    tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
 
   - role: debops.redis
     tags: [ 'depend::redis', 'depend::redis:wordpress', 'depend-of::wordpress', 'type::dependency' ]
 
   - role: hhvm
+    tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
 
-  - role: mariadb
-    when: wordpress_dependencies is defined and wordpress_dependencies
-    tags: [ 'mysql', 'wordpress' ]
-
-    mariadb_databases:
-      - name: '{{ wordpress_database_name }}'
-        state: 'present'
-
+  - role: debops.mariadb
+    tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     mariadb_users:
       - name: '{{ wordpress_database_user }}'
         password: '{{ wordpress_database_password }}'
         host: '{{ wordpress_database_server }}'
         priv: '{{ wordpress_database_name }}.*:ALL'
         state: 'present'
+    mariadb_databases:
+      - name: '{{ wordpress_database_name }}'
+    when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: varnish
+    tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     varnish_listen: '{{ wordpress_varnish_listen }}'
     varnish_backend_port: '{{ wordpress_varnish_backend_port }}'
     varnish_backend_probe_host: '{{ wordpress_url }}'

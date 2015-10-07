@@ -13,3 +13,6 @@
 
 [wordpress]
 #<hostname>
+
+[debops_mariadb_server]
+#<hostname>

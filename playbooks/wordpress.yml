@@ -2,6 +2,14 @@
 
 - include: common.yml
 
+- name: Manage MariaDB server
+  hosts: 'debops_mariadb_server'
+  sudo: True
+
+  roles:
+    - role: debops.mariadb_server
+      tags: [ 'role::mariadb_server', 'mariadb_server' ]
+
 - name: Manage WordPress web server
   hosts: 'wordpress'
   sudo: True
