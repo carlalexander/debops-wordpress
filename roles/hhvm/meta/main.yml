@@ -5,3 +5,20 @@ dependencies:
   - role: debops.monit
     monit_process_list: [ '{{ hhvm_monit_process }}' ]
     when: hhvm_monit is defined and hhvm_monit
+
+galaxy_info:
+  company: 'DebOps'
+  license: 'GNU General Public License v3'
+  min_ansible_version: '1.7.0'
+  platforms:
+  - name: Ubuntu
+    versions:
+    - precise
+    - quantal
+    - raring
+    - saucy
+    - trusty
+  - name: Debian
+    versions:
+    - wheezy
+    - jessie
