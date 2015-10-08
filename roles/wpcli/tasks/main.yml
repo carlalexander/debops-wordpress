@@ -1,26 +1,46 @@
 ---
 
-- name: Create install location for WP-CLI
+- name: Create wpcli source directory
   file:
-    dest: '{{ wpcli_share_path }}'
+    path: '{{ wpcli_src_dir }}'
     state: 'directory'
     owner: 'root'
     group: 'root'
-    mode: '755'
-
-
-- name: Install WP-CLI
-  command: 'curl {{ wpcli_phar_url }} -o {{ wpcli_share_path }}/{{ wpcli_bin_name }}'
-  args:
-    creates: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
-
-- name: Set execute bits on WP-CLI
-  file:
-    path: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
     mode: '0755'
 
-- name: Symlink WP-CLI
-  file:
-    dest: '{{ wpcli_bin_path }}/{{ wpcli_bin_name }}'
-    src: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
-    state: 'link'
+## Need to wait for next release because of https://github.com/wp-cli/wp-cli/pull/2125
+# - name: Get filename of latest wp-cli package version
+#   uri:
+#     url: '{{ wpcli_wp_cli_base_url }}/deb/php-wpcli_latest_all.deb'
+#     return_content: yes
+#   register: wpcli_wp_cli_package
+#   tags: [ 'role::wpcli:install' ]
+
+# - name: Download latest wp-cli package
+#   get_url:
+#     url: '{{ wpcli_wp_cli_base_url }}/deb/{{ wpcli_wp_cli_package.content }}'
+#     dest: '{{ wpcli_src_dir }}/{{ wpcli_wp_cli_package.content }}'
+#     mode: '0644'
+#     force: no
+#   tags: [ 'role::wpcli:install' ]
+
+# - name: Install wp-cli package
+#   apt:
+#     deb: '{{ wpcli_src_dir }}/{{ wpcli_wp_cli_package.content }}'
+#     state: 'present'
+#   tags: [ 'role::wpcli:install' ]
+
+- name: Install wp-cli
+  get_url:
+    url: '{{ wpcli_wp_cli_base_url }}/phar/wp-cli.phar'
+    dest: '{{ wpcli_bin_dir }}/wp'
+    mode: 0755
+    force: yes
+  tags: [ 'role::wpcli:install' ]
+
+## FIXME(ypid): For what is this needed?
+# - name: Symlink WP-CLI
+#   file:
+#     dest: '{{ wpcli_bin_dir }}/wp'
+#     src: '{{ wpcli_share_path }}/{{ wpcli_bin_name }}'
+#     state: 'link'

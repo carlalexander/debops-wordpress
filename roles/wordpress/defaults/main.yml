@@ -21,6 +21,18 @@ wordpress_dependencies: True
 wordpress_password_length: '20'
 
 
+# .. envvar:: wordpress_user
+#
+# User that will be used for the WordPress instance.
+wordpress_user: 'www-data'
+
+
+# .. envvar:: wordpress_group
+#
+# Group that will be used for the WordPress instance.
+wordpress_group: 'www-data'
+
+
 # --------------------------
 #   Database configuration
 # --------------------------

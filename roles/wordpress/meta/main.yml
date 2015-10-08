@@ -55,3 +55,4 @@ dependencies:
     when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: wpcli
+    tags: [ 'depend::wpcli', 'depend::wpcli:wordpress', 'depend-of::wordpress', 'type::dependency' ]

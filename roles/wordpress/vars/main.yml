@@ -107,9 +107,9 @@ wordpress_backend_server:
 
   php5_options: |
     {% if wordpress_allow is defined and wordpress_allow %}
-    {% for address in wordpress_allow %}
+      {% for address in wordpress_allow %}
     allow {{ address }};
-    {% endfor %}
+      {% endfor %}
     deny all;
     {% endif %}
     set $php_https off;
@@ -137,8 +137,8 @@ wordpress_varnish_upstream:
 wordpress_php5_pool:
   enabled: True
   name: 'wordpress'
-  user: 'www-data'
-  group: 'www-data'
+  user: '{{ wordpress_user }}'
+  group: '{{ wordpress_group }}'
   pm_max_children: '{{ wordpress_php5_max_children }}'
   php_value:
     post_max_size: '{{ wordpress_php5_upload_size }}'
