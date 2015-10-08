@@ -110,6 +110,9 @@ wordpress_title: '{{ wordpress_url }}'
 # WordPress URL address
 wordpress_url: '{{ inventory_hostname }}'
 
+# Whether to disable WordPress file editing or not
+wordpress_disable_file_edit: False
+
 
 # ---- WordPress Multisite Configuration ----
 
