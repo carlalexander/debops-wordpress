@@ -82,14 +82,14 @@ wordpress_nginx_allow: []
 
 
 # Relative path to the SSL certificate files used by debops.nginx
-wordpress_nginx_crt: 'certs/{{ wordpress_url }}.crt'
-wordpress_nginx_key: 'private/{{ wordpress_url }}.key'
+wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
+wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 
 
 # .. envvar:: wordpress_nginx_server_name
 #
 # List of domain names that the nginx server responds to.
-wordpress_nginx_server_name: [ '{{ wordpress_url }}' ]
+wordpress_nginx_server_name: [ '{{ wordpress_domain }}' ]
 
 
 # ---------------------------
@@ -137,7 +137,7 @@ wordpress_varnish_listen: '6081'
 wordpress_varnish_backend_port: '8080'
 
 # List of addresses that are allowed to purge the Varnish cache
-wordpress_varnish_purge_allow: [ '{{ wordpress_url }}', 'localhost', '127.0.0.1', '::1' ]
+wordpress_varnish_purge_allow: [ '{{ wordpress_domain }}', 'localhost', '127.0.0.1', '::1' ]
 
 # Dictionary conditions that will run at the end the vcl_recv subroutine
 wordpress_varnish_vcl_recv_conditions:
@@ -178,25 +178,25 @@ wordpress_admin_password: "{{ lookup('password', secret + '/credentials/' + ansi
 #
 # FIXME: Not used.
 # Object cache key salt
-wordpress_cache_key_salt: '{{ wordpress_url }}_'
+wordpress_cache_key_salt: '{{ wordpress_domain }}_'
 
 
 # .. envvar:: wordpress_root
 #
 # WordPress root directory.
-wordpress_root: '/var/www/{{ wordpress_url }}'
+wordpress_root: '/var/www/{{ wordpress_domain }}'
 
 
 # .. envvar:: wordpress_title
 #
 # WordPress site title
-wordpress_title: '{{ wordpress_url }}'
+wordpress_title: '{{ wordpress_domain }}'
 
 
-# .. envvar:: wordpress_url
+# .. envvar:: wordpress_domain
 #
 # WordPress URL address
-wordpress_url: '{{ inventory_hostname }}'
+wordpress_domain: '{{ inventory_hostname }}'
 
 
 # ---------------------------

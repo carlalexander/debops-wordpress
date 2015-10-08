@@ -12,3 +12,6 @@ v0.2.0
 - Changed variable from ``wordpress_database_username`` to
   ``wordpress_database_user`` for consistency reasons. [ypid]
 
+- Changed variable from ``wordpress_url`` to
+  ``wordpress_domain`` for consistency reasons. [ypid]
+

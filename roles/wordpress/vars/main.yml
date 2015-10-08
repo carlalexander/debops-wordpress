@@ -4,7 +4,7 @@ wordpress_varnish_server:
   by_role: 'wordpress'
   enabled: True
   default: False
-  filename: 'varnish.{{ wordpress_url }}'
+  filename: 'varnish.{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   listen: [ '80' ]
   listen_ssl: [ '443' ]
@@ -34,7 +34,7 @@ wordpress_backend_server:
   type: 'php5'
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
   ssl: False
-  filename: '{{ wordpress_url }}'
+  filename: '{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   root: '{{ wordpress_root }}'
 
