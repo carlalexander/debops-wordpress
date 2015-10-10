@@ -17,3 +17,7 @@ v0.2.0
 
 - Allow to serve WordPress via HTTP and HTTPS and don’t redirect HTTP to HTTPS.
   Default is still HTTP only. [ypid]
+
+- Enable SSL/TLS support by default using a self signed CA and host certificate
+  and serve the site via HTTP and HTTPS simultaneity.
+  User/Admins Login is redirected to HTTPS. [ypid]

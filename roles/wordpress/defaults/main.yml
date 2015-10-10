@@ -121,7 +121,7 @@ wordpress_php5_max_children: '10'
 # .. envvar:: wordpress_ssl
 #
 # Whether our WordPress site is using SSL or not
-wordpress_ssl: False
+wordpress_ssl: True
 
 # .. envvar:: wordpress_http_and_https
 #
@@ -130,7 +130,7 @@ wordpress_ssl: False
 # provide and HTTPS version for users who really want it.
 # This option is only active when :ref:`wordpress_ssl` is True.
 # Default is undefined which will redirect all HTTP requests to HTTPS.
-wordpress_redirect_to_ssl:
+wordpress_redirect_to_ssl: False
 
 # Path to the SSL certificate files
 wordpress_ssl_crt: ''
