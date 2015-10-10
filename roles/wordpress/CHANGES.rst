@@ -15,3 +15,5 @@ v0.2.0
 - Changed variable from ``wordpress_url`` to
   ``wordpress_domain`` for consistency reasons. [ypid]
 
+- Allow to serve WordPress via HTTP and HTTPS and don’t redirect HTTP to HTTPS.
+  Default is still HTTP only. [ypid]

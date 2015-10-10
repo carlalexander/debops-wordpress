@@ -24,6 +24,7 @@
   args:
     chdir: '{{ wordpress_root }}'
   register: wordpress_installed
+  changed_when: False
   failed_when: False
 
 - name: Download WordPress
@@ -61,6 +62,6 @@
 - name: Schedule regular calls to wp-cron.php
   cron:
     name: 'Call wp-cron.php at {{ wordpress_domain }}'
-    job: 'curl {% if wordpress_ssl is defined and wordpress_ssl %}-k https{% else %}http{% endif %}://{{ wordpress_domain }}/wp-cron.php > /dev/null 2>&1'
+    job: 'curl {{ "-k https" if wordpress_ssl|d() else "http" }}://{{ wordpress_domain }}/wp-cron.php > /dev/null 2>&1'
     user: '{{ wordpress_user }}'
     cron_file: '{{ wordpress_domain | replace(".", "_") }}'

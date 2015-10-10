@@ -17,7 +17,7 @@ wordpress_dependencies: True
 
 # .. envvar:: wordpress_password_length
 #
-# Length of randomly generated passwords (it's a string)
+# Length of randomly generated passwords (it's a string).
 wordpress_password_length: '20'
 
 
@@ -81,7 +81,7 @@ wordpress_table_prefix: 'wp_'
 wordpress_nginx_allow: []
 
 
-# Relative path to the SSL certificate files used by debops.nginx
+# Relative path to the SSL certificate files used by ``debops.nginx``
 wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
 wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 
@@ -118,8 +118,19 @@ wordpress_php5_max_children: '10'
 #   SSL
 # ---------------------------
 
+# .. envvar:: wordpress_ssl
+#
 # Whether our WordPress site is using SSL or not
 wordpress_ssl: False
+
+# .. envvar:: wordpress_http_and_https
+#
+# If False, the HTTP site will not redirect to HTTPS.
+# So this allows you to serve your blog via HTTP by default and optionally
+# provide and HTTPS version for users who really want it.
+# This option is only active when :ref:`wordpress_ssl` is True.
+# Default is undefined which will redirect all HTTP requests to HTTPS.
+wordpress_redirect_to_ssl:
 
 # Path to the SSL certificate files
 wordpress_ssl_crt: ''
