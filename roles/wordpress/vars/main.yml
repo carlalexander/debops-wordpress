@@ -19,11 +19,11 @@ wordpress_varnish_server:
   favicon: False
   proxy_pass: 'http://varnish'
   proxy_options: |
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
+    {% if (wordpress_ssl|d() | bool) and not (wordpress_redirect_to_ssl|d(True) | bool) %}
     if ($scheme = 'http') {
       rewrite ^/wp-(admin|login.php) https://$host$uri permanent;
     }
+    {% endif %}
 
   options: |
     client_max_body_size  {{ wordpress_php5_upload_size }};
