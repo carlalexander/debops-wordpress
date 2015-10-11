@@ -1,10 +1,10 @@
 ---
 
 wordpress_varnish_server:
-  by_role: 'wordpress'
+  by_role: 'carlalexander.wordpress'
   enabled: True
   default: False
-  filename: 'varnish.{{ wordpress_url }}'
+  filename: 'varnish.{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   listen: [ '80' ]
   listen_ssl: [ '443' ]
@@ -28,13 +28,13 @@ wordpress_varnish_server:
       proxy_pass http://varnish;
 
 wordpress_backend_server:
-  by_role: 'wordpress'
+  by_role: 'carlalexander.wordpress'
   enabled: True
   default: False
   type: 'php5'
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
   ssl: False
-  filename: '{{ wordpress_url }}'
+  filename: '{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   root: '{{ wordpress_root }}'
 
@@ -107,9 +107,9 @@ wordpress_backend_server:
 
   php5_options: |
     {% if wordpress_allow is defined and wordpress_allow %}
-    {% for address in wordpress_allow %}
+      {% for address in wordpress_allow %}
     allow {{ address }};
-    {% endfor %}
+      {% endfor %}
     deny all;
     {% endif %}
     set $php_https off;
@@ -137,8 +137,8 @@ wordpress_varnish_upstream:
 wordpress_php5_pool:
   enabled: True
   name: 'wordpress'
-  user: 'www-data'
-  group: 'www-data'
+  user: '{{ wordpress_user }}'
+  group: '{{ wordpress_group }}'
   pm_max_children: '{{ wordpress_php5_max_children }}'
   php_value:
     post_max_size: '{{ wordpress_php5_upload_size }}'

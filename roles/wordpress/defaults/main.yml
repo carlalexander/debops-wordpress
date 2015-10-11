@@ -1,126 +1,254 @@
 ---
+# Default variables
+# =================
 
-# ---- Basic options ----
+# .. contents:: Sections
+#    :local:
+#
+# -------------------
+#   Basic options
+# -------------------
 
-# Should WordPress role manage its own dependencies?
+# .. envvar:: wordpress_dependencies
+#
+# Should the ``carlalexander.wordpress`` role manage it's own dependencies (database, web server)?
 wordpress_dependencies: True
 
-# Length of randomly generated passwords (it's a string)
+
+# .. envvar:: wordpress_password_length
+#
+# Length of randomly generated passwords (it's a string).
 wordpress_password_length: '20'
 
 
-# ---- Database ----
+# .. envvar:: wordpress_user
+#
+# User that will be used for the WordPress instance.
+wordpress_user: 'www-data'
 
-# WordPress database hostname
-wordpress_database_hostname: 'localhost'
 
-# WordPress database name
+# .. envvar:: wordpress_group
+#
+# Group that will be used for the WordPress instance.
+wordpress_group: 'www-data'
+
+
+# --------------------------
+#   Database configuration
+# --------------------------
+
+# .. envvar:: wordpress_database_server
+#
+# FQDN of the database server.
+wordpress_database_server: '{{ ansible_local.mariadb.server
+                                 if (ansible_local|d() and ansible_local.mariadb|d() and
+                                     ansible_local.mariadb.server|d())
+                                 else "localhost" }}'
+
+
+# .. envvar:: wordpress_database_user
+#
+# WordPress database user.
+wordpress_database_user: 'wordpress'
+
+
+# .. envvar:: wordpress_database_name
+#
+# WordPress database name.
 wordpress_database_name: 'wordpress'
 
-# WordPress database username
-wordpress_database_username: 'wordpress'
 
+# .. envvar:: wordpress_database_password
+#
 # WordPress database password
-wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/mariadb/' + wordpress_database_username + '/password length=' + wordpress_password_length) }}"
+wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/mariadb/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
 
 
-# ---- Nginx ----
+# .. envvar:: wordpress_table_prefix
+#
+# WordPress database table prefix.
+wordpress_table_prefix: 'wp_'
 
+
+# ---------------------------
+#   Webserver configuration
+# ---------------------------
+
+# .. envvar:: wordpress_nginx_allow
+#
 # List of IP addresses or network ranges in CIDR format, allowed to access
 # WordPress. Leave empty to allow access from all IP addresses/networks
 wordpress_nginx_allow: []
 
-# Relative path to the SSL certificate files used by debops.nginx
-wordpress_nginx_crt: 'certs/{{ wordpress_url }}.crt'
-wordpress_nginx_key: 'private/{{ wordpress_url }}.key'
 
+# .. envvar:: wordpress_nginx_crt
+# .. envvar:: wordpress_nginx_key
+#
+# Relative path to the SSL certificate files used by ``debops.nginx``
+wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
+wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
+
+
+# .. envvar:: wordpress_nginx_server_name
+#
 # List of domain names that the nginx server responds to.
-wordpress_nginx_server_name: [ '{{ wordpress_url }}' ]
+wordpress_nginx_server_name: [ '{{ wordpress_domain }}' ]
 
 
-# ---- PHP ----
+# ---------------------------
+#   PHP
+# ---------------------------
 
+# .. envvar:: wordpress_php5_packages
+#
 # Additional PHP packages installed with PHP5
 wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-curl', 'php5-dev' ]
 
-# Max upload size for nginx and php5
+
+# .. envvar:: wordpress_php5_upload_size
+#
+# Max upload size set in nginx and php5, with amount as M or G.
 wordpress_php5_upload_size: '32M'
 
+
+# .. envvar:: wordpress_php5_max_children
+#
 # Maximum number of PHP5 processes for WordPress
 wordpress_php5_max_children: '10'
 
 
-# ---- SSL ----
+# ---------------------------
+#   SSL
+# ---------------------------
 
+# .. envvar:: wordpress_ssl
+#
 # Whether our WordPress site is using SSL or not
 wordpress_ssl: False
 
+# .. envvar:: wordpress_ssl_crt
+# .. envvar:: wordpress_ssl_key
+#
 # Path to the SSL certificate files
 wordpress_ssl_crt: ''
 wordpress_ssl_key: ''
 
 
-# ---- Varnish ----
+# ---------------------------
+#   Varnish
+# ---------------------------
 
+# .. envvar:: wordpress_varnish_listen
+#
 # Port that varnish is listening to.
 wordpress_varnish_listen: '6081'
 
+# .. envvar:: wordpress_varnish_backend_port
+#
 # Port used by the varnish backend server (WordPress in this case)
 wordpress_varnish_backend_port: '8080'
 
+# .. envvar:: wordpress_varnish_purge_allow
+#
 # List of addresses that are allowed to purge the Varnish cache
-wordpress_varnish_purge_allow: [ '{{ wordpress_url }}', 'localhost', '127.0.0.1', '::1' ]
+wordpress_varnish_purge_allow: [ '{{ wordpress_domain }}', 'localhost', '127.0.0.1', '::1' ]
 
+# .. envvar:: wordpress_varnish_vcl_recv_conditions
+#
 # Dictionary conditions that will run at the end the vcl_recv subroutine
 wordpress_varnish_vcl_recv_conditions:
   'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
   'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'
 
+# .. envvar:: wordpress_varnish_vcl_recv_remove_cookies
+#
 # List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
-wordpress_varnish_vcl_recv_remove_cookies: [ 'wordpress-settings-[0-9]+?=[^;]+(; )?', 'wordpress-settings-time-[0-9]+?=[^;]+(; )?', 'wordpress_test_cookie=[^;]+(; )?', 'has_js=[^;]+(; )?', '__utm.=[^;]+(; )?', '_ga=[^;]+(; )?', '_gat=[^;]+(; )?', 'utmctr=[^;]+(; )?', 'utmcmd.=[^;]+(; )?', 'utmccn.=[^;]+(; )?', '__gads=[^;]+(; )?', '__qc.=[^;]+(; )?', '__atuv.=[^;]+(; )?' ]
+wordpress_varnish_vcl_recv_remove_cookies:
+  - 'wordpress-settings-[0-9]+?=[^;]+(; )?'
+  - 'wordpress-settings-time-[0-9]+?=[^;]+(; )?'
+  - 'wordpress_test_cookie=[^;]+(; )?'
+  - 'has_js=[^;]+(; )?'
+  - '__utm.=[^;]+(; )?'
+  - '_ga=[^;]+(; )?'
+  - '_gat=[^;]+(; )?'
+  - 'utmctr=[^;]+(; )?'
+  - 'utmcmd.=[^;]+(; )?'
+  - 'utmccn.=[^;]+(; )?'
+  - '__gads=[^;]+(; )?'
+  - '__qc.=[^;]+(; )?'
+  - '__atuv.=[^;]+(; )?'
 
+# .. envvar:: wordpress_varnish_vcl_backend_response_conditions
+#
 # Dictionary conditions that will run at the end the vcl_recv subroutine
 wordpress_varnish_vcl_backend_response_conditions:
   'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
 
 
-# ---- WordPress Configuration ----
+# ---------------------------
+#   WordPress configuration
+# ---------------------------
 
-# WordPress admin email
-wordpress_admin_email: 'admin@example.com'
-
-# WordPress admin username
+# .. envvar:: wordpress_admin_username
+#
+# WordPress admin username.
 wordpress_admin_username: 'admin'
 
-# Password for MariaDB root user
+
+# .. envvar:: wordpress_admin_email
+#
+# WordPress admin email.
+wordpress_admin_email: '{{ wordpress_admin_username }}@{{ ansible_domain }}'
+
+
+# .. envvar:: wordpress_admin_password
+#
+# Password for the WordPress admin user.
 wordpress_admin_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/wordpress/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
+
+# .. envvar:: wordpress_admin_password
+#
+# FIXME: Not used.
 # Object cache key salt
-wordpress_cache_key_salt: '{{ wordpress_url }}_'
+wordpress_cache_key_salt: '{{ wordpress_domain }}_'
 
-# WordPress root directory
-wordpress_root: '/var/www/{{ wordpress_url }}'
 
-# WordPress table prefix
-wordpress_table_prefix: 'wp_'
+# .. envvar:: wordpress_root
+#
+# WordPress root directory.
+wordpress_root: '/var/www/{{ wordpress_domain }}'
 
-# WordPress Site Title
-wordpress_title: '{{ wordpress_url }}'
 
+# .. envvar:: wordpress_title
+#
+# WordPress site title
+wordpress_title: '{{ wordpress_domain }}'
+
+
+# .. envvar:: wordpress_domain
+#
 # WordPress URL address
-wordpress_url: '{{ inventory_hostname }}'
-
-# Whether to disable WordPress file editing or not
-wordpress_disable_file_edit: False
+wordpress_domain: '{{ inventory_hostname }}'
 
 
-# ---- WordPress Multisite Configuration ----
+# ---------------------------
+#   WordPress multisite configuration ----
+# ---------------------------
 
-# Whether the WordPress installation is multisite or not
+# .. envvar:: wordpress_multisite
+#
+# Whether the WordPress installation is multisite or not.
 wordpress_multisite: False
 
-# The base path of each site URL in the network
+
+# .. envvar:: wordpress_multisite_path
+#
+# The base path of each site URL in the network.
 wordpress_multisite_path: '/'
 
-# Whether to configure the multisite installation using subdomains or not
+
+# .. envvar:: wordpress_multisite_subdomains
+#
+# Whether to configure the multisite installation using subdomains or not.
 wordpress_multisite_subdomains: False

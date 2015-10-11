@@ -6,61 +6,62 @@
   file:
     path: '{{ wordpress_root }}'
     state: 'directory'
-    owner: 'www-data'
-    group: 'www-data'
+    owner: '{{ wordpress_user }}'
+    group: '{{ wordpress_group }}'
     mode: '0755'
 
 - name: Configure wp-cli
   template:
     src: 'var/www/wp-cli.local.yml.j2'
     dest: '{{ wordpress_root }}/wp-cli.local.yml'
-    owner: 'www-data'
-    group: 'www-data'
+    owner: '{{ wordpress_user }}'
+    group: '{{ wordpress_group }}'
     mode: '0644'
 
 - name: Check if WordPress is installed
   command: 'wp core is-installed'
-  sudo_user: 'www-data'
+  sudo_user: '{{ wordpress_user }}'
   args:
-      chdir: '{{ wordpress_root }}'
+    chdir: '{{ wordpress_root }}'
   register: wordpress_installed
+  changed_when: False
   failed_when: False
 
 - name: Download WordPress
   command: 'wp core download'
-  sudo_user: 'www-data'
+  sudo_user: '{{ wordpress_user }}'
   args:
-      chdir: '{{ wordpress_root }}'
-      creates: '{{ wordpress_root }}/index.php'
+    chdir: '{{ wordpress_root }}'
+    creates: '{{ wordpress_root }}/index.php'
   when: wordpress_installed is defined and wordpress_installed.rc == 1
 
 - name: Configure WordPress
-  command: 'wp core config --dbhost="{{ wordpress_database_hostname }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_username }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
-  sudo_user: 'www-data'
+  command: 'wp core config --dbhost="{{ wordpress_database_server }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_user }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
+  sudo_user: '{{ wordpress_user }}'
   args:
-      chdir: '{{ wordpress_root }}'
-      creates: '{{ wordpress_root }}/wp-config.php'
+    chdir: '{{ wordpress_root }}'
+    creates: '{{ wordpress_root }}/wp-config.php'
   when: wordpress_installed is defined and wordpress_installed.rc == 1
 
 - name: Install WordPress
   command: 'wp core install --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
-  sudo_user: 'www-data'
+  sudo_user: '{{ wordpress_user }}'
   args:
-      chdir: "{{ wordpress_root }}"
+    chdir: '{{ wordpress_root }}'
   when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
          (wordpress_multisite is defined and not wordpress_multisite))
 
 - name: Install WordPress Multisite
-  command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {% if wordpress_multisite_subdomains %}--subdomains{% endif %} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
-  sudo_user: 'www-data'
+  command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {{ "--subdomains" if wordpress_multisite_subdomains else "" }} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
+  sudo_user: '{{ wordpress_user }}'
   args:
-      chdir: "{{ wordpress_root }}"
+    chdir: '{{ wordpress_root }}'
   when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
          (wordpress_multisite is defined and wordpress_multisite))
 
 - name: Schedule regular calls to wp-cron.php
   cron:
-    name: 'Call wp-cron.php at {{ wordpress_url }}'
-    job: 'curl {% if wordpress_ssl is defined and wordpress_ssl %}-k https{% else %}http{% endif %}://{{ wordpress_url }}/wp-cron.php > /dev/null 2>&1'
-    user: 'www-data'
-    cron_file: '{{ wordpress_url | replace(".", "_") }}'
+    name: 'Call wp-cron.php at {{ wordpress_domain }}'
+    job: 'curl {{ "-k https" if wordpress_ssl|d() else "http" }}://{{ wordpress_domain }}/wp-cron.php > /dev/null 2>&1'
+    user: '{{ wordpress_user }}'
+    cron_file: '{{ wordpress_domain | replace(".", "_") }}'
