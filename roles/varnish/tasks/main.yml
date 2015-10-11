@@ -2,21 +2,32 @@
 
 # ---- Install and configure Varnish server ----
 
-- name: Add Varnish repository key
+- name: Get upstream APT GPG key
   apt_key:
-    url: 'https://repo.varnish-cache.org/GPG-key.txt'
+    id: '{{ varnish_upstream_key }}'
+    keyserver: '{{ ansible_local.core.keyserver
+                   if (ansible_local|d() and ansible_local.core|d() and
+                       ansible_local.core.keyserver)
+                   else "hkp://pool.sks-keyservers.net" }}'
     state: 'present'
+  when: (varnish_use_upstream|d() or
+         not (ansible_distribution == 'Debian' and ansible_distribution_release in ['jessie']))
 
-- name: Add Varnish repository
+- name: Configure upstream APT repository
   apt_repository:
-    repo: 'deb https://repo.varnish-cache.org/ubuntu/ {{ ansible_distribution_release }} varnish-4.0'
+    repo: '{{ varnish_upstream_repository }}'
     state: 'present'
-    update_cache: 'yes'
+    update_cache: True
+  when: (varnish_use_upstream|d() or
+         not (ansible_distribution == 'Debian' and ansible_distribution_release in ['jessie']))
 
-- name: Install Varnish package
+- name: Install required packages
   apt:
-    name: 'varnish'
-    state: 'latest'
+    name: '{{ item }}'
+    state: 'present'
+    install_recommends: False
+  with_flattened:
+    - 'varnish'
 
 - name: Configure Varnish
   template:

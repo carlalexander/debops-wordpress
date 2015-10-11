@@ -155,9 +155,9 @@ sub vcl_recv {
 {% endif %}
 
   # Ansible conditions
-{% for condition in varnish_vcl_recv_conditions.keys() %}
+{% for condition, value in varnish_vcl_recv_conditions.iteritems() %}
   if ({{ condition }}) {
-    {{ varnish_vcl_recv_conditions[condition] }}
+    {{ value }}
   }
 {% endfor %}
   # End Ansible conditions
@@ -319,9 +319,9 @@ sub vcl_backend_response {
   }
 
   # Ansible conditions
-{% for condition in varnish_vcl_backend_response_conditions.keys() %}
+{% for condition, value in varnish_vcl_backend_response_conditions.iteritems() %}
   if ({{ condition }}) {
-    {{ varnish_vcl_backend_response_conditions[condition] }}
+    {{ value }}
   }
 {% endfor %}
   # End Ansible conditions
