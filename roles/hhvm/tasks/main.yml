@@ -2,22 +2,28 @@
 
 # ---- Install and configure HHVM server ----
 
-- name: Add HHVM repository key
+- name: Get upstream APT GPG key
   apt_key:
-    url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{ hhvm_keyserver_fingerprint }}'
+    id: '{{ hhvm_upstream_key }}'
+    keyserver: '{{ ansible_local.core.keyserver
+                   if (ansible_local|d() and ansible_local.core|d() and
+                       ansible_local.core.keyserver)
+                   else "hkp://pool.sks-keyservers.net" }}'
     state: 'present'
 
-- name: Add HHVM repository
+- name: Configure upstream APT repository
   apt_repository:
-    repo: 'deb http://dl.hhvm.com/ubuntu {{ ansible_distribution_release }} main'
+    repo: '{{ hhvm_upstream_repository }}'
     state: 'present'
-    update_cache: 'yes'
+    update_cache: True
 
-- name: Install HHVM package
+- name: Install required packages
   apt:
-    name: 'hhvm'
-    force: 'yes'
-    state: 'latest'
+    name: '{{ item }}'
+    state: 'present'
+    install_recommends: False
+  with_flattened:
+    - 'hhvm'
 
 - name: Configure php.ini for HHVM
   template:

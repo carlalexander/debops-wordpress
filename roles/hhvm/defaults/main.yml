@@ -1,23 +1,49 @@
 ---
+# Default variables
+# =================
 
-# ---- HHVM repository configuration ----
+# .. contents:: Sections
+#    :local:
+#
+# -------------------
+#   HHVM repository configuration ----
+# -------------------
 
-# HHVM keyserver fingerprint
-hhvm_keyserver_fingerprint: '0x5a16e7281be7a449'
+# .. envvar:: hhvm_upstream_key
+#
+# APT GPG key fingerprint used to sign the upstream HHVM packages.
+hhvm_upstream_key: '36AEF64D0207E7EEE352D4875A16E7281BE7A449'
 
-# Whether to monitor the HHVM process using monit
+
+# .. envvar:: hhvm_upstream_repository
+#
+# Address of the HHVM upstream APT repository.
+hhvm_upstream_repository: 'deb http://dl.hhvm.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+
+
+# -------------------
+#   HHVM configuration
+# -------------------
+
+# .. envvar:: hhvm_monit
+#
+# Whether to monitor the HHVM process using ``debops.monit``.
 hhvm_monit: False
 
-# ---- HHVM configuration ----
 
-# HHVM php.ini settings
+# .. envvar:: hhvm_php_settings
+#
+# HHVM php.ini settings.
 hhvm_php_settings:
   'log.level': 'Warning'
   'log.always_log_unhandled_exceptions': 'true'
   'log.runtime_error_reporting_level': '8191'
   'mysql.typed_results': 'false'
 
-# HHVM server.ini settings
+
+# .. envvar:: hhvm_server_settings
+#
+# HHVM server.ini settings.
 hhvm_server_settings:
   'header': 'true'
   'log.use_log_file': 'true'
