@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Allow to manage plugins via ``wordpress_plugins``. [ypid]
+
 - Changed the ``wordpress`` role to use the ``proxy`` template
   from the ``debops.nginx`` role. [ypid]
 

@@ -231,6 +231,37 @@ wordpress_title: '{{ wordpress_domain }}'
 wordpress_domain: '{{ inventory_hostname }}'
 
 
+# .. envvar:: wordpress_plugins
+#
+# Manage plugins.
+#
+# There are a few recommended plugins documented in the wiki
+# https://github.com/carlalexander/debops-wordpress/wiki/Recommended-plugins.
+# They can be installed as shown in the following example.
+# Recommended plugins::
+#
+#     wordpress_plugins:
+#       - name: 'akismet'
+#       - name: 'varnish-http-purge'
+#       - name: 'redis-cache'
+#       - name: 'tiny-compress-images'
+#       - name: 'ricg-responsive-images'
+#
+# ``name``
+#   Name of the plugin to manage.
+#
+# ``state``
+#   The following state options are supported:
+#   latest: Default. Ensure that the latest version of the plugin is installed.
+#   present: Ensure that the plugin is installed.
+#   absent: Ensure that the plugin is absent.
+#
+# ``enabled``
+#   Should the plugin be enabled? If not given it will be enabled by default.
+#
+wordpress_plugins: []
+
+
 # ---------------------------
 #   WordPress multisite configuration ----
 # ---------------------------

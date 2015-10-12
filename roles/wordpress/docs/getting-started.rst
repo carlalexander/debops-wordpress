@@ -51,3 +51,7 @@ Available role tags:
 
 ``depend::wpcli:wordpress``
   Run ``carlalexander.wpcli`` dependent role in ``carlalexander.wordpress`` context.
+
+``role::wordpress:plugins``
+  Manage WordPress plugins.
+
