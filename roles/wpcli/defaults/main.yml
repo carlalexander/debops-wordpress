@@ -15,6 +15,15 @@
 wpcli_base_url: 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages'
 
 
+# .. envvar:: wpcli_src_dir
+#
+# wpcli sources root directory.
+wpcli_src_dir: '{{ (ansible_local.root.src
+                         if (ansible_local|d() and ansible_local.root|d() and
+                             ansible_local.root.src|d())
+                         else "/usr/local/src") + "/wpcli" }}'
+
+
 # .. envvar:: wpcli_bin_dir
 #
 # Local system bin directory.

@@ -1,5 +1,35 @@
 ---
 
+# - name: Create wpcli source directory
+#   file:
+#     path: '{{ wpcli_src_dir }}'
+#     state: 'directory'
+#     owner: 'root'
+#     group: 'root'
+#     mode: '0755'
+
+## Need to wait for next release because of https://github.com/wp-cli/wp-cli/pull/2125
+# - name: Get filename of latest wp-cli package version
+#   uri:
+#     url: '{{ wpcli_base_url }}/deb/php-wpcli_latest_all.deb'
+#     return_content: yes
+#   register: wpcli_wp_cli_package
+#   tags: [ 'role::wpcli:install' ]
+
+# - name: Download latest wp-cli package
+#   get_url:
+#     url: '{{ wpcli_base_url }}/deb/{{ wpcli_wp_cli_package.content }}'
+#     dest: '{{ wpcli_src_dir }}/{{ wpcli_wp_cli_package.content }}'
+#     mode: '0644'
+#     force: no
+#   tags: [ 'role::wpcli:install' ]
+
+# - name: Install wp-cli package
+#   apt:
+#     deb: '{{ wpcli_src_dir }}/{{ wpcli_wp_cli_package.content }}'
+#     state: 'present'
+#   tags: [ 'role::wpcli:install' ]
+
 - name: Install wp-cli
   get_url:
     url: '{{ wpcli_base_url }}/phar/wp-cli.phar'
