@@ -30,7 +30,7 @@ dependencies:
     tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
 
-  - role: mariadb
+  - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     mariadb_users:
       - name: '{{ wordpress_database_user }}'
@@ -40,7 +40,6 @@ dependencies:
         state: 'present'
     mariadb_databases:
       - name: '{{ wordpress_database_name }}'
-        state: 'present'
     when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: varnish

@@ -7,4 +7,7 @@
   sudo: True
 
   roles:
-    - { role: wordpress, tags: wordpress }
+    - role: debops.mariadb_server
+      tags: [ 'role::mariadb_server', 'mariadb_server' ]
+    - role: wordpress
+      tags: [ 'role::wordpress', 'wordpress' ]
