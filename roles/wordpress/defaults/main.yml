@@ -123,8 +123,18 @@ wordpress_php5_max_children: '10'
 
 # .. envvar:: wordpress_ssl
 #
-# Whether our WordPress site is using SSL or not
-wordpress_ssl: False
+# Whether our WordPress site is using SSL or not.
+wordpress_ssl: True
+
+# .. envvar:: wordpress_http_and_https
+#
+# If False, the HTTP site will not redirect to HTTPS.
+# So this allows you to serve your blog via HTTP by default and optionally
+# provide and HTTPS version for users who really want it.
+# This option is only active when :ref:`wordpress_ssl` is True.
+# Default is False.
+wordpress_http_and_https: False
+
 
 # .. envvar:: wordpress_ssl_crt
 # .. envvar:: wordpress_ssl_key
