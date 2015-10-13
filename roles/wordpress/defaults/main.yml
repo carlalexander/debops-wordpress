@@ -82,10 +82,13 @@ wordpress_nginx_allow: []
 
 
 # .. envvar:: wordpress_nginx_crt
+#
+# Relative path to the SSL certificate file used by ``debops.nginx``.
+wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
+
 # .. envvar:: wordpress_nginx_key
 #
-# Relative path to the SSL certificate files used by ``debops.nginx``
-wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
+# Relative path to the SSL key file used by ``debops.nginx``.
 wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 
 
@@ -127,10 +130,13 @@ wordpress_php5_max_children: '10'
 wordpress_ssl: False
 
 # .. envvar:: wordpress_ssl_crt
+#
+# Path to the SSL certificate file.
+wordpress_ssl_crt: ''
+
 # .. envvar:: wordpress_ssl_key
 #
-# Path to the SSL certificate files
-wordpress_ssl_crt: ''
+# Path to the SSL key file.
 wordpress_ssl_key: ''
 
 
@@ -180,7 +186,7 @@ wordpress_varnish_vcl_recv_remove_cookies:
 
 # .. envvar:: wordpress_varnish_vcl_backend_response_conditions
 #
-# Dictionary conditions that will run at the end the vcl_recv subroutine
+# Dictionary conditions that will run at the end the vcl_recv subroutine.
 wordpress_varnish_vcl_backend_response_conditions:
   'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
 
