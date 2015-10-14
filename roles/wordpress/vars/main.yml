@@ -23,7 +23,7 @@ wordpress_varnish_server:
     '/': |
       {% if (wordpress_ssl|d() | bool) and not (wordpress_redirect_to_ssl|d(True) | bool) %}
       if ($scheme = 'http') {
-        rewrite ^/wp-(admin|login.php) https://$host$uri permanent;
+        rewrite /wp-(admin|login.php) https://$host$uri permanent;
       }
       {% endif %}
       proxy_set_header X-Real-IP $remote_addr;
@@ -82,7 +82,9 @@ wordpress_backend_server:
       text/x-cross-domain-policy
       text/xml;
 
-    rewrite ^/wp-admin$ $scheme://$host$uri/ permanent;
+    # rewrite ^/wp-admin$ $scheme://$host$uri/ permanent;
+    # A start of string match would conflict with wordpress_multisite_subdomains==False.
+    rewrite /wp-admin$ $scheme://$host$uri/ permanent;
     {% if wordpress_multisite and not wordpress_multisite_subdomains %}
 
     if (!-e $request_filename) {
