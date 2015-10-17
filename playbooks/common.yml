@@ -2,7 +2,7 @@
 
 - name: Common roles for all playbooks
   hosts: 'all:!localhost'
-  sudo: True
+  become: True
 
   roles:
     - role: swap
