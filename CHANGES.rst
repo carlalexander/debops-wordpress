@@ -6,6 +6,12 @@ v0.2.0
 
 *Unreleased*
 
+- Changed the ``wordpress`` role to use the ``proxy`` template
+  from the ``debops.nginx`` role. [ypid]
+
+- Replaced the ``mariadb`` role with the ``debops.mariadb`` and
+  ``debops.mariadb_server`` roles. [ypid]
+
 - Changed variable from ``wordpress_database_hostname`` to
   ``wordpress_database_server`` for consistency reasons. [ypid]
 
