@@ -12,8 +12,6 @@ wordpress_varnish_server:
   ssl: '{{ wordpress_ssl }}'
   pki_crt: '{{ wordpress_nginx_crt }}'
   pki_key: '{{ wordpress_nginx_key }}'
-  root: False
-  index: False
   deny_hidden: False
   favicon: False
   proxy_pass: 'http://varnish'
