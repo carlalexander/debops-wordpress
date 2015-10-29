@@ -213,13 +213,6 @@ wordpress_admin_email: '{{ wordpress_admin_username }}@{{ ansible_domain }}'
 wordpress_admin_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/wordpress/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
 
-# .. envvar:: wordpress_admin_password
-#
-# FIXME: Not used.
-# Object cache key salt
-wordpress_cache_key_salt: '{{ wordpress_domain }}_'
-
-
 # .. envvar:: wordpress_root
 #
 # WordPress root directory.
