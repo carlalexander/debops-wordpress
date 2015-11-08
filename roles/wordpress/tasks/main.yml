@@ -65,3 +65,6 @@
     job: 'curl {{ "-k https" if wordpress_ssl|d() else "http" }}://{{ wordpress_domain }}/wp-cron.php > /dev/null 2>&1'
     user: '{{ wordpress_user }}'
     cron_file: '{{ wordpress_domain | replace(".", "_") }}'
+
+- include: manage_plugins.yml
+  tags: [ 'role::wordpress:plugins' ]
