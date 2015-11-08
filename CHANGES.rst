@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Changed ``wpcli`` role to use the wp-cli debian package. [ypid]
+
 - Allow to manage plugins via ``wordpress_plugins``. [ypid]
 
 - Changed the ``wordpress`` role to use the ``proxy`` template
