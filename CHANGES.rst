@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Renamed ``all_servers`` group to ``debops_all_hosts`` in
+  the ``hosts`` file. [carlalexander]
+
 - Changed ``wpcli`` role to use the wp-cli debian package. [ypid]
 
 - Allow to manage plugins via ``wordpress_plugins``. [ypid]
