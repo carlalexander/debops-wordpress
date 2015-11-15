@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Changed ``wordpress_database_password`` storage location
+  to match location in ``debops.mariadb``. [carlalexander]
+
 - Renamed ``all_servers`` group to ``debops_all_hosts`` in
   the ``hosts`` file. [carlalexander]
 

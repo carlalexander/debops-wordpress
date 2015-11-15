@@ -61,7 +61,7 @@ wordpress_database_name: 'wordpress'
 # .. envvar:: wordpress_database_password
 #
 # WordPress database password
-wordpress_database_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/mariadb/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
+wordpress_database_password: "{{ lookup('password', secret + '/mariadb/' + ansible_local.mariadb.delegate_to + '/credentials/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
 
 
 # .. envvar:: wordpress_table_prefix
