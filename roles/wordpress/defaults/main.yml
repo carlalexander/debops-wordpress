@@ -18,7 +18,7 @@ wordpress_dependencies: True
 # .. envvar:: wordpress_password_length
 #
 # Length of randomly generated passwords (it's a string).
-wordpress_password_length: '20'
+wordpress_password_length: '48'
 
 
 # .. envvar:: wordpress_user

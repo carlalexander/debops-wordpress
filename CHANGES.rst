@@ -6,7 +6,10 @@ v0.2.0
 
 *Unreleased*
 
-- Changed ``wordpress_database_password`` storage location
+- Changed the ``wordpress_password_length`` default value
+  to match the one in ``debops.mariadb``. [carlalexander]
+
+- Changed ``wordpress_database_password`` secret location
   to match location in ``debops.mariadb``. [carlalexander]
 
 - Renamed ``all_servers`` group to ``debops_all_hosts`` in
