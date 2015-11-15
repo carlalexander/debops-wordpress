@@ -210,7 +210,7 @@ wordpress_admin_email: '{{ wordpress_admin_username }}@{{ ansible_domain }}'
 # .. envvar:: wordpress_admin_password
 #
 # Password for the WordPress admin user.
-wordpress_admin_password: "{{ lookup('password', secret + '/credentials/' + ansible_fqdn + '/wordpress/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
+wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress_domain + '/credentials/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
 
 # .. envvar:: wordpress_root

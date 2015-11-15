@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Changed ``wordpress_admin_password`` secret location so
+  that it isn't host dependent. [carlalexander]
+
 - Changed the ``wordpress_password_length`` default value
   to match the one in ``debops.mariadb``. [carlalexander]
 
