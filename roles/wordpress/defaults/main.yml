@@ -263,7 +263,7 @@ wordpress_plugins: []
 
 
 # ---------------------------
-#   WordPress multisite configuration ----
+#   WordPress multisite configuration
 # ---------------------------
 
 # .. envvar:: wordpress_multisite
