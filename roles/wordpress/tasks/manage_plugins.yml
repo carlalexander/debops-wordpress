@@ -34,7 +34,7 @@
   with_items: wordpress_plugins
 
 - name: Activate WordPress plugins
-  command: 'wp plugin activate "{{ item.name }}"'
+  command: 'wp plugin activate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
   sudo_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
@@ -52,7 +52,7 @@
   with_items: wordpress_plugins
 
 - name: Deactivate WordPress plugins
-  command: 'wp plugin deactivate "{{ item.name }}"'
+  command: 'wp plugin deactivate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
   sudo_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'

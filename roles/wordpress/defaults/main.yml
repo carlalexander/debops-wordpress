@@ -259,6 +259,11 @@ wordpress_domain: '{{ inventory_hostname }}'
 # ``enabled``
 #   Should the plugin be enabled? If not given it will be enabled by default.
 #
+#  ``network``
+#   Determines whether the ``enabled`` option applies to the entire multisite
+#   network or not. Defaults to True if multisite is enabled. Otherwise, it
+#   doesn't do anything.
+#
 wordpress_plugins: []
 
 

@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added support for network activation and deactivation
+  of plugins. Only works if multisite is enabled. [carlalexander]
+
 - Changed ``wordpress_admin_password`` secret location so
   that it isn't host dependent. [carlalexander]
 
