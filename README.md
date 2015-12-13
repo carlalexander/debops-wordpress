@@ -30,12 +30,12 @@ To create a "DebOps for WordPress" project, you just need to:
 *If you've never used DebOps or Ansible before, please refer to the "[Configuring your server](https://github.com/carlalexander/debops-wordpress/wiki/Configuring-your-server)" page of the wiki.*
 
 To configure a server, you need to add it to the `hosts` file in the `inventory` folder
-under both the `[all_servers]` and `[wordpress]`.
+under both the `[debops_all_hosts]` and `[wordpress]`.
 
 ```ini
 # inventory/hosts
 
-[all_servers]
+[debops_all_hosts]
 wordpress.example.com
 
 [wordpress]
