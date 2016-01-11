@@ -219,6 +219,11 @@ wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpr
 wordpress_disable_file_edit: False
 
 
+# .. envvar:: wordpress_domain
+#
+# WordPress URL address
+wordpress_domain: '{{ inventory_hostname }}'
+
 # .. envvar:: wordpress_root
 #
 # WordPress root directory.
@@ -229,12 +234,6 @@ wordpress_root: '/var/www/{{ wordpress_domain }}'
 #
 # WordPress site title
 wordpress_title: '{{ wordpress_domain }}'
-
-
-# .. envvar:: wordpress_domain
-#
-# WordPress URL address
-wordpress_domain: '{{ inventory_hostname }}'
 
 
 # .. envvar:: wordpress_plugins
