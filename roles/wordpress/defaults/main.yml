@@ -213,6 +213,12 @@ wordpress_admin_email: '{{ wordpress_admin_username }}@{{ ansible_domain }}'
 wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress_domain + '/credentials/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
 
+# .. envvar:: wordpress_disable_file_edit
+#
+# Whether to disable file editing or not.
+wordpress_disable_file_edit: False
+
+
 # .. envvar:: wordpress_root
 #
 # WordPress root directory.

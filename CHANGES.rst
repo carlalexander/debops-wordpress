@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added missing default value for ``wordpress_disable_file_edit``
+  in the ``wordpress`` role.
+
 - Added support for network activation and deactivation
   of plugins. Only works if multisite is enabled. [carlalexander]
 
