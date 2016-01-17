@@ -11,6 +11,18 @@ dependencies:
     php5_pools: [ '{{ wordpress_php5_pool }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
 
+  - role: debops.mariadb
+    tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    mariadb_databases:
+      - name: '{{ wordpress_database_name }}'
+    mariadb_users:
+      - name: '{{ wordpress_database_user }}'
+        password: '{{ wordpress_database_password }}'
+        host: '{{ wordpress_database_server }}'
+        priv: '{{ wordpress_database_name }}.*:ALL'
+        state: 'present'
+    when: wordpress_dependencies is defined and wordpress_dependencies
+
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_webroot_create: False
@@ -28,18 +40,6 @@ dependencies:
 
   - role: hhvm
     tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    when: wordpress_dependencies is defined and wordpress_dependencies
-
-  - role: debops.mariadb
-    tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    mariadb_users:
-      - name: '{{ wordpress_database_user }}'
-        password: '{{ wordpress_database_password }}'
-        host: '{{ wordpress_database_server }}'
-        priv: '{{ wordpress_database_name }}.*:ALL'
-        state: 'present'
-    mariadb_databases:
-      - name: '{{ wordpress_database_name }}'
     when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: varnish
