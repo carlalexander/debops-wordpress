@@ -25,12 +25,6 @@ hhvm_upstream_repository: 'deb http://dl.hhvm.com/{{ ansible_distribution | lowe
 #   HHVM configuration
 # -------------------
 
-# .. envvar:: hhvm_monit
-#
-# Whether to monitor the HHVM process using ``debops.monit``.
-hhvm_monit: False
-
-
 # .. envvar:: hhvm_php_settings
 #
 # HHVM php.ini settings.
