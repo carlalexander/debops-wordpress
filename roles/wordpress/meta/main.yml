@@ -39,6 +39,7 @@ dependencies:
     tags: [ 'depend::redis', 'depend::redis:wordpress', 'depend-of::wordpress', 'type::dependency' ]
 
   - role: hhvm
+    hhvm_server_user: '{{ wordpress_user }}'
     tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
 

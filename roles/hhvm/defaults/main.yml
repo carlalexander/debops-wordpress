@@ -25,6 +25,12 @@ hhvm_upstream_repository: 'deb http://dl.hhvm.com/{{ ansible_distribution | lowe
 #   HHVM configuration
 # -------------------
 
+# .. envvar:: hhvm_server_user
+#
+# User that HHVM runs under.
+hhvm_server_user: ''
+
+
 # .. envvar:: hhvm_php_settings
 #
 # HHVM php.ini settings.
@@ -46,3 +52,4 @@ hhvm_server_settings:
   'server.default_document': 'index.php'
   'server.file_socket': '{{ hhvm_sock }}'
   'server.type': 'fastcgi'
+  'server.user': '{{ hhvm_server_user }}'
