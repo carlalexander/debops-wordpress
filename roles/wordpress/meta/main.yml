@@ -5,12 +5,6 @@ dependencies:
   - role: debops.secret
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
 
-  - role: debops.php5
-    tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    php5_packages: '{{ wordpress_php5_packages }}'
-    php5_pools: [ '{{ wordpress_php5_pool }}' ]
-    when: wordpress_dependencies is defined and wordpress_dependencies
-
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     mariadb_databases:
@@ -28,6 +22,12 @@ dependencies:
     nginx_webroot_create: False
     nginx_servers: [ '{{ wordpress_varnish_server }}', '{{ wordpress_backend_server }}' ]
     nginx_upstreams: [ '{{ wordpress_php_upstream }}', '{{ wordpress_varnish_upstream }}' ]
+    when: wordpress_dependencies is defined and wordpress_dependencies
+
+  - role: debops.php5
+    tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    php5_packages: '{{ wordpress_php5_packages }}'
+    php5_pools: [ '{{ wordpress_php5_pool }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: debops.pki
