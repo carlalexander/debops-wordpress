@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Changed the ``wordpress_admin_email``  default to use ``wordpress_domain``
+  instead ``ansible_domain``. [carlalexander]
+
 - Added missing default value for ``wordpress_disable_file_edit``
   in the ``wordpress`` role. [carlalexander]
 

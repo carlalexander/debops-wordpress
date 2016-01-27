@@ -204,7 +204,7 @@ wordpress_admin_username: 'admin'
 # .. envvar:: wordpress_admin_email
 #
 # WordPress admin email.
-wordpress_admin_email: '{{ wordpress_admin_username }}@{{ ansible_domain }}'
+wordpress_admin_email: '{{ wordpress_admin_username }}@{{ wordpress_domain }}'
 
 
 # .. envvar:: wordpress_admin_password
