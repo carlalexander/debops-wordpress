@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Changed ``varnish`` role to support the configuration of multiple backends
+  through the ``varnish_backends`` variable [carlalexander]
+
 - Changed the ``wordpress_admin_email``  default to use ``wordpress_domain``
   instead ``ansible_domain``. [carlalexander]
 

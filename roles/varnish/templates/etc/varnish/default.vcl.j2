@@ -6,29 +6,32 @@ vcl 4.0;
 import std;
 import directors;
 
-backend webserver {
-  .host = "{{ varnish_backend_host }}";
-  .port = "{{ varnish_backend_port }}";
-  .max_connections = {{ varnish_backend_max_connections }};
+{% for backend in varnish_backends %}
+backend {{ backend.name }} {
+  .host = "{{ backend.host|d(varnish_backend_host) }}";
+  .port = "{{ backend.port|d(varnish_backend_port) }}";
+  .max_connections = {{ backend.max_connections|d(varnish_backend_max_connections) }};
 
+{% if backend.probe|d(True) %}
   .probe = {
-    #.url = "/"; # short easy way (GET /)
-    # We prefer to only do a HEAD /
     .request =
-      "HEAD / HTTP/1.1"
-      "Host: {{ varnish_backend_probe_host }}"
-      "Connection: close";
+      "{{ backend.request|d(varnish_backend_probe_request) }}"
+      "Host: {{ backend.probe_host|d(varnish_backend_probe_host) }}"
+      "Connection: close"
+      "User-Agent: {{ backend.probe_user_agent|d(varnish_backend_probe_user_agent) }}";
 
-    .interval  = {{ varnish_backend_probe_interval }};
-    .timeout   = {{ varnish_backend_probe_timeout }};
-    .window    = {{ varnish_backend_probe_window }};
-    .threshold = {{ varnish_backend_probe_threshold }};
+    .interval  = {{ backend.probe_interval|d(varnish_backend_probe_interval) }};
+    .timeout   = {{ backend.probe_timeout|d(varnish_backend_probe_timeout) }};
+    .window    = {{ backend.probe_window|d(varnish_backend_probe_window) }};
+    .threshold = {{ backend.probe_threshold|d(varnish_backend_probe_threshold) }};
   }
+{% endif %}
 
-  .first_byte_timeout     = {{ varnish_backend_first_byte_timeout }};
-  .connect_timeout        = {{ varnish_backend_connect_timeout }};
-  .between_bytes_timeout  = {{ varnish_backend_between_bytes_timeout }};
+  .first_byte_timeout     = {{ backend.first_byte_timeout|d(varnish_backend_first_byte_timeout) }};
+  .connect_timeout        = {{ backend.connect_timeout|d(varnish_backend_connect_timeout) }};
+  .between_bytes_timeout  = {{ backend.between_bytes_timeout|d(varnish_backend_between_bytes_timeout) }};
 }
+{% endfor %}
 
 # ACL we'll use later to allow purges
 acl purge {
@@ -42,7 +45,9 @@ sub vcl_init {
   # Typically used to initialize VMODs.
 
   new vdir = directors.round_robin();
-  vdir.add_backend(webserver);
+{% for backend in varnish_backends %}
+  vdir.add_backend({{ backend.name }});
+{% endfor %}
 }
 
 sub vcl_recv {

@@ -119,6 +119,11 @@ wordpress_php_upstream:
    - 'unix:/var/run/hhvm/hhvm.sock'
    - 'unix:/var/run/php5-fpm-wordpress.sock backup'
 
+wordpress_varnish_backend:
+  name: 'wordpress'
+  port: '{{ wordpress_varnish_backend_port }}'
+  probe: False
+
 wordpress_varnish_upstream:
   enabled: True
   name: 'varnish'

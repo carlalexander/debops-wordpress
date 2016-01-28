@@ -103,6 +103,18 @@ varnish_backend_connect_timeout: '5s'
 varnish_backend_between_bytes_timeout: '2s'
 
 
+# .. envvar:: varnish_backend_probe_request
+#
+# The request sent when polling a Varnish backend.
+varnish_backend_probe_request: 'HEAD / HTTP/1.1'
+
+
+# .. envvar:: varnish_backend_probe_user_agent
+#
+# The user agent sent when polling a Varnish backend.
+varnish_backend_probe_user_agent: 'Varnish Health Probe'
+
+
 # .. envvar:: varnish_backend_probe_host
 #
 # The value of the host header of the poll.
@@ -131,6 +143,59 @@ varnish_backend_probe_window: 5
 #
 # How many of the window last polls must be good for the backend to be declared healthy.
 varnish_backend_probe_threshold: 3
+
+
+# .. envvar:: varnish_backends
+#
+# Manage Varnish backends.
+#
+# ``name``
+#   Name of the backend.
+#
+# ``host``
+#   The backend server host.
+#
+# ``port``
+#   The backend server port.
+#
+# ``max_connections``
+#   How many connections to the backend are allowed.
+#
+# ``probe``
+#   Determines whether Varnish will poll the backend.
+#
+# ``probe_request``
+#   The request sent when polling the backend.
+#
+# ``probe_host``
+#   The host header when polling the backend.
+#
+# ``probe_user_agent``
+#   The user agent header when polling the backend.
+#
+# ``probe_interval``
+#   How long time to wait between polls to the backend.
+#
+# ``probe_timeout``
+#   How long to wait before timing out the probe to the backend.
+#
+# ``probe_window``
+#   How many of the latest polls to consider when determining if the backend is healthy.
+#
+# ``probe_threshold``
+#   How many of the window last polls must be good for the backend to be declared healthy.
+#
+# ``first_byte_timeout``
+#   How long to wait before we receive a response from the backend.
+#
+# ``connect_timeout``
+#   How long to wait for a connection to the backend.
+#
+# ``between_bytes_timeout``
+#   How long to wait between two subsequent successful reads from the backend.
+#
+varnish_backends:
+  - name: 'default'
 
 
 # ------------------------------------
