@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_database_host`` variable to the ``wordpress`` role
+  for use with private networking setups. [carlalexander]
+
 - Changed ``varnish`` role to support the configuration of multiple backends
   through the ``varnish_backends`` variable [carlalexander]
 

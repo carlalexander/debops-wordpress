@@ -12,7 +12,7 @@ dependencies:
     mariadb_users:
       - name: '{{ wordpress_database_user }}'
         password: '{{ wordpress_database_password }}'
-        host: '{{ wordpress_database_server }}'
+        host: '{{ wordpress_database_host }}'
         priv: '{{ wordpress_database_name }}.*:ALL'
         state: 'present'
     when: wordpress_dependencies is defined and wordpress_dependencies

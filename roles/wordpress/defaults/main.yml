@@ -64,6 +64,12 @@ wordpress_database_name: 'wordpress'
 wordpress_database_password: "{{ lookup('password', secret + '/mariadb/' + ansible_local.mariadb.delegate_to + '/credentials/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
 
 
+# .. envvar:: wordpress_database_host
+#
+# Hostname or IP address of the WordPress database.
+wordpress_database_host: '{{ wordpress_database_server }}'
+
+
 # .. envvar:: wordpress_table_prefix
 #
 # WordPress database table prefix.
