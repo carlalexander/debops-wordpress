@@ -14,18 +14,15 @@
 # Should the ``carlalexander.wordpress`` role manage it's own dependencies (database, web server)?
 wordpress_dependencies: True
 
-
 # .. envvar:: wordpress_password_length
 #
 # Length of randomly generated passwords (it's a string).
 wordpress_password_length: '48'
 
-
 # .. envvar:: wordpress_user
 #
 # User that will be used for the WordPress instance.
 wordpress_user: 'www-data'
-
 
 # .. envvar:: wordpress_group
 #
@@ -86,7 +83,6 @@ wordpress_table_prefix: 'wp_'
 # WordPress. Leave empty to allow access from all IP addresses/networks
 wordpress_nginx_allow: []
 
-
 # .. envvar:: wordpress_nginx_crt
 #
 # Relative path to the SSL certificate file used by ``debops.nginx``.
@@ -96,7 +92,6 @@ wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
 #
 # Relative path to the SSL key file used by ``debops.nginx``.
 wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
-
 
 # .. envvar:: wordpress_nginx_server_name
 #
@@ -113,12 +108,10 @@ wordpress_nginx_server_name: [ '{{ wordpress_domain }}' ]
 # Additional PHP packages installed with PHP5
 wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-curl', 'php5-dev' ]
 
-
 # .. envvar:: wordpress_php5_upload_size
 #
 # Max upload size set in nginx and php5, with amount as M or G.
 wordpress_php5_upload_size: '32M'
-
 
 # .. envvar:: wordpress_php5_max_children
 #
@@ -212,12 +205,10 @@ wordpress_varnish_vcl_backend_response_conditions:
 # WordPress admin username.
 wordpress_admin_username: 'admin'
 
-
 # .. envvar:: wordpress_admin_email
 #
 # WordPress admin email.
 wordpress_admin_email: '{{ wordpress_admin_username }}@{{ wordpress_domain }}'
-
 
 # .. envvar:: wordpress_admin_password
 #
@@ -230,7 +221,6 @@ wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpr
 # Whether to disable file editing or not.
 wordpress_disable_file_edit: False
 
-
 # .. envvar:: wordpress_domain
 #
 # WordPress URL address
@@ -241,12 +231,10 @@ wordpress_domain: '{{ inventory_hostname }}'
 # WordPress root directory.
 wordpress_root: '/var/www/{{ wordpress_domain }}'
 
-
 # .. envvar:: wordpress_title
 #
 # WordPress site title
 wordpress_title: '{{ wordpress_domain }}'
-
 
 # .. envvar:: wordpress_plugins
 #
@@ -293,12 +281,10 @@ wordpress_plugins: []
 # Whether the WordPress installation is multisite or not.
 wordpress_multisite: False
 
-
 # .. envvar:: wordpress_multisite_path
 #
 # The base path of each site URL in the network.
 wordpress_multisite_path: '/'
-
 
 # .. envvar:: wordpress_multisite_subdomains
 #
