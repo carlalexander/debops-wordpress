@@ -223,6 +223,12 @@ varnish_normalize_query_parameters: True
 varnish_purge_allow: [ 'localhost', '127.0.0.1', '::1' ]
 
 
+# .. envvar:: varnish_purge_condition
+#
+# Conditions that will run when vcl_recv receives a purge request.
+varnish_purge_conditions:
+  '!client.ip ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
+
 # .. envvar:: varnish_vcl_recv_conditions
 #
 # Dictionary conditions that will run at the end the vcl_recv subroutine.

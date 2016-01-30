@@ -68,10 +68,12 @@ sub vcl_recv {
 
   # Allow purging
   if (req.method == "PURGE") {
-    if (!client.ip ~ purge) { # purge is the ACL defined at the begining
-      # Not from an allowed IP? Then die with an error.
-      return (synth(405, "This IP is not allowed to send PURGE requests."));
+{% for condition, value in varnish_purge_conditions.iteritems() %}
+    if ({{ condition }}) {
+      {{ value }}
     }
+{% endfor %}
+
     # If you got this stage (and didn't error out above), purge the cached result
     return (purge);
   }

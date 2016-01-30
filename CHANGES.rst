@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``varnish_purge_conditions`` variable to the ``varnish`` role
+  to support more complex purging scenarios. [carlalexander]
+
 - Added ``wordpress_database_host`` variable to the ``wordpress`` role
   for use with private networking setups. [carlalexander]
 
