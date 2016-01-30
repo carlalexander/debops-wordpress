@@ -219,8 +219,8 @@ varnish_normalize_query_parameters: True
 
 # .. envvar:: varnish_purge_allow
 #
-# List of addresses that are allowed to purge the Varnish cache.
-varnish_purge_allow: [ 'localhost', '127.0.0.1', '::1' ]
+# List of IP addresses that are allowed to purge the Varnish cache.
+varnish_purge_allow: [ '127.0.0.1', '::1' ]
 
 
 # .. envvar:: varnish_purge_condition

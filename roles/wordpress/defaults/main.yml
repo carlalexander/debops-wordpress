@@ -162,8 +162,14 @@ wordpress_varnish_backend_port: '8080'
 
 # .. envvar:: wordpress_varnish_purge_allow
 #
-# List of addresses that are allowed to purge the Varnish cache
-wordpress_varnish_purge_allow: [ '{{ wordpress_domain }}', 'localhost', '127.0.0.1', '::1' ]
+# List of IP addresses that are allowed to purge the Varnish cache
+wordpress_varnish_purge_allow: [ '{{ ansible_default_ipv4.address }}', '127.0.0.1', '::1' ]
+
+# .. envvar:: wordpress_varnish_purge_condition
+#
+# Conditions that will run when vcl_recv receives a purge request.
+wordpress_varnish_purge_conditions:
+  '!std.ip(req.http.X-Real-IP, "0.0.0.0") ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
 
 # .. envvar:: wordpress_varnish_vcl_recv_conditions
 #

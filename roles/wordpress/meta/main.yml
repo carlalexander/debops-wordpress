@@ -49,6 +49,7 @@ dependencies:
     varnish_backends: [ '{{ wordpress_varnish_backend }}' ]
     varnish_normalize_query_parameters: False
     varnish_purge_allow: '{{ wordpress_varnish_purge_allow }}'
+    varnish_purge_conditions: '{{ wordpress_varnish_purge_conditions }}'
     varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions }}'
     varnish_vcl_recv_remove_cookies: '{{ wordpress_varnish_vcl_recv_remove_cookies }}'
     varnish_vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions }}'
