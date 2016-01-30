@@ -231,7 +231,7 @@ varnish_purge_conditions:
 
 # .. envvar:: varnish_vcl_recv_conditions
 #
-# Dictionary conditions that will run at the end the vcl_recv subroutine.
+# Conditions that will run at the end the vcl_recv subroutine.
 varnish_vcl_recv_conditions: {}
 
 
@@ -258,5 +258,5 @@ varnish_vcl_recv_remove_cookies:
 
 # .. envvar:: varnish_vcl_backend_response_conditions
 #
-# Dictionary conditions that will run at the end the vcl_recv subroutine.
+# Conditions that will run at the end the vcl_recv subroutine.
 varnish_vcl_backend_response_conditions: {}
