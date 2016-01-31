@@ -34,43 +34,31 @@ wordpress_group: 'www-data'
 #   Database configuration
 # --------------------------
 
-# .. envvar:: wordpress_database_server
+# .. envvar:: wordpress_mariadb_server
 #
 # FQDN of the database server.
-wordpress_database_server: '{{ ansible_local.mariadb.server
+wordpress_mariadb_server: '{{ ansible_local.mariadb.server
                                  if (ansible_local|d() and ansible_local.mariadb|d() and
                                      ansible_local.mariadb.server|d())
                                  else "localhost" }}'
 
-
-# .. envvar:: wordpress_database_user
+# .. envvar:: wordpress_mariadb_databases
 #
-# WordPress database user.
-wordpress_database_user: 'wordpress'
+# When the WordPress database server is used remotely, this variable defines
+# the “host” part of the client username.
+wordpress_mariadb_client: '{{ mariadb_client }}'
 
-
-# .. envvar:: wordpress_database_name
+# .. envvar:: wordpress_mariadb_databases
 #
-# WordPress database name.
-wordpress_database_name: 'wordpress'
+# List of databases configured on the WordPress MariaDB server.
+wordpress_mariadb_databases:
+  - '{{ wordpress_mariadb_database }}'
 
-
-# .. envvar:: wordpress_database_password
+# .. envvar:: wordpress_mariadb_users
 #
-# WordPress database password
-wordpress_database_password: "{{ lookup('password', secret + '/mariadb/' + ansible_local.mariadb.delegate_to + '/credentials/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
-
-
-# .. envvar:: wordpress_database_host
-#
-# Hostname or IP address of the WordPress database.
-wordpress_database_host: '{{ wordpress_database_server }}'
-
-
-# .. envvar:: wordpress_table_prefix
-#
-# WordPress database table prefix.
-wordpress_table_prefix: 'wp_'
+# List of user accounts configured on the WordPress MariaDB server.
+wordpress_mariadb_users:
+  - '{{ wordpress_mariadb_user }}'
 
 
 # ---------------------------
@@ -215,6 +203,30 @@ wordpress_admin_email: '{{ wordpress_admin_username }}@{{ wordpress_domain }}'
 # Password for the WordPress admin user.
 wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress_domain + '/credentials/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
+# .. envvar:: wordpress_database_host
+#
+# Hostname or IP address of the WordPress database.
+wordpress_database_host: '{{ wordpress_mariadb_server }}'
+
+# .. envvar:: wordpress_database_user
+#
+# WordPress database user.
+wordpress_database_user: 'wordpress'
+
+# .. envvar:: wordpress_database_name
+#
+# WordPress database name.
+wordpress_database_name: 'wordpress'
+
+# .. envvar:: wordpress_database_password
+#
+# WordPress database password
+wordpress_database_password: "{{ lookup('password', secret + '/mariadb/' + ansible_local.mariadb.delegate_to + '/credentials/' + wordpress_database_user + '/password length=' + wordpress_password_length) }}"
+
+# .. envvar:: wordpress_table_prefix
+#
+# WordPress database table prefix.
+wordpress_table_prefix: 'wp_'
 
 # .. envvar:: wordpress_disable_file_edit
 #

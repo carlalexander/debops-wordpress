@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added more database configuration options to ``wordpress`` role to
+  allow for additional users, databases and remote databases. [carlalexander]
+
 - Added ``varnish_purge_conditions`` variable to the ``varnish`` role
   to support more complex purging scenarios. [carlalexander]
 

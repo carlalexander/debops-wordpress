@@ -131,6 +131,16 @@ wordpress_varnish_upstream:
    - '127.0.0.1:{{ wordpress_varnish_listen }}'
    - '127.0.0.1:{{ wordpress_varnish_backend_port }} backup'
 
+wordpress_mariadb_database:
+  name: '{{ wordpress_database_name }}'
+
+wordpress_mariadb_user:
+  name: '{{ wordpress_database_user }}'
+  password: '{{ wordpress_database_password }}'
+  host: '{{ wordpress_mariadb_client }}'
+  priv: '{{ wordpress_database_name }}.*:ALL'
+  state: 'present'
+
 wordpress_php5_pool:
   enabled: True
   name: 'wordpress'

@@ -17,7 +17,7 @@ the name of your server.
 
  * Move `secret/credentials/{{ ansible_fqdn }}/wordpress/{{ wordpress_admin_username }}/password` to `secret/wordpress/{{ wordpress_domain }}/credentials/{{ wordpress_admin_username }}/password`
 
- * Rename `wordpress_database_hostname` option to `wordpress_database_server`
+ * Rename `wordpress_database_hostname` option to `wordpress_database_host`
 
  * Rename `wordpress_database_username` option to `wordpress_database_user`
 

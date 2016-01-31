@@ -7,14 +7,9 @@ dependencies:
 
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    mariadb_databases:
-      - name: '{{ wordpress_database_name }}'
-    mariadb_users:
-      - name: '{{ wordpress_database_user }}'
-        password: '{{ wordpress_database_password }}'
-        host: '{{ wordpress_database_host }}'
-        priv: '{{ wordpress_database_name }}.*:ALL'
-        state: 'present'
+    mariadb_databases: [ '{{ wordpress_mariadb_databases }}' ]
+    mariadb_users: [ '{{ wordpress_mariadb_users }}' ]
+    mariadb_server: '{{ wordpress_mariadb_server }}'
     when: wordpress_dependencies is defined and wordpress_dependencies
 
   - role: debops.nginx
