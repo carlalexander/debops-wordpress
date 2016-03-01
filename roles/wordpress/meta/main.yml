@@ -15,6 +15,8 @@ dependencies:
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_webroot_create: False
+    nginx_default_servers: []
+    nginx_internal_servers: [ '{{ nginx_server_acme }}' ]
     nginx_servers: [ '{{ wordpress_varnish_server }}', '{{ wordpress_backend_server }}' ]
     nginx_upstreams: [ '{{ wordpress_php_upstream }}', '{{ wordpress_varnish_upstream }}' ]
     when: wordpress_dependencies is defined and wordpress_dependencies
