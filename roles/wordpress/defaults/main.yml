@@ -40,7 +40,7 @@ wordpress_group: 'www-data'
 wordpress_mariadb_server: '{{ ansible_local.mariadb.server
                                  if (ansible_local|d() and ansible_local.mariadb|d() and
                                      ansible_local.mariadb.server|d())
-                                 else "localhost" }}'
+                                 else "127.0.0.1" }}'
 
 # .. envvar:: wordpress_mariadb_databases
 #
