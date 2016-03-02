@@ -44,17 +44,15 @@ varnish_upstream_version: '4.1'
 # Port that Varnish listens to for requests
 varnish_listen: '6081'
 
-
 # .. envvar:: varnish_admin_listen
 #
 # Port for Varnish admin
 varnish_admin_listen: '6082'
 
-
 # .. envvar:: varnish_memory_allocation
 #
 # How much memory is reserved for the Varnish cache
-varnish_memory_allocation: '256m'
+varnish_memory_allocation: '{{ 0.5 * ansible_memtotal_mb|int }}m'
 
 # .. envvar:: varnish_ttl
 #
