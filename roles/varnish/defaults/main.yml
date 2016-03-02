@@ -32,7 +32,7 @@ varnish_upstream_repository: 'deb https://repo.varnish-cache.org/{{ ansible_dist
 # .. envvar:: varnish_upstream_version
 #
 # Upstream version to install.
-varnish_upstream_version: '4.0'
+varnish_upstream_version: '4.1'
 
 
 # ------------------------------------
