@@ -318,13 +318,6 @@ sub vcl_backend_response {
     set beresp.http.Location = regsub(beresp.http.Location, ":[0-9]+", "");
   }
 
-  # Set 2min cache if unset for static files
-  if (beresp.ttl <= 0s || beresp.http.Set-Cookie || beresp.http.Vary == "*") {
-    set beresp.ttl = 120s; # Important, you shouldn't rely on this, SET YOUR HEADERS in the backend
-    set beresp.uncacheable = true;
-    return (deliver);
-  }
-
   # Ansible conditions
 {% for condition, value in varnish_vcl_backend_response_conditions.iteritems() %}
   if ({{ condition }}) {
@@ -332,6 +325,13 @@ sub vcl_backend_response {
   }
 {% endfor %}
   # End Ansible conditions
+
+  # Create a hit-for-pass object when TTL is 0s or we're setting a cookie.
+  if (beresp.ttl <= 0s || beresp.http.Set-Cookie || beresp.http.Vary == "*") {
+    set beresp.ttl = 120s;
+    set beresp.uncacheable = true; # Flags the response as hit-for-pass
+    return (deliver);
+  }
 
   # Allow stale content, in case the backend goes down.
   # make Varnish keep all objects for 6 hours beyond their TTL
