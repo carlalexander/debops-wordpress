@@ -6,6 +6,16 @@ v0.2.0
 
 *Unreleased*
 
+- Changed the ``wordpress_mariadb_server`` default value from ``localhost``
+  to `127.0.0.1`. Prevents issues when someone doesn't use a valid
+  ``ansible_fqdn`` as their server name. [carlalexander]
+
+- Added ``varnish_ttl`` variable to the ``varnish`` role so that we
+  can overwrite the default TTL for Varnish objects. [carlalexander]
+
+- Changed the ``varnish_upstream_version`` default value from ``4.0``
+  to ``4.1``. [carlalexander]
+
 - Added more database configuration options to ``wordpress`` role to
   allow for additional users, databases and remote databases. [carlalexander]
 
@@ -18,14 +28,14 @@ v0.2.0
 - Changed ``varnish`` role to support the configuration of multiple backends
   through the ``varnish_backends`` variable [carlalexander]
 
-- Changed the ``wordpress_admin_email``  default to use ``wordpress_domain``
+- Changed the ``wordpress_admin_email`` default to use ``wordpress_domain``
   instead ``ansible_domain``. [carlalexander]
 
 - Added missing default value for ``wordpress_disable_file_edit``
   in the ``wordpress`` role. [carlalexander]
 
-- Added support for network activation and deactivation
-  of plugins. Only works if multisite is enabled. [carlalexander]
+- Added support for network activation and deactivation of plugins.
+  Only works if multisite is enabled. [carlalexander]
 
 - Changed ``wordpress_admin_password`` secret location so
   that it isn't host dependent. [carlalexander]
