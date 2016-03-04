@@ -111,6 +111,7 @@ wordpress_backend_server:
     }
 
     fastcgi_param HTTPS $php_https;
+    fastcgi_next_upstream error timeout invalid_header http_500;
 
 wordpress_php_upstream:
   enabled: True

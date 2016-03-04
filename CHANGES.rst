@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Added more failover options for fastcgi upstream failover. [carlalexander]
+
 - Changed the ``wordpress_mariadb_server`` default value from ``localhost``
   to `127.0.0.1`. Prevents issues when someone doesn't use a valid
   ``ansible_fqdn`` as their server name. [carlalexander]
