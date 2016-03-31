@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added upload_max and post_max sizes to ``hhvm`` role configuration
+  options. [carlalexander]
+
 - Added more failover options for fastcgi upstream failover. [carlalexander]
 
 - Changed the ``wordpress_mariadb_server`` default value from ``localhost``

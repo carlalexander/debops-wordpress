@@ -14,7 +14,6 @@
 # APT GPG key fingerprint used to sign the upstream HHVM packages.
 hhvm_upstream_key: '36AEF64D0207E7EEE352D4875A16E7281BE7A449'
 
-
 # .. envvar:: hhvm_upstream_repository
 #
 # Address of the HHVM upstream APT repository.
@@ -25,25 +24,28 @@ hhvm_upstream_repository: 'deb http://dl.hhvm.com/{{ ansible_distribution | lowe
 #   HHVM configuration
 # -------------------
 
-# .. envvar:: hhvm_server_user
+# .. envvar:: hhvm_file_post_max_size
 #
-# User that HHVM runs under.
-hhvm_server_user: ''
+# Max size of POST requests.
+hhvm_file_post_max_size: '8M'
 
+# .. envvar:: hhvm_file_upload_max_filesize
+#
+# Max file upload size.
+hhvm_file_upload_max_filesize: '{{ hhvm_file_post_max_size }}'
 
 # .. envvar:: hhvm_php_settings
 #
-# HHVM php.ini settings.
+# Dict of HHVM php.ini settings.
 hhvm_php_settings:
   'log.level': 'Warning'
   'log.always_log_unhandled_exceptions': 'true'
   'log.runtime_error_reporting_level': '8191'
   'mysql.typed_results': 'false'
 
-
 # .. envvar:: hhvm_server_settings
 #
-# HHVM server.ini settings.
+# Dict of HHVM server.ini settings.
 hhvm_server_settings:
   'header': 'true'
   'log.use_log_file': 'true'
@@ -53,3 +55,8 @@ hhvm_server_settings:
   'server.file_socket': '{{ hhvm_sock }}'
   'server.type': 'fastcgi'
   'server.user': '{{ hhvm_server_user }}'
+
+# .. envvar:: hhvm_server_user
+#
+# User that HHVM runs under.
+hhvm_server_user: ''
