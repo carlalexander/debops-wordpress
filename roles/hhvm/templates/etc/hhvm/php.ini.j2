@@ -13,3 +13,6 @@ session.gc_maxlifetime = 1440
 hhvm.{{ setting }} = {{ hhvm_php_settings[setting] }}
 {% endfor %}
 {% endif %}
+
+; Extra options
+{{ hhvm_php_extra }}

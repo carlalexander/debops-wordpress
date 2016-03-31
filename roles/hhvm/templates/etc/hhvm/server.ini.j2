@@ -17,3 +17,6 @@ hhvm.enable_zend_ini_compat = false
 hhvm.{{ setting }} = {{ hhvm_server_settings[setting] }}
 {% endfor  %}
 {% endif %}
+
+; Extra options
+{{ hhvm_server_extra }}

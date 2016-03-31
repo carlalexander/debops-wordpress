@@ -34,6 +34,11 @@ hhvm_file_post_max_size: '8M'
 # Max file upload size.
 hhvm_file_upload_max_filesize: '{{ hhvm_file_post_max_size }}'
 
+# .. envvar:: hhvm_php_extra
+#
+# Extra configuration options at the end of the HHVM php.ini file.
+hhvm_php_extra: ''
+
 # .. envvar:: hhvm_php_settings
 #
 # Dict of HHVM php.ini settings.
@@ -42,6 +47,11 @@ hhvm_php_settings:
   'log.always_log_unhandled_exceptions': 'true'
   'log.runtime_error_reporting_level': '8191'
   'mysql.typed_results': 'false'
+
+# .. envvar:: hhvm_server_extra
+#
+# Extra configuration options at the end of the HHVM server.ini file.
+hhvm_server_extra: ''
 
 # .. envvar:: hhvm_server_settings
 #

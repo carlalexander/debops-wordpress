@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added options to add extra configuration options to both the `php.ini`
+  and `server.ini` files of ``hhvm`` role. [carlalexander]
+
 - Added upload_max and post_max sizes to ``hhvm`` role configuration
   options. [carlalexander]
 
