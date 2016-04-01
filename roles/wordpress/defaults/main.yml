@@ -203,6 +203,11 @@ wordpress_admin_email: '{{ wordpress_admin_username }}@{{ wordpress_domain }}'
 # Password for the WordPress admin user.
 wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress_domain + '/credentials/' + wordpress_admin_username + '/password length=' + wordpress_password_length) }}"
 
+# .. envvar:: wordpress_config_extra_php
+#
+# Extra PHP code that's appended at the end of the ``wp-confip.php`` file.
+wordpress_config_extra_php: ''
+
 # .. envvar:: wordpress_database_host
 #
 # Hostname or IP address of the WordPress database.

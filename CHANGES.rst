@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added option to append extra PHP code to the end of the ``wp-config.php``
+  file in the ``wordpress`` role. [carlalexander]
+
 - Added options to add extra configuration options to both the `php.ini`
   and `server.ini` files of ``hhvm`` role. [carlalexander]
 
