@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Replaced ``swap`` role with the ``debops.swapfile`` role. [carlalexander]
+
 - Added option to append extra PHP code to the end of the ``wp-config.php``
   file in the ``wordpress`` role. [carlalexander]
 

@@ -5,4 +5,6 @@
   become: True
 
   roles:
-    - role: swap
+    - role: debops.swapfile
+      tags: [ 'role::swap', 'swap' ]
+      swapfile_swappiness: '15'
