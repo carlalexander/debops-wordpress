@@ -10,6 +10,7 @@ wordpress_varnish_server:
   listen: [ '80' ]
   listen_ssl: [ '443' ]
   ssl: '{{ wordpress_ssl }}'
+  acme: False
   pki_crt: '{{ wordpress_nginx_crt }}'
   pki_key: '{{ wordpress_nginx_key }}'
   deny_hidden: False
@@ -26,6 +27,7 @@ wordpress_backend_server:
   type: 'php5'
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
   ssl: False
+  acme: False
   filename: '{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   root: '{{ wordpress_root }}'
