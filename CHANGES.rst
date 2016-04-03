@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Renamed ``wordpress_varnish_server``, ``wordpress_backend_server``,
+  ``wordpress_php_upstream`` and ``wordpress_varnish_upstream``. [carlalexander]
+
 - Replaced ``swap`` role with the ``debops.swapfile`` role. [carlalexander]
 
 - Added option to append extra PHP code to the end of the ``wp-config.php``
