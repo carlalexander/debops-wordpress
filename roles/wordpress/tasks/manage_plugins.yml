@@ -2,7 +2,7 @@
 
 - name: Get list of installed WordPress plugins
   command: 'wp plugin list --format=json'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   changed_when: False
@@ -11,7 +11,7 @@
 
 - name: Get list of active WordPress plugins
   command: 'wp plugin list --format=json --status=active'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   changed_when: False
@@ -27,42 +27,42 @@
 
 - name: Install WordPress plugins
   command: 'wp plugin install "{{ item.name }}"'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   when: item.name|d() and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress_plugin_installed_list
-  with_items: wordpress_plugins
+  with_items: '{{ wordpress_plugins }}'
 
 - name: Activate WordPress plugins
   command: 'wp plugin activate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   when: item.name|d() and (item.enabled|d(True) | bool) and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress_plugin_active_list
-  with_items: wordpress_plugins
+  with_items: '{{ wordpress_plugins }}'
 
 - name: Update WordPress plugins
   command: 'wp plugin update "{{ item.name }}"'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   register: wordpress_plugin_update_cmd
   changed_when: ('Updated 0/0 plugins' not in wordpress_plugin_update_cmd.stdout)
   when: item.name|d() and (item.state|d("latest") in ['latest']) and item.name in wordpress_plugin_installed_list
-  with_items: wordpress_plugins
+  with_items: '{{ wordpress_plugins }}'
 
 - name: Deactivate WordPress plugins
   command: 'wp plugin deactivate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   when: item.name|d() and not (item.enabled|d(True) | bool) and item.name in wordpress_plugin_active_list
-  with_items: wordpress_plugins
+  with_items: '{{ wordpress_plugins }}'
 
 - name: Uninstall WordPress plugins
   command: 'wp plugin uninstall --deactivate "{{ item.name }}"'
-  sudo_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
   when: item.name|d() and (item.state|d("latest") in ['absent']) and item.name in wordpress_plugin_installed_list
-  with_items: wordpress_plugins
+  with_items: '{{ wordpress_plugins }}'
