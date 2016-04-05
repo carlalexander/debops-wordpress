@@ -62,6 +62,131 @@ wordpress_mariadb_users:
 
 
 # ---------------------------
+#   Fail2ban configuration
+# ---------------------------
+
+# .. envvar:: wordpress_fail2ban_default_action
+#
+# Default action performed by ``fail2ban`` when IP address is banned.
+wordpress_fail2ban_default_action: 'action_'
+
+# .. envvar:: wordpress_fail2ban_default_bantime
+#
+# Default length of time in seconds for the ban to persist. (Default: 2 hours)
+wordpress_fail2ban_default_bantime: '{{ 60 * 60 * 2 }}'
+
+# .. envvar:: wordpress_fail2ban_default_findtime
+#
+# Default length of time in seconds under which the given ``maxretry`` needs
+# to happen to trigger a DDOS ban. (Default: 10 minutes)
+wordpress_fail2ban_default_findtime: '{{ 60 * 10 }}'
+
+# .. envvar:: wordpress_fail2ban_default_maxretry
+#
+# Default maximum number of attempts in the given ``findtime`` to trigger
+# a ban.
+wordpress_fail2ban_default_maxretry: '3'
+
+# .. envvar:: wordpress_fail2ban_filters
+#
+# List of dicts which define custom local ``fail2ban`` filters.
+wordpress_fail2ban_filters:
+  - '{{ wordpress_fail2ban_filter_ddos }}'
+  - '{{ wordpress_fail2ban_filter_login }}'
+
+# .. envvar:: wordpress_fail2ban_ignoreip
+#
+# List of IP addresses or CIDR networks which should be ignored by fail2ban.
+wordpress_fail2ban_ignoreip: []
+
+# .. envvar:: wordpress_fail2ban_jails
+#
+# List of dicts which define custom local ``fail2ban`` jails.
+wordpress_fail2ban_jails:
+  - '{{ wordpress_fail2ban_jail_badbots }}'
+  - '{{ wordpress_fail2ban_jail_ddos }}'
+  - '{{ wordpress_fail2ban_jail_login }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_action
+#
+# Action performed by ``fail2ban`` when IP address is banned by the badbots jail.
+wordpress_fail2ban_jail_badbots_action: '{{ wordpress_fail2ban_default_action }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_bantime
+#
+# Length of time in seconds for the badbots jail ban to persist. (Default: 2 hours)
+wordpress_fail2ban_jail_badbots_bantime: '{{ wordpress_fail2ban_default_bantime }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_enabled
+#
+# Whether the badbots jail is enabled or not.
+wordpress_fail2ban_jail_badbots_enabled: 'true'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_findtime
+#
+# Length of time in seconds under which the given ``maxretry`` needs to happen
+# to trigger a badbots ban. (Default: 2 hours)
+wordpress_fail2ban_jail_badbots_findtime: '{{ wordpress_fail2ban_default_findtime }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_maxretry
+#
+# Maximum number of requests in the given ``findtime`` to trigger a badbots ban.
+wordpress_fail2ban_jail_badbots_maxretry: '1'
+
+# .. envvar:: wordpress_fail2ban_jail_ddos_action
+#
+# Action performed by ``fail2ban`` when IP address is banned by the DDOS jail.
+wordpress_fail2ban_jail_ddos_action: '{{ wordpress_fail2ban_default_action }}'
+
+# .. envvar:: wordpress_fail2ban_jail_ddos_bantime
+#
+# Length of time in seconds for the DDOS jail ban to persist. (Default: 2 hours)
+wordpress_fail2ban_jail_ddos_bantime: '{{ wordpress_fail2ban_default_bantime }}'
+
+# .. envvar:: wordpress_fail2ban_jail_ddos_enabled
+#
+# Whether the DDOS jail is enabled or not.
+wordpress_fail2ban_jail_ddos_enabled: 'true'
+
+# .. envvar:: wordpress_fail2ban_jail_ddos_findtime
+#
+# Length of time in seconds under which the given ``maxretry`` needs to happen
+# to trigger a DDOS ban. (Default: 5 minutes)
+wordpress_fail2ban_jail_ddos_findtime: '300'
+
+# .. envvar:: wordpress_fail2ban_jail_ddos_maxretry
+#
+# Maximum number of requests in the given ``findtime`` to trigger a DDOS ban.
+wordpress_fail2ban_jail_ddos_maxretry: '300'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_action
+#
+# Action performed by ``fail2ban`` when IP address is banned by the login jail.
+wordpress_fail2ban_jail_login_action: '{{ wordpress_fail2ban_default_action }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_bantime
+#
+# Length of time in seconds for the login jail ban to persist. (Default: 2 hours)
+wordpress_fail2ban_jail_login_bantime: '{{ wordpress_fail2ban_default_bantime }}'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_enabled
+#
+# Whether the login jail is enabled or not.
+wordpress_fail2ban_jail_login_enabled: 'true'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_findtime
+#
+# Length of time in seconds under which the given ``maxretry`` needs to happen
+# to trigger a login ban. (Default: 60 seconds)
+wordpress_fail2ban_jail_login_findtime: '60'
+
+# .. envvar:: wordpress_fail2ban_jail_badbots_maxretry
+#
+# Maximum number of requests in the given ``findtime`` to trigger a login ban.
+wordpress_fail2ban_jail_login_maxretry: '5'
+
+
+# ---------------------------
 #   Webserver configuration
 # ---------------------------
 

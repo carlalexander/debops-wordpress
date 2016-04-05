@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``debops.fail2ban`` dependency to ``wordpress`` role. [carlalexander]
+
 - Renamed ``wordpress_varnish_server``, ``wordpress_backend_server``,
   ``wordpress_php_upstream`` and ``wordpress_varnish_upstream``. [carlalexander]
 

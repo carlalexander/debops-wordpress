@@ -1,6 +1,51 @@
 ---
 
 # --------------------------
+#   Fail2ban configuration
+# --------------------------
+
+wordpress_fail2ban_filter_ddos:
+  name: 'wordpress-ddos'
+  failregex: '^<HOST> .* "(GET|POST)'
+
+wordpress_fail2ban_filter_login:
+  name: 'wordpress-login'
+  failregex: '^<HOST> .* "POST .*?/(wp-login|xmlrpc).php'
+
+wordpress_fail2ban_jail_badbots:
+  name: 'wordpress-badbots'
+  enabled: '{{ wordpress_fail2ban_jail_badbots_enabled }}'
+  action: '{{ wordpress_fail2ban_jail_badbots_action }}'
+  filter: 'apache-badbots'
+  port: 'http,https'
+  logpath: '/var/log/nginx/varnish*access.log'
+  find: '{{ wordpress_fail2ban_jail_badbots_findtime }}'
+  maxretry: '{{ wordpress_fail2ban_jail_badbots_maxretry }}'
+  bantime: '{{ wordpress_fail2ban_jail_badbots_bantime }}'
+
+wordpress_fail2ban_jail_ddos:
+  name: 'wordpress-ddos'
+  enabled: '{{ wordpress_fail2ban_jail_ddos_enabled }}'
+  action: '{{ wordpress_fail2ban_jail_ddos_action }}'
+  filter: 'wordpress-ddos'
+  port: 'http,https'
+  logpath: '/var/log/nginx/varnish*access.log'
+  find: '{{ wordpress_fail2ban_jail_ddos_findtime }}'
+  maxretry: '{{ wordpress_fail2ban_jail_ddos_maxretry }}'
+  bantime: '{{ wordpress_fail2ban_jail_ddos_bantime }}'
+
+wordpress_fail2ban_jail_login:
+  name: 'wordpress-login'
+  enabled: '{{ wordpress_fail2ban_jail_login_enabled }}'
+  action: '{{ wordpress_fail2ban_jail_login_action }}'
+  filter: 'wordpress-login'
+  port: 'http,https'
+  logpath: '/var/log/nginx/varnish*access.log'
+  find: '{{ wordpress_fail2ban_jail_login_findtime }}'
+  maxretry: '{{ wordpress_fail2ban_jail_login_maxretry }}'
+  bantime: '{{ wordpress_fail2ban_jail_login_bantime }}'
+
+# --------------------------
 #   MariaDB configuration
 # --------------------------
 
