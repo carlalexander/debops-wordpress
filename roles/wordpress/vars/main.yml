@@ -4,6 +4,16 @@
 #   Fail2ban configuration
 # --------------------------
 
+wordpress_fail2ban_action_permanent_ban:
+  name: 'wordpress-permanent'
+  start: cat /etc/fail2ban/wordpress-banlist.<name> | while read IP; do ip route list | grep -q "unreachable $IP" || ip route add unreachable $IP; done
+  stop: touch /etc/fail2ban/wordpress-banlist.<name>
+  check: test -e /etc/fail2ban/wordpress-banlist.<name>
+  ban: |
+    FILE=/etc/fail2ban/wordpress-banlist.<name>
+    grep -q "<ip>" "$FILE" || ip route list | grep -q 'unreachable <ip>' || ip route add unreachable <ip>
+    grep -q "<ip>" "$FILE" || echo "<ip>" >> "$FILE"
+
 wordpress_fail2ban_filter_ddos:
   name: 'wordpress-ddos'
   failregex: '^<HOST> .* "(GET|POST)'
@@ -11,6 +21,11 @@ wordpress_fail2ban_filter_ddos:
 wordpress_fail2ban_filter_login:
   name: 'wordpress-login'
   failregex: '^<HOST> .* "POST .*?/(wp-login|xmlrpc).php'
+
+wordpress_fail2ban_filter_repeat_bans:
+  name: 'wordpress-repeat-bans'
+  failregex: 'fail2ban\.actions:\s+WARNING\s+\[(?:.*)\]\s+Ban\s+<HOST>'
+  ignoreregex: 'fail2ban\.actions:\s+WARNING\s+\[wordpress-permanent\]\s+Ban\s+<HOST>'
 
 wordpress_fail2ban_jail_badbots:
   name: 'wordpress-badbots'
@@ -44,6 +59,16 @@ wordpress_fail2ban_jail_login:
   find: '{{ wordpress_fail2ban_jail_login_findtime }}'
   maxretry: '{{ wordpress_fail2ban_jail_login_maxretry }}'
   bantime: '{{ wordpress_fail2ban_jail_login_bantime }}'
+
+wordpress_fail2ban_jail_permanent:
+  name: 'wordpress-permanent'
+  enabled: '{{ wordpress_fail2ban_jail_permanent_enabled }}'
+  action: '{{ wordpress_fail2ban_jail_permanent_action }}'
+  filter: 'wordpress-repeat-bans'
+  logpath: '/var/log/fail2ban.log'
+  find: '{{ wordpress_fail2ban_jail_permanent_findtime }}'
+  maxretry: '{{ wordpress_fail2ban_jail_permanent_maxretry }}'
+  bantime: '-1'
 
 # --------------------------
 #   MariaDB configuration

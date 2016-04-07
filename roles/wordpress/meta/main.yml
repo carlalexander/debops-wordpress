@@ -8,6 +8,8 @@ dependencies:
   - role: debops.fail2ban
     tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     fail2ban_action: '{{ wordpress_fail2ban_default_action }}'
+    fail2ban_actions: '{{ wordpress_fail2ban_actions }}'
+    fail2ban_custom_actions: '{{ wordpress_fail2ban_custom_actions }}'
     fail2ban_bantime: '{{ wordpress_fail2ban_default_bantime }}'
     fail2ban_filters: '{{ wordpress_fail2ban_filters }}'
     fail2ban_findtime: '{{ wordpress_fail2ban_default_findtime }}'

@@ -65,6 +65,25 @@ wordpress_mariadb_users:
 #   Fail2ban configuration
 # ---------------------------
 
+# .. envvar:: wordpress_fail2ban_actions
+#
+# List of dicts which define custom local ``fail2ban`` actions.
+wordpress_fail2ban_actions:
+  - '{{ wordpress_fail2ban_action_permanent_ban }}'
+
+# .. envvar:: wordpress_fail2ban_custom_actions
+#
+# List of custom named actions to perform when a ban is executed.
+wordpress_fail2ban_custom_actions:
+  'wordpress_permanent_action_': |
+    wordpress-permanent[name=%(__name__)s]
+  'wordpress_permanent_action_mw': |
+    wordpress-permanent[name=%(__name__)s]
+    %(mta)s-whois[name=%(__name__)s, dest="%(destemail)s"]
+  'wordpress_permanent_action_mwl': |
+    wordpress-permanent[name=%(__name__)s]
+    %(mta)s-whois-lines[name=%(__name__)s, dest="%(destemail)s", logpath=%(logpath)s]
+
 # .. envvar:: wordpress_fail2ban_default_action
 #
 # Default action performed by ``fail2ban`` when IP address is banned.
@@ -93,6 +112,7 @@ wordpress_fail2ban_default_maxretry: '3'
 wordpress_fail2ban_filters:
   - '{{ wordpress_fail2ban_filter_ddos }}'
   - '{{ wordpress_fail2ban_filter_login }}'
+  - '{{ wordpress_fail2ban_filter_repeat_bans }}'
 
 # .. envvar:: wordpress_fail2ban_ignoreip
 #
@@ -106,6 +126,7 @@ wordpress_fail2ban_jails:
   - '{{ wordpress_fail2ban_jail_badbots }}'
   - '{{ wordpress_fail2ban_jail_ddos }}'
   - '{{ wordpress_fail2ban_jail_login }}'
+  - '{{ wordpress_fail2ban_jail_permanent }}'
 
 # .. envvar:: wordpress_fail2ban_jail_badbots_action
 #
@@ -184,6 +205,27 @@ wordpress_fail2ban_jail_login_findtime: '60'
 #
 # Maximum number of requests in the given ``findtime`` to trigger a login ban.
 wordpress_fail2ban_jail_login_maxretry: '5'
+
+# .. envvar:: wordpress_fail2ban_jail_permanent_action
+#
+# Action performed by ``fail2ban`` when IP address is banned by the permanent jail.
+wordpress_fail2ban_jail_permanent_action: 'wordpress_permanent_{{ wordpress_fail2ban_default_action }}'
+
+# .. envvar:: wordpress_fail2ban_jail_permanent_enabled
+#
+# Whether the permanent jail is enabled or not.
+wordpress_fail2ban_jail_permanent_enabled: 'true'
+
+# .. envvar:: wordpress_fail2ban_jail_permanent_findtime
+#
+# Length of time in seconds under which the given ``maxretry`` needs to happen
+# to trigger a permanent ban. (Default: 1 week)
+wordpress_fail2ban_jail_permanent_findtime: '{{ 60 * 60 * 24 * 7 }}'
+
+# .. envvar:: wordpress_fail2ban_jail_permanent_maxretry
+#
+# Maximum number of requests in the given ``findtime`` to trigger a permanent ban.
+wordpress_fail2ban_jail_permanent_maxretry: '10'
 
 
 # ---------------------------
