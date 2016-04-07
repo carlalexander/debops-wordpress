@@ -187,8 +187,8 @@ wordpress_fail2ban_jail_login_action: '{{ wordpress_fail2ban_default_action }}'
 
 # .. envvar:: wordpress_fail2ban_jail_badbots_bantime
 #
-# Length of time in seconds for the login jail ban to persist. (Default: 2 hours)
-wordpress_fail2ban_jail_login_bantime: '{{ wordpress_fail2ban_default_bantime }}'
+# Length of time in seconds for the login jail ban to persist. (Default: 10 minutes)
+wordpress_fail2ban_jail_login_bantime: '{{ 60 * 10 }}'
 
 # .. envvar:: wordpress_fail2ban_jail_badbots_enabled
 #
