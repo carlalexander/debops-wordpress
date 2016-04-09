@@ -45,8 +45,8 @@ wordpress.example.com
 Once that's done, you just need to run two command lines. Each of them can take several minutes to run.
 
 ```bash
-$ debops
-$ debops wordpress
+$ debops -u root
+$ debops wordpress -u root
 ```
 
 ## Acknowledgements
