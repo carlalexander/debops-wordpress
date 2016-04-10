@@ -106,6 +106,12 @@ wordpress_fail2ban_default_findtime: '{{ 60 * 10 }}'
 # a ban.
 wordpress_fail2ban_default_maxretry: '3'
 
+# .. envvar:: wordpress_fail2ban_enabled
+#
+# Whether the ``carlalexander.wordpress`` role should install and configure
+# fail2ban or not.
+wordpress_fail2ban_enabled: True
+
 # .. envvar:: wordpress_fail2ban_filters
 #
 # List of dicts which define custom local ``fail2ban`` filters.

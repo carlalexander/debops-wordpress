@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_fail2ban_enabled`` variable so that you can disable
+  the installation and configuration of fail2ban. [carlalexander]
+
 - Added ``debops.fail2ban`` dependency to ``wordpress`` role. [carlalexander]
 
 - Renamed ``wordpress_varnish_server``, ``wordpress_backend_server``,
