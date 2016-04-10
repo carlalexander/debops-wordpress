@@ -16,13 +16,14 @@ dependencies:
     fail2ban_host_jails: '{{ wordpress_fail2ban_jails }}'
     fail2ban_ignoreip: '{{ wordpress_fail2ban_ignoreip }}'
     fail2ban_maxretry: '{{ wordpress_fail2ban_default_maxretry }}'
+    when: wordpress_dependencies
 
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     mariadb_databases: [ '{{ wordpress_mariadb_databases }}' ]
     mariadb_users: [ '{{ wordpress_mariadb_users }}' ]
     mariadb_server: '{{ wordpress_mariadb_server }}'
-    when: wordpress_dependencies is defined and wordpress_dependencies
+    when: wordpress_dependencies
 
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
@@ -31,27 +32,28 @@ dependencies:
     nginx_internal_servers: [ '{{ nginx_server_acme }}' ]
     nginx_servers: [ '{{ wordpress_server_varnish }}', '{{ wordpress_server_backend }}' ]
     nginx_upstreams: [ '{{ wordpress_upstream_php }}', '{{ wordpress_upstream_varnish }}' ]
-    when: wordpress_dependencies is defined and wordpress_dependencies
+    when: wordpress_dependencies
 
   - role: debops.php5
     tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     php5_packages: '{{ wordpress_php5_packages }}'
     php5_pools: [ '{{ wordpress_php5_pool }}' ]
-    when: wordpress_dependencies is defined and wordpress_dependencies
+    when: wordpress_dependencies
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     pki_copy_private_files: '{{ wordpress_ssl_files }}'
-    when: wordpress_ssl is defined and wordpress_ssl
+    when: wordpress_dependencies and wordpress_ssl
 
   - role: debops.redis
     tags: [ 'depend::redis', 'depend::redis:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    when: wordpress_dependencies
 
   - role: hhvm
     tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     hhvm_file_post_max_size: '{{ wordpress_php5_upload_size }}'
     hhvm_server_user: '{{ wordpress_user }}'
-    when: wordpress_dependencies is defined and wordpress_dependencies
+    when: wordpress_dependencies
 
   - role: varnish
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
@@ -63,7 +65,8 @@ dependencies:
     varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions }}'
     varnish_vcl_recv_remove_cookies: '{{ wordpress_varnish_vcl_recv_remove_cookies }}'
     varnish_vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions }}'
-    when: wordpress_dependencies is defined and wordpress_dependencies
+    when: wordpress_dependencies
 
   - role: wpcli
     tags: [ 'depend::wpcli', 'depend::wpcli:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    when: wordpress_dependencies
