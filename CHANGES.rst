@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_install_enabled`` variable so that you can disable
+  the installation of WordPress. [schrapel]
+
 - Added ``wordpress_fail2ban_enabled`` variable so that you can disable
   the installation and configuration of fail2ban. [carlalexander]
 

@@ -17,6 +17,7 @@
     owner: '{{ wordpress_user }}'
     group: '{{ wordpress_group }}'
     mode: '0644'
+  when: wordpress_install_enabled
 
 - name: Check if WordPress is installed
   command: 'wp core is-installed'
@@ -26,6 +27,7 @@
   register: wordpress_installed
   changed_when: False
   failed_when: False
+  when: wordpress_install_enabled
 
 - name: Download WordPress
   command: 'wp core download'
@@ -33,7 +35,7 @@
   args:
     chdir: '{{ wordpress_root }}'
     creates: '{{ wordpress_root }}/index.php'
-  when: wordpress_installed is defined and wordpress_installed.rc == 1
+  when: wordpress_installed is defined and wordpress_installed.rc == 1 and wordpress_install_enabled
 
 - name: Configure WordPress
   command: 'wp core config --dbhost="{{ wordpress_database_host }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_user }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
@@ -41,7 +43,7 @@
   args:
     chdir: '{{ wordpress_root }}'
     creates: '{{ wordpress_root }}/wp-config.php'
-  when: wordpress_installed is defined and wordpress_installed.rc == 1
+  when: wordpress_installed is defined and wordpress_installed.rc == 1 and wordpress_install_enabled
 
 - name: Install WordPress
   command: 'wp core install --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
@@ -49,7 +51,7 @@
   args:
     chdir: '{{ wordpress_root }}'
   when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
-         (wordpress_multisite is defined and not wordpress_multisite))
+         (wordpress_multisite is defined and not wordpress_multisite)) and wordpress_install_enabled
 
 - name: Install WordPress Multisite
   command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {{ "--subdomains" if wordpress_multisite_subdomains else "" }} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
@@ -57,7 +59,7 @@
   args:
     chdir: '{{ wordpress_root }}'
   when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
-         (wordpress_multisite is defined and wordpress_multisite))
+         (wordpress_multisite is defined and wordpress_multisite)) and wordpress_install_enabled
 
 - name: Schedule regular calls to wp-cron.php
   cron:
@@ -68,3 +70,4 @@
 
 - include: manage_plugins.yml
   tags: [ 'role::wordpress:plugins' ]
+  when: wordpress_install_enabled
