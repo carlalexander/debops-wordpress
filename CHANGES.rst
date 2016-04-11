@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_cron_path`` variable so that you control the path to
+  ``wp-cron.php`` for the WordPress cron job. [carlalexander]
+
 - Added ``wordpress_install_enabled`` variable so that you can disable
   the installation of WordPress. [schrapel]
 

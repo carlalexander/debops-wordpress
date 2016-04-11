@@ -386,6 +386,11 @@ wordpress_admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpr
 # Extra PHP code that's appended at the end of the ``wp-confip.php`` file.
 wordpress_config_extra_php: ''
 
+# .. envvar:: wordpress_cron_path
+#
+# Path to ``wp-cron.php`` for the WordPress cron job.
+wordpress_cron_path: '/wp-cron.php'
+
 # .. envvar:: wordpress_database_host
 #
 # Hostname or IP address of the WordPress database.
