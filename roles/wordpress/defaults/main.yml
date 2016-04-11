@@ -14,6 +14,11 @@
 # Should the ``carlalexander.wordpress`` role manage it's own dependencies (database, web server)?
 wordpress_dependencies: True
 
+# .. envvar:: wordpress_install_enabled
+#
+# Should the ``carlalexander.wordpress`` role install WordPress?
+wordpress_install_enabled: True
+
 # .. envvar:: wordpress_password_length
 #
 # Length of randomly generated passwords (it's a string).
