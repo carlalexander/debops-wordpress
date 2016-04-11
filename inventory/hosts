@@ -8,8 +8,8 @@
 # View the list here:
 # https://github.com/debops/debops-playbooks/blob/master/playbooks/common.yml
 
-#<hostname>
 [debops_all_hosts]
+#<hostname>
 
 [wordpress]
 #<hostname>
