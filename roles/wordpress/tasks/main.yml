@@ -9,6 +9,7 @@
     owner: '{{ wordpress_user }}'
     group: '{{ wordpress_group }}'
     mode: '0755'
+  when: wordpress_install_enabled
 
 - name: Configure wp-cli
   template:
