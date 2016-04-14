@@ -246,13 +246,18 @@ wordpress_fail2ban_jail_permanent_maxretry: '10'
 # .. envvar:: wordpress_nginx_allow
 #
 # List of IP addresses or network ranges in CIDR format, allowed to access
-# WordPress. Leave empty to allow access from all IP addresses/networks
+# WordPress. Leave empty to allow access from all IP addresses/networks.
 wordpress_nginx_allow: []
+
+# .. envvar:: wordpress_nginx_pki_realm
+#
+# Default PKI realm used by ``debops.nginx``.
+wordpress_nginx_pki_realm: 'domain'
 
 # .. envvar:: wordpress_nginx_crt
 #
 # Relative path to the SSL certificate file used by ``debops.nginx``.
-wordpress_nginx_crt: 'certs/{{ wordpress_domain }}.crt'
+wordpress_nginx_crt: 'private/{{ wordpress_domain }}.crt'
 
 # .. envvar:: wordpress_nginx_key
 #

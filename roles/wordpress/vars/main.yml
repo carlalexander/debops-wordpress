@@ -227,10 +227,10 @@ wordpress_server_varnish:
 
 wordpress_ssl_files:
   - src: '{{ wordpress_ssl_crt }}'
-    dest: '{{ wordpress_nginx_crt }}'
+    dest: '/etc/pki/realms/{{ wordpress_nginx_pki_realm }}/{{ wordpress_nginx_crt }}'
 
   - src: '{{ wordpress_ssl_key }}'
-    dest: '{{ wordpress_nginx_key }}'
+    dest: '/etc/pki/realms/{{ wordpress_nginx_pki_realm }}/{{ wordpress_nginx_key }}'
 
 
 # --------------------------

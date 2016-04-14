@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_nginx_pki_realm`` variable to control the default
+  PKI realm used by ``debops.nginx``. [carlalexander]
+
 - Renamed ``swapfile_swappiness`` to ``swapfile__swappiness``. [carlalexander]
 
 - Added ``wordpress_cron_path`` variable so that you control the path to

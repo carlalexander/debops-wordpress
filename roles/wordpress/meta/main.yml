@@ -30,6 +30,7 @@ dependencies:
     nginx_webroot_create: False
     nginx_default_servers: []
     nginx_internal_servers: [ '{{ nginx_server_acme }}' ]
+    nginx_pki_realm: '{{ wordpress_nginx_pki_realm }}'
     nginx_servers: [ '{{ wordpress_server_varnish }}', '{{ wordpress_server_backend }}' ]
     nginx_upstreams: [ '{{ wordpress_upstream_php }}', '{{ wordpress_upstream_varnish }}' ]
     when: wordpress_dependencies
@@ -42,7 +43,7 @@ dependencies:
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    pki_copy_private_files: '{{ wordpress_ssl_files }}'
+    pki_private_files: '{{ wordpress_ssl_files }}'
     when: wordpress_dependencies and wordpress_ssl
 
   - role: debops.redis
