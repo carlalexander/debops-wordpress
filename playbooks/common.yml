@@ -7,4 +7,4 @@
   roles:
     - role: debops.swapfile
       tags: [ 'role::swap', 'swap' ]
-      swapfile_swappiness: '15'
+      swapfile__swappiness: '15'

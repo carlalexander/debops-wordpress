@@ -6,6 +6,8 @@ v0.2.0
 
 *Unreleased*
 
+- Renamed ``swapfile_swappiness`` to ``swapfile__swappiness``. [carlalexander]
+
 - Added ``wordpress_cron_path`` variable so that you control the path to
   ``wp-cron.php`` for the WordPress cron job. [carlalexander]
 
