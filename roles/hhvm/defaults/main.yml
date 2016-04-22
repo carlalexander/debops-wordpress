@@ -34,6 +34,27 @@ hhvm_file_post_max_size: '8M'
 # Max file upload size.
 hhvm_file_upload_max_filesize: '{{ hhvm_file_post_max_size }}'
 
+# .. envvar:: hhvm_jit_cold_size
+#
+# Size of cold code cache. Code that is unlikely to be executed is deemed cold.
+hhvm_jit_cold_size: '{{ 0.5 * hhvm_jit_size | int }}'
+
+# .. envvar:: hhvm_jit_frozen_size
+#
+# Size of extremely cold code cache. Code that is almost never executed, or executed
+# once and then freed up, is deemed frozen.
+hhvm_jit_frozen_size: '{{ hhvm_jit_size }}'
+
+# .. envvar:: hhvm_jit_max_usage
+#
+# Maximum amount of code to generate.
+hhvm_jit_max_usage: '{{ hhvm_jit_size }}'
+
+# .. envvar:: hhvm_jit_size
+#
+# Size in bytes of main translation cache.
+hhvm_jit_size: 62914560
+
 # .. envvar:: hhvm_php_extra
 #
 # Extra configuration options at the end of the HHVM php.ini file.
@@ -58,6 +79,10 @@ hhvm_server_extra: ''
 # Dict of HHVM server.ini settings.
 hhvm_server_settings:
   'header': 'true'
+  'jit_a_size': '{{ hhvm_jit_size }}'
+  'jit_a_cold_size': '{{ hhvm_jit_cold_size }}'
+  'jit_a_frozen_size': '{{ hhvm_jit_frozen_size }}'
+  'jit_a_max_usage': '{{ hhvm_jit_max_usage }}'
   'log.use_log_file': 'true'
   'log.file': '/var/log/hhvm/error.log'
   'repo.central.path': '{{ hhvm_hhbc }}'
