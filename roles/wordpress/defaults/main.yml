@@ -128,7 +128,7 @@ wordpress_fail2ban_filters:
 # .. envvar:: wordpress_fail2ban_ignoreip
 #
 # List of IP addresses or CIDR networks which should be ignored by fail2ban.
-wordpress_fail2ban_ignoreip: []
+wordpress_fail2ban_ignoreip: [ '{{ ansible_default_ipv4.address }}' ]
 
 # .. envvar:: wordpress_fail2ban_jails
 #

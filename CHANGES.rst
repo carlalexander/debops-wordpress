@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added the server ip address to the ``wordpress_fail2ban_ignoreip``
+  variable. [carlalexander]
+
 - Added ``wordpress_nginx_pki_realm`` variable to control the default
   PKI realm used by ``debops.nginx``. [carlalexander]
 
