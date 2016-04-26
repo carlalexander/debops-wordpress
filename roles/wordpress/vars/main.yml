@@ -34,7 +34,7 @@ wordpress_fail2ban_jail_badbots:
   filter: 'apache-badbots'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  find: '{{ wordpress_fail2ban_jail_badbots_findtime }}'
+  findtime: '{{ wordpress_fail2ban_jail_badbots_findtime }}'
   maxretry: '{{ wordpress_fail2ban_jail_badbots_maxretry }}'
   bantime: '{{ wordpress_fail2ban_jail_badbots_bantime }}'
 
@@ -45,7 +45,7 @@ wordpress_fail2ban_jail_ddos:
   filter: 'wordpress-ddos'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  find: '{{ wordpress_fail2ban_jail_ddos_findtime }}'
+  findtime: '{{ wordpress_fail2ban_jail_ddos_findtime }}'
   maxretry: '{{ wordpress_fail2ban_jail_ddos_maxretry }}'
   bantime: '{{ wordpress_fail2ban_jail_ddos_bantime }}'
 
@@ -56,7 +56,7 @@ wordpress_fail2ban_jail_login:
   filter: 'wordpress-login'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  find: '{{ wordpress_fail2ban_jail_login_findtime }}'
+  findtime: '{{ wordpress_fail2ban_jail_login_findtime }}'
   maxretry: '{{ wordpress_fail2ban_jail_login_maxretry }}'
   bantime: '{{ wordpress_fail2ban_jail_login_bantime }}'
 
@@ -66,7 +66,7 @@ wordpress_fail2ban_jail_permanent:
   action: '{{ wordpress_fail2ban_jail_permanent_action }}'
   filter: 'wordpress-repeat-bans'
   logpath: '/var/log/fail2ban.log'
-  find: '{{ wordpress_fail2ban_jail_permanent_findtime }}'
+  findtime: '{{ wordpress_fail2ban_jail_permanent_findtime }}'
   maxretry: '{{ wordpress_fail2ban_jail_permanent_maxretry }}'
   bantime: '-1'
 
