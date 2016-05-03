@@ -60,6 +60,7 @@ dependencies:
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     varnish_listen: '{{ wordpress_varnish_listen }}'
     varnish_backends: [ '{{ wordpress_varnish_backend }}' ]
+    varnish_add_ban_lurker_headers: '{{ wordpress_varnish_add_ban_lurker_headers }}'
     varnish_normalize_query_parameters: '{{ wordpress_varnish_normalize_query_parameters }}'
     varnish_purge_allow: '{{ wordpress_varnish_purge_allow }}'
     varnish_purge_conditions: '{{ wordpress_varnish_purge_conditions }}'

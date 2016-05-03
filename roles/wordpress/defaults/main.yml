@@ -324,6 +324,12 @@ wordpress_varnish_listen: '6081'
 # Port used by the varnish backend server (WordPress in this case)
 wordpress_varnish_backend_port: '8080'
 
+# .. envvar:: wordpress_varnish_add_ban_lurker_headers
+#
+# Whether to add ban lurker headers to backend response. These headers are the primary mechanism
+# used by the Varnish ban lurker to clear out banned cache objects.
+wordpress_varnish_add_ban_lurker_headers: False
+
 # .. envvar:: wordpress_varnish_normalize_query_parameters
 #
 # Normalizing query parameters lets Varnish cache variations of the same URL.

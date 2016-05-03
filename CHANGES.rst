@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``varnish_add_ban_lurker_headers`` variable so to add support for
+  the Varnish ban lurker in the ``varnish`` role. [carlalexander]
+
 - Added ``wordpress_varnish_normalize_query_parameters`` variable so that
   you can control the normalization of query parameters in the ``varnish``
   role. [carlalexander]

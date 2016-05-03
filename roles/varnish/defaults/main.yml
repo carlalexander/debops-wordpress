@@ -188,6 +188,12 @@ varnish_backends:
 #   Varnish caching configuration
 # ------------------------------------
 
+# .. envvar:: varnish_add_ban_lurker_headers
+#
+# Whether to add ban lurker headers to backend response. These headers are the primary mechanism
+# used by the Varnish ban lurker to clear out banned cache objects.
+varnish_add_ban_lurker_headers: False
+
 # .. envvar:: varnish_cache_static_files
 #
 # Determines if the cache should store static files. This consumes a lot more memory. Disable this
