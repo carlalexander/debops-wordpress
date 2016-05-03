@@ -16,18 +16,15 @@
 # upstream even if it is available in distribution repositories.
 varnish_use_upstream: False
 
-
 # .. envvar:: varnish_upstream_key
 #
 # APT GPG key id used to sign the upstream Varnish packages.
 varnish_upstream_key: 'E98C6BBBA1CBC5C3EB2DF21C60E7C096C4DEFFEB'
 
-
 # .. envvar:: varnish_upstream_repository
 #
 # Address of the Varnish upstream APT repository.
 varnish_upstream_repository: 'deb https://repo.varnish-cache.org/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} varnish-{{ varnish_upstream_version }}'
-
 
 # .. envvar:: varnish_upstream_version
 #
@@ -66,7 +63,7 @@ varnish_ncsa_enabled: 1
 
 
 # ------------------------------------
-#   Backend Configuration ----
+#   Backend Configuration
 # ------------------------------------
 
 # .. envvar:: varnish_backend_host
@@ -74,78 +71,65 @@ varnish_ncsa_enabled: 1
 # Backend server host.
 varnish_backend_host: '127.0.0.1'
 
-
 # .. envvar:: varnish_backend_port
 #
 # Backend server port.
 varnish_backend_port: '8080'
-
 
 # .. envvar:: varnish_backend_max_connections
 #
 # How many connections to the backend are allowed.
 varnish_backend_max_connections: 300
 
-
 # .. envvar:: varnish_backend_first_byte_timeout
 #
 # How long to wait before we receive a response from the backend.
 varnish_backend_first_byte_timeout: '300s'
-
 
 # .. envvar:: varnish_backend_connect_timeout
 #
 # How long to wait for a connection to the backend.
 varnish_backend_connect_timeout: '5s'
 
-
 # .. envvar:: varnish_backend_between_bytes_timeout
 #
 # How long to wait between two subsequent successful reads from the backend.
 varnish_backend_between_bytes_timeout: '2s'
-
 
 # .. envvar:: varnish_backend_probe_request
 #
 # The request sent when polling a Varnish backend.
 varnish_backend_probe_request: 'HEAD / HTTP/1.1'
 
-
 # .. envvar:: varnish_backend_probe_user_agent
 #
 # The user agent sent when polling a Varnish backend.
 varnish_backend_probe_user_agent: 'Varnish Health Probe'
-
 
 # .. envvar:: varnish_backend_probe_host
 #
 # The value of the host header of the poll.
 varnish_backend_probe_host: 'localhost'
 
-
 # .. envvar:: varnish_backend_probe_interval
 #
 # How long time to wait between polls to the backend.
 varnish_backend_probe_interval: '5s'
-
 
 # .. envvar:: varnish_backend_probe_timeout
 #
 # How long to wait before timing out the probe to the backend.
 varnish_backend_probe_timeout: '1s'
 
-
 # .. envvar:: varnish_backend_probe_window
 #
 # How many of the latest polls to consider when determining if the backend is healthy.
 varnish_backend_probe_window: 5
 
-
 # .. envvar:: varnish_backend_probe_threshold
 #
 # How many of the window last polls must be good for the backend to be declared healthy.
 varnish_backend_probe_threshold: 3
-
 
 # .. envvar:: varnish_backends
 #
@@ -211,37 +195,37 @@ varnish_backends:
 # Read more here: https://ma.ttias.be/stop-caching-static-files/
 varnish_cache_static_files: True
 
-
 # .. envvar:: varnish_normalize_query_parameters
 #
 # Normalizing query parameters lets Varnish cache variations of the same URL.
 # This might cause some issues with some script minimization systems.
 varnish_normalize_query_parameters: True
 
-
 # .. envvar:: varnish_purge_allow
 #
 # List of IP addresses that are allowed to purge the Varnish cache.
 varnish_purge_allow: [ '127.0.0.1', '::1' ]
 
-
 # .. envvar:: varnish_purge_condition
 #
-# Conditions that will run when vcl_recv receives a purge request.
+# Dictionary of conditions that will run when vcl_recv receives a purge request.
 varnish_purge_conditions:
   '!client.ip ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
 
+# .. envvar:: varnish_vcl_backend_response_conditions
+#
+# Dictionary of conditions that will run at the end the vcl_recv subroutine.
+varnish_vcl_backend_response_conditions: {}
+
 # .. envvar:: varnish_vcl_recv_conditions
 #
-# Conditions that will run at the end the vcl_recv subroutine.
+# Dictionary of conditions that will run at the end the vcl_recv subroutine.
 varnish_vcl_recv_conditions: {}
-
 
 # .. envvar:: varnish_vcl_recv_remove_parameters
 #
 # Regular expression for query parameters that need to be removed during the vcl_recv subroutine.
 varnish_vcl_recv_remove_parameters: 'utm_(campaign|medium|source|term)|gclid|cx|ie|cof|siteurl'
-
 
 # .. envvar:: varnish_vcl_recv_remove_cookies
 #
@@ -256,9 +240,3 @@ varnish_vcl_recv_remove_cookies:
   - '__gads=[^;]+(; )?'
   - '__qc.=[^;]+(; )?'
   - '__atuv.=[^;]+(; )?'
-
-
-# .. envvar:: varnish_vcl_backend_response_conditions
-#
-# Conditions that will run at the end the vcl_recv subroutine.
-varnish_vcl_backend_response_conditions: {}
