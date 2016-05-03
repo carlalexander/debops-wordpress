@@ -324,6 +324,12 @@ wordpress_varnish_listen: '6081'
 # Port used by the varnish backend server (WordPress in this case)
 wordpress_varnish_backend_port: '8080'
 
+# .. envvar:: wordpress_varnish_normalize_query_parameters
+#
+# Normalizing query parameters lets Varnish cache variations of the same URL.
+# This might cause some issues with some script minimization systems.
+wordpress_varnish_normalize_query_parameters: False
+
 # .. envvar:: wordpress_varnish_purge_allow
 #
 # List of IP addresses that are allowed to purge the Varnish cache

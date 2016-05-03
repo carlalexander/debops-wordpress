@@ -6,6 +6,10 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_varnish_normalize_query_parameters`` variable so that
+  you can control the normalization of query parameters in the ``varnish``
+  role. [carlalexander]
+
 - Added the server ip address to the ``wordpress_fail2ban_ignoreip``
   variable. [carlalexander]
 
