@@ -70,7 +70,7 @@ sub vcl_recv {
   if (req.method == "PURGE") {
 {% for condition, value in varnish_purge_conditions.iteritems() %}
     if ({{ condition }}) {
-      {{ value }}
+      {{ value | indent(6) }}
     }
 {% endfor %}
 
@@ -164,7 +164,7 @@ sub vcl_recv {
   # Ansible conditions
 {% for condition, value in varnish_vcl_recv_conditions.iteritems() %}
   if ({{ condition }}) {
-    {{ value }}
+    {{ value | indent(4) }}
   }
 {% endfor %}
   # End Ansible conditions
@@ -321,7 +321,7 @@ sub vcl_backend_response {
   # Ansible conditions
 {% for condition, value in varnish_vcl_backend_response_conditions.iteritems() %}
   if ({{ condition }}) {
-    {{ value }}
+    {{ value | indent(4) }}
   }
 {% endfor %}
   # End Ansible conditions
