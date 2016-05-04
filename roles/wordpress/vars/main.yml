@@ -260,3 +260,13 @@ wordpress_varnish_backend:
   name: 'wordpress'
   port: '{{ wordpress_varnish_backend_port }}'
   probe: False
+
+wordpress_varnish_purge_conditions_default:
+  '!std.ip(req.http.X-Real-IP, "0.0.0.0") ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
+
+wordpress_varnish_vcl_backend_response_conditions_default:
+  'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
+
+wordpress_varnish_vcl_recv_conditions_default:
+  'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
+  'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'

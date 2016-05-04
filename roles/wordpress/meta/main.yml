@@ -63,10 +63,10 @@ dependencies:
     varnish_add_ban_lurker_headers: '{{ wordpress_varnish_add_ban_lurker_headers }}'
     varnish_normalize_query_parameters: '{{ wordpress_varnish_normalize_query_parameters }}'
     varnish_purge_allow: '{{ wordpress_varnish_purge_allow }}'
-    varnish_purge_conditions: '{{ wordpress_varnish_purge_conditions }}'
-    varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions }}'
+    varnish_purge_conditions: '{{ wordpress_varnish_purge_conditions_default | combine(wordpress_varnish_purge_conditions) }}'
+    varnish_vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions_default | combine(wordpress_varnish_vcl_backend_response_conditions) }}'
+    varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions_default | combine(wordpress_varnish_vcl_recv_conditions) }}'
     varnish_vcl_recv_remove_cookies: '{{ wordpress_varnish_vcl_recv_remove_cookies }}'
-    varnish_vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions }}'
     when: wordpress_dependencies
 
   - role: wpcli

@@ -343,16 +343,18 @@ wordpress_varnish_purge_allow: [ '{{ ansible_default_ipv4.address }}', '127.0.0.
 
 # .. envvar:: wordpress_varnish_purge_condition
 #
-# Conditions that will run when vcl_recv receives a purge request.
-wordpress_varnish_purge_conditions:
-  '!std.ip(req.http.X-Real-IP, "0.0.0.0") ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
+# Dictionary of conditions that will run when vcl_recv receives a purge request.
+wordpress_varnish_purge_conditions: {}
+
+# .. envvar:: wordpress_varnish_vcl_backend_response_conditions
+#
+# Dictionary of conditions that will run at the end the vcl_recv subroutine.
+wordpress_varnish_vcl_backend_response_conditions: {}
 
 # .. envvar:: wordpress_varnish_vcl_recv_conditions
 #
-# Conditions that will run at the end the vcl_recv subroutine
-wordpress_varnish_vcl_recv_conditions:
-  'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
-  'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'
+# Dictionary of conditions that will run at the end the vcl_recv subroutine
+wordpress_varnish_vcl_recv_conditions: {}
 
 # .. envvar:: wordpress_varnish_vcl_recv_remove_cookies
 #
@@ -371,12 +373,6 @@ wordpress_varnish_vcl_recv_remove_cookies:
   - '__gads=[^;]+(; )?'
   - '__qc.=[^;]+(; )?'
   - '__atuv.=[^;]+(; )?'
-
-# .. envvar:: wordpress_varnish_vcl_backend_response_conditions
-#
-# Conditions that will run at the end the vcl_recv subroutine.
-wordpress_varnish_vcl_backend_response_conditions:
-  'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
 
 
 # ---------------------------
