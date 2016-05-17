@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added support for the ``Content-Security-Policy`` header to the ``wordpress``
+  role. [carlalexander]
+
 - Added ``varnish_add_ban_lurker_headers`` variable so to add support for
   the Varnish ban lurker in the ``varnish`` role. [carlalexander]
 

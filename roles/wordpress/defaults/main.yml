@@ -249,6 +249,23 @@ wordpress_fail2ban_jail_permanent_maxretry: '10'
 # WordPress. Leave empty to allow access from all IP addresses/networks.
 wordpress_nginx_allow: []
 
+# .. envvar:: wordpress_nginx_csp
+#
+# Whether the WordPress vhost will use the Content-Security-Policy header or not.
+wordpress_nginx_csp: False
+
+# .. envvar:: wordpress_nginx_csp_policy
+#
+# Determines the Content-Security-Policy header configured in the WordPress vhost.
+# By default, blocks all non-https content.
+wordpress_nginx_csp_policy: "default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; script-src https: 'unsafe-inline'"
+
+# .. envvar:: wordpress_nginx_csp_report
+#
+# Whether the WordPress vhost will use the Content-Security-Policy-Report-Only
+# header or not. Overrides the ``wordpress_nginx_csp`` option.
+wordpress_nginx_csp_report: False
+
 # .. envvar:: wordpress_nginx_pki_realm
 #
 # Default PKI realm used by ``debops.nginx``.
