@@ -115,9 +115,6 @@ wordpress_server_backend:
   filename: '{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   root: '{{ wordpress_root }}'
-  csp: '{{ wordpress_nginx_csp }}'
-  csp_report: '{{ wordpress_nginx_csp_report }}'
-  csp_policy: '{{ wordpress_nginx_csp_policy }}'
 
   options: |
     client_max_body_size  {{ wordpress_php5_upload_size }};
@@ -215,6 +212,9 @@ wordpress_server_varnish:
   acme: False
   pki_crt: '{{ wordpress_nginx_crt }}'
   pki_key: '{{ wordpress_nginx_key }}'
+  csp: '{{ wordpress_nginx_csp }}'
+  csp_report: '{{ wordpress_nginx_csp_report }}'
+  csp_policy: '{{ wordpress_nginx_csp_policy }}'
   ocsp_verify: False
   deny_hidden: False
   favicon: False
