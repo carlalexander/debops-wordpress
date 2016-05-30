@@ -51,7 +51,7 @@ wordpress_mariadb_server: '{{ ansible_local.mariadb.server
 #
 # When the WordPress database server is used remotely, this variable defines
 # the “host” part of the client username.
-wordpress_mariadb_client: '{{ mariadb_client }}'
+wordpress_mariadb_client: '{{ mariadb__client }}'
 
 # .. envvar:: wordpress_mariadb_databases
 #

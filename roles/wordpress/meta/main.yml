@@ -20,9 +20,9 @@ dependencies:
 
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    mariadb_databases: [ '{{ wordpress_mariadb_databases }}' ]
-    mariadb_users: [ '{{ wordpress_mariadb_users }}' ]
-    mariadb_server: '{{ wordpress_mariadb_server }}'
+    mariadb__databases: [ '{{ wordpress_mariadb_databases }}' ]
+    mariadb__users: [ '{{ wordpress_mariadb_users }}' ]
+    mariadb__server: '{{ wordpress_mariadb_server }}'
     when: wordpress_dependencies
 
   - role: debops.nginx
