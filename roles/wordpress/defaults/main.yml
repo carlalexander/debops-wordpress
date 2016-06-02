@@ -266,11 +266,6 @@ wordpress_nginx_csp_policy: "default-src https:; script-src https: 'unsafe-eval'
 # header or not. Overrides the ``wordpress_nginx_csp`` option.
 wordpress_nginx_csp_report: False
 
-# .. envvar:: wordpress_nginx_pki_realm
-#
-# Default PKI realm used by ``debops.nginx``.
-wordpress_nginx_pki_realm: 'domain'
-
 # .. envvar:: wordpress_nginx_crt
 #
 # Relative path to the SSL certificate file used by ``debops.nginx``.
@@ -281,10 +276,25 @@ wordpress_nginx_crt: 'private/{{ wordpress_domain }}.crt'
 # Relative path to the SSL key file used by ``debops.nginx``.
 wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 
+# .. envvar:: wordpress_nginx_pki_realm
+#
+# Default PKI realm used by ``debops.nginx``.
+wordpress_nginx_pki_realm: 'domain'
+
 # .. envvar:: wordpress_nginx_server_name
 #
 # List of domain names that the nginx server responds to.
 wordpress_nginx_server_name: [ '{{ wordpress_domain }}' ]
+
+# .. envvar:: wordpress_nginx_user
+#
+# System user used by nginx.
+wordpress_nginx_user: 'www-data'
+
+# .. envvar:: wordpress_nginx_www
+#
+# Base path for nginx root directories.
+wordpress_nginx_www: '/var/www'
 
 
 # ---------------------------
@@ -459,7 +469,7 @@ wordpress_domain: '{{ inventory_hostname }}'
 # .. envvar:: wordpress_root
 #
 # WordPress root directory.
-wordpress_root: '/var/www/{{ wordpress_domain }}'
+wordpress_root: '{{ wordpress_nginx_www }}/{{ wordpress_domain }}'
 
 # .. envvar:: wordpress_title
 #

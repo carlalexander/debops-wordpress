@@ -27,12 +27,15 @@ dependencies:
 
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    nginx_webroot_create: False
+    nginx_acme: False
     nginx_default_servers: []
-    nginx_internal_servers: [ '{{ nginx_server_acme }}' ]
+    nginx_internal_servers: []
     nginx_pki_realm: '{{ wordpress_nginx_pki_realm }}'
     nginx_servers: [ '{{ wordpress_server_varnish }}', '{{ wordpress_server_backend }}' ]
     nginx_upstreams: [ '{{ wordpress_upstream_php }}', '{{ wordpress_upstream_varnish }}' ]
+    nginx_webroot_create: False
+    nginx_user: '{{ wordpress_nginx_user }}'
+    nginx_www: '{{ wordpress_nginx_www }}'
     when: wordpress_dependencies
 
   - role: debops.php5

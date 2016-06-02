@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_nginx_user`` and ``wordpress_nginx_www`` variables to the
+  ``wordpress`` role. [carlalexander]
+
 - Added support for the ``Content-Security-Policy`` header to the ``wordpress``
   role. [carlalexander]
 
