@@ -6,6 +6,10 @@ v0.2.0
 
 *Unreleased*
 
+- Reworked ``wordpress_dependencies`` from a boolean variable to a list so that
+  we can remove specific dependencies. Removed the ``wordpress_fail2ban_enabled``
+  as a result. [carlalexander]
+
 - Added ``wordpress_nginx_user`` and ``wordpress_nginx_www`` variables to the
   ``wordpress`` role. [carlalexander]
 

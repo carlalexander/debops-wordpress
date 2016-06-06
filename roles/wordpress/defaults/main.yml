@@ -11,8 +11,17 @@
 
 # .. envvar:: wordpress_dependencies
 #
-# Should the ``carlalexander.wordpress`` role manage it's own dependencies (database, web server)?
-wordpress_dependencies: True
+# List of dependencies that the role manages.
+wordpress_dependencies:
+  - 'fail2ban'
+  - 'hhvm'
+  - 'mariadb'
+  - 'nginx'
+  - 'php5'
+  - 'pki'
+  - 'redis'
+  - 'varnish'
+  - 'wpcli'
 
 # .. envvar:: wordpress_install_enabled
 #
@@ -110,12 +119,6 @@ wordpress_fail2ban_default_findtime: '{{ 60 * 10 }}'
 # Default maximum number of attempts in the given ``findtime`` to trigger
 # a ban.
 wordpress_fail2ban_default_maxretry: '3'
-
-# .. envvar:: wordpress_fail2ban_enabled
-#
-# Whether the ``carlalexander.wordpress`` role should install and configure
-# fail2ban or not.
-wordpress_fail2ban_enabled: True
 
 # .. envvar:: wordpress_fail2ban_filters
 #
