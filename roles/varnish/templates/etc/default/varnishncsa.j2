@@ -1,3 +1,3 @@
 # {{ ansible_managed }}
 
-VARNISHNCSA_ENABLED={{ varnish_ncsa_enabled }}
+VARNISHNCSA_ENABLED={{ '1' if varnish_ncsa_enabled else '0' }}

@@ -354,6 +354,11 @@ wordpress_varnish_listen: '6081'
 # Port used by the varnish backend server (WordPress in this case)
 wordpress_varnish_backend_port: '8080'
 
+# .. envvar:: wordpress_varnish_ncsa_enabled
+#
+# Is Varnish NCSA-style logging enabled?
+wordpress_varnish_ncsa_enabled: False
+
 # .. envvar:: wordpress_varnish_add_ban_lurker_headers
 #
 # Whether to add ban lurker headers to backend response. These headers are the primary mechanism

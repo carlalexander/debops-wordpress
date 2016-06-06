@@ -38,6 +38,21 @@
     mode: '0644'
   notify: [ 'Restart varnish' ]
 
+- name: Append "varnish" group to "varnishlog" user
+  user:
+    name: 'varnishlog'
+    append: 'true'
+    groups: 'varnish'
+
+- name: Configure Varnish NCSA-style logging
+  template:
+    src: 'etc/default/varnishncsa.j2'
+    dest: '/etc/default/varnishncsa'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: [ 'Restart varnishncsa' ]
+
 - name: Configure default.vcl for Varnish
   template:
     src: 'etc/varnish/default.vcl.j2'
