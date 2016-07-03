@@ -72,3 +72,7 @@
 - include: manage_plugins.yml
   tags: [ 'role::wordpress:plugins' ]
   when: wordpress_install_enabled
+
+- include: manage_ssl.yml
+  tags: [ 'role::wordpress:ssl' ]
+  when: wordpress_ssl

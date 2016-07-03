@@ -101,6 +101,28 @@ wordpress_php5_pool:
 
 
 # --------------------------
+#   PKI configuration
+# --------------------------
+
+wordpress_pki_default_realm:
+  name: '{{ wordpress_pki_default_realm_name }}'
+  acme: "{{ wordpress_ssl_provider == 'letsencrypt' }}"
+  acme_challenge_dir: '{{ wordpress_pki_acme_challenge_dir }}'
+  acme_default_subdomains: '{{ wordpress_pki_default_realm_subdomains }}'
+  acme_subdomains: '{{ wordpress_pki_default_realm_subdomains }}'
+  default_subdomains: '{{ wordpress_pki_default_realm_subdomains }}'
+  subdomains: '{{ wordpress_pki_default_realm_subdomains }}'
+
+wordpress_pki_private_files:
+  - src: '{{ wordpress_ssl_key }}'
+    dest: '/etc/pki/realms/{{ wordpress_pki_realm }}/private/key.pem'
+
+wordpress_pki_public_files:
+  - src: '{{ wordpress_ssl_crt }}'
+    dest: '/etc/pki/realms/{{ wordpress_pki_realm }}/external/cert.pem'
+
+
+# --------------------------
 #   nginx server configuration
 # --------------------------
 
@@ -206,12 +228,11 @@ wordpress_server_varnish:
   default: False
   filename: 'varnish.{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
+  root: False
   listen: [ '80' ]
   listen_ssl: [ '443' ]
   ssl: '{{ wordpress_ssl }}'
-  acme: False
-  pki_crt: '{{ wordpress_nginx_crt }}'
-  pki_key: '{{ wordpress_nginx_key }}'
+  acme: "{{ wordpress_ssl_provider == 'letsencrypt' }}"
   csp: '{{ wordpress_nginx_csp }}'
   csp_report: '{{ wordpress_nginx_csp_report }}'
   csp_policy: '{{ wordpress_nginx_csp_policy }}'
@@ -222,18 +243,6 @@ wordpress_server_varnish:
 
   options: |
     client_max_body_size  {{ wordpress_php5_upload_size }};
-
-
-# --------------------------
-#   SSL configuration
-# --------------------------
-
-wordpress_ssl_files:
-  - src: '{{ wordpress_ssl_crt }}'
-    dest: '/etc/pki/realms/{{ wordpress_nginx_pki_realm }}/{{ wordpress_nginx_crt }}'
-
-  - src: '{{ wordpress_ssl_key }}'
-    dest: '/etc/pki/realms/{{ wordpress_nginx_pki_realm }}/{{ wordpress_nginx_key }}'
 
 
 # --------------------------

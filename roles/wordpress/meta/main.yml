@@ -2,8 +2,14 @@
 
 dependencies:
 
+  - role: debops.pki/env
+    tags: ['depend::pki', 'depend::pki:wordpress', 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+    pki_host_realms: "{{ wordpress_pki_host_realms if wordpress_ssl else [] }}"
+
   - role: debops.secret
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+    secret_directories:
+        - '{{ pki_env_secret_directories }}'
 
   - role: debops.fail2ban
     tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
@@ -28,6 +34,7 @@ dependencies:
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_acme: False
+    nginx_acme_root: '{{ wordpress_nginx_acme_root }}'
     nginx_default_servers: []
     nginx_internal_servers: []
     nginx_pki_realm: '{{ wordpress_nginx_pki_realm }}'
@@ -46,7 +53,11 @@ dependencies:
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    pki_private_files: '{{ wordpress_ssl_files }}'
+    pki_acme_group: '{{ wordpress_pki_acme_group }}'
+    pki_acme_user: '{{ wordpress_pki_acme_user }}'
+    pki_host_private_files: "{{ wordpress_pki_private_files if wordpress_ssl_provider == 'manual' else [] }}"
+    pki_host_public_files: "{{ wordpress_pki_public_files if wordpress_ssl_provider == 'manual' else [] }}"
+    pki_host_realms: "{{ wordpress_pki_host_realms }}"
     when: ('pki' in wordpress_dependencies and wordpress_ssl)
 
   - role: debops.redis

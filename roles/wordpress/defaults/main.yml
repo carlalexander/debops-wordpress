@@ -246,6 +246,11 @@ wordpress_fail2ban_jail_permanent_maxretry: '10'
 #   Webserver configuration
 # ---------------------------
 
+# .. envvar:: wordpress_nginx_acme_root
+#
+# Global directory where ACME challenges will be served from.
+wordpress_nginx_acme_root: '{{ wordpress_nginx_www }}/acme'
+
 # .. envvar:: wordpress_nginx_allow
 #
 # List of IP addresses or network ranges in CIDR format, allowed to access
@@ -282,7 +287,7 @@ wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 # .. envvar:: wordpress_nginx_pki_realm
 #
 # Default PKI realm used by ``debops.nginx``.
-wordpress_nginx_pki_realm: 'domain'
+wordpress_nginx_pki_realm: '{{ wordpress_pki_realm }}'
 
 # .. envvar:: wordpress_nginx_server_name
 #
@@ -304,9 +309,14 @@ wordpress_nginx_www: '/var/www'
 #   PHP
 # ---------------------------
 
+# .. envvar:: wordpress_php5_max_children
+#
+# Maximum number of PHP5 processes for WordPress.
+wordpress_php5_max_children: '10'
+
 # .. envvar:: wordpress_php5_packages
 #
-# Additional PHP packages installed with PHP5
+# Additional PHP packages installed with PHP5.
 wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-curl', 'php5-dev' ]
 
 # .. envvar:: wordpress_php5_upload_size
@@ -314,10 +324,48 @@ wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd
 # Max upload size set in nginx and php5, with amount as M or G.
 wordpress_php5_upload_size: '32M'
 
-# .. envvar:: wordpress_php5_max_children
+
+# ---------------------------
+#   PKI
+# ---------------------------
+
+# .. envvar:: wordpress_pki_acme_challenge_dir
 #
-# Maximum number of PHP5 processes for WordPress
-wordpress_php5_max_children: '10'
+# Path to global ACME challenge directory.
+wordpress_pki_acme_challenge_dir: '{{ wordpress_nginx_acme_root }}/.well-known/acme-challenge'
+
+# .. envvar:: wordpress_pki_acme_group
+#
+# Name of the system group which will be used to interact with the ACME
+# Certificate Authority.
+wordpress_pki_acme_group: '{{ wordpress_pki_acme_user }}'
+
+# .. envvar:: wordpress_pki_acme_user
+#
+# Name of the system user account which will be used to interact with the ACME
+# Certificate Authority.
+wordpress_pki_acme_user: 'pki-acme'
+
+# .. envvar:: wordpress_pki_realm
+#
+# PKI realm used by WordPress.
+wordpress_pki_realm: '{{ wordpress_pki_default_realm_name }}'
+
+# .. envvar:: wordpress_pki_default_realm_name
+#
+# Default name of the PKI realm used by WordPress.
+wordpress_pki_default_realm_name: '{{ wordpress_domain }}'
+
+# .. envvar:: wordpress_pki_default_realm_subdomains
+#
+# Subdomains configured in the default PKI realm used by WordPress.
+wordpress_pki_default_realm_subdomains: "{{ [ 'www' ] if wordpress_domain == ansible_domain else [] }}"
+
+# .. envvar:: wordpress_pki_host_realms
+#
+# List of PKI realms configured with WordPress.
+wordpress_pki_host_realms:
+  - '{{ wordpress_pki_default_realm }}'
 
 
 # ---------------------------
@@ -326,17 +374,22 @@ wordpress_php5_max_children: '10'
 
 # .. envvar:: wordpress_ssl
 #
-# Whether our WordPress site is using SSL or not
+# Whether our WordPress site is using SSL or not.
 wordpress_ssl: False
+
+# .. envvar:: wordpress_ssl_provider
+#
+# The SSL certificate provider. Can be 'letsencrypt', 'manual' or 'selfsigned'.
+wordpress_ssl_provider: 'letsencrypt'
 
 # .. envvar:: wordpress_ssl_crt
 #
-# Path to the SSL certificate file.
+# Path to the SSL certificate file when using the 'manual' SSL certificate provider.
 wordpress_ssl_crt: ''
 
 # .. envvar:: wordpress_ssl_key
 #
-# Path to the SSL key file.
+# Path to the SSL key file when using the 'manual' SSL certificate provider.
 wordpress_ssl_key: ''
 
 
