@@ -36,7 +36,8 @@
   args:
     chdir: '{{ wordpress_root }}'
     creates: '{{ wordpress_root }}/index.php'
-  when: wordpress_installed is defined and wordpress_installed.rc == 1 and wordpress_install_enabled
+  when: (wordpress_install_enabled and
+         (wordpress_installed is defined and wordpress_installed.rc == 1))
 
 - name: Configure WordPress
   command: 'wp core config --dbhost="{{ wordpress_database_host }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_user }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
@@ -44,23 +45,24 @@
   args:
     chdir: '{{ wordpress_root }}'
     creates: '{{ wordpress_root }}/wp-config.php'
-  when: wordpress_installed is defined and wordpress_installed.rc == 1 and wordpress_install_enabled
+  when: (wordpress_install_enabled and
+         (wordpress_installed is defined and wordpress_installed.rc == 1))
 
 - name: Install WordPress
   command: 'wp core install --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
   become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
-  when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
-         (wordpress_multisite is defined and not wordpress_multisite)) and wordpress_install_enabled
+  when: (wordpress_install_enabled and not wordpress_multisite and
+         (wordpress_installed is defined and wordpress_installed.rc == 1))
 
 - name: Install WordPress Multisite
   command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {{ "--subdomains" if wordpress_multisite_subdomains else "" }} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
   become_user: '{{ wordpress_user }}'
   args:
     chdir: '{{ wordpress_root }}'
-  when: ((wordpress_installed is defined and wordpress_installed.rc == 1) and
-         (wordpress_multisite is defined and wordpress_multisite)) and wordpress_install_enabled
+  when: (wordpress_install_enabled and not wordpress_multisite and
+         (wordpress_installed is defined and wordpress_installed.rc == 1))
 
 - name: Schedule regular calls to wp-cron.php
   cron:
