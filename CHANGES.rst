@@ -6,6 +6,9 @@ v0.2.0
 
 *Unreleased*
 
+- Added ``wordpress_nginx_listen`` and ``wordpress_nginx_listen_ssl`` variables to
+  the ``wordpress`` role. [carlalexander]
+
 - Reworked ``wordpress_dependencies`` from a boolean variable to a list so that
   we can remove specific dependencies. Removed the ``wordpress_fail2ban_enabled``
   as a result. [carlalexander]

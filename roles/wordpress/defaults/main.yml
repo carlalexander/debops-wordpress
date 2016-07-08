@@ -284,6 +284,16 @@ wordpress_nginx_crt: 'private/{{ wordpress_domain }}.crt'
 # Relative path to the SSL key file used by ``debops.nginx``.
 wordpress_nginx_key: 'private/{{ wordpress_domain }}.key'
 
+# .. envvar:: wordpress_nginx_listen
+#
+# Default listen port for HTTP connections used by ``debops.nginx``.
+wordpress_nginx_listen: [ '[::]:80' ]
+
+# .. envvar:: wordpress_nginx_listen_ssl
+#
+# Default listen port for HTTPS connections used by ``debops.nginx``.
+wordpress_nginx_listen_ssl: [ '[::]:443' ]
+
 # .. envvar:: wordpress_nginx_pki_realm
 #
 # Default PKI realm used by ``debops.nginx``.

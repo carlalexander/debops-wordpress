@@ -229,8 +229,8 @@ wordpress_server_varnish:
   filename: 'varnish.{{ wordpress_domain }}'
   name: '{{ wordpress_nginx_server_name }}'
   root: False
-  listen: [ '80' ]
-  listen_ssl: [ '443' ]
+  listen: '{{ wordpress_nginx_listen }}'
+  listen_ssl: '{{ wordpress_nginx_listen_ssl }}'
   ssl: '{{ wordpress_ssl }}'
   acme: "{{ wordpress_ssl_provider == 'letsencrypt' }}"
   csp: '{{ wordpress_nginx_csp }}'
