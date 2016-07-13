@@ -4,7 +4,7 @@ Changelog
 v0.2.0
 ------
 
-*Unreleased*
+*Released: 2016-07-13*
 
 - Added ``wordpress_nginx_listen`` and ``wordpress_nginx_listen_ssl`` variables to
   the ``wordpress`` role. [carlalexander]
