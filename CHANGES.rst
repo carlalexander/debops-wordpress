@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.3.0
+------
+
+*Unreleased*
+
+- Removed the Varnish upstream from the ``varnish`` role. [carlalexander]
+
 v0.2.0
 ------
 

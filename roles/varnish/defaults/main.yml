@@ -6,33 +6,6 @@
 #    :local:
 #
 # ------------------------------------
-#   Varnish packages and installation
-# ------------------------------------
-
-# .. envvar:: varnish_use_upstream
-#
-# By default ``carlalexander.varnish`` installs varnish from distribution
-# repositories when possible. When set to True varnish will be installed from
-# upstream even if it is available in distribution repositories.
-varnish_use_upstream: False
-
-# .. envvar:: varnish_upstream_key
-#
-# APT GPG key id used to sign the upstream Varnish packages.
-varnish_upstream_key: 'E98C6BBBA1CBC5C3EB2DF21C60E7C096C4DEFFEB'
-
-# .. envvar:: varnish_upstream_repository
-#
-# Address of the Varnish upstream APT repository.
-varnish_upstream_repository: 'deb https://repo.varnish-cache.org/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} varnish-{{ varnish_upstream_version }}'
-
-# .. envvar:: varnish_upstream_version
-#
-# Upstream version to install.
-varnish_upstream_version: '4.1'
-
-
-# ------------------------------------
 #   Varnish server configuration
 # ------------------------------------
 

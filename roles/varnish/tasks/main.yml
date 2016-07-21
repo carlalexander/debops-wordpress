@@ -2,25 +2,6 @@
 
 # ---- Install and configure Varnish server ----
 
-- name: Get upstream APT GPG key
-  apt_key:
-    id: '{{ varnish_upstream_key }}'
-    keyserver: '{{ ansible_local.core.keyserver
-                   if (ansible_local|d() and ansible_local.core|d() and
-                       ansible_local.core.keyserver)
-                   else "hkp://pool.sks-keyservers.net" }}'
-    state: 'present'
-  when: (varnish_use_upstream|d() or
-         not (ansible_distribution == 'Debian' and ansible_distribution_release in ['jessie']))
-
-- name: Configure upstream APT repository
-  apt_repository:
-    repo: '{{ varnish_upstream_repository }}'
-    state: 'present'
-    update_cache: True
-  when: (varnish_use_upstream|d() or
-         not (ansible_distribution == 'Debian' and ansible_distribution_release in ['jessie']))
-
 - name: Install required packages
   apt:
     name: '{{ item }}'
