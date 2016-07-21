@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Removed the ``hhvm`` role and the ``debops.php5`` role dependency for the ``wordpress``
+  role. Replaced them with the ``debops.php`` which installs PHP7. [carlalexander]
+
 - Removed the Varnish upstream from the ``varnish`` role. [carlalexander]
 
 v0.2.0

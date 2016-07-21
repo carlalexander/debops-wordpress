@@ -6,6 +6,9 @@ dependencies:
     tags: ['depend::pki', 'depend::pki:wordpress', 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     pki_host_realms: "{{ wordpress_pki_host_realms if wordpress_ssl else [] }}"
 
+  - role: debops.php/env
+    tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+
   - role: debops.secret
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     secret_directories:
@@ -45,11 +48,13 @@ dependencies:
     nginx_www: '{{ wordpress_nginx_www }}'
     when: ('nginx' in wordpress_dependencies)
 
-  - role: debops.php5
-    tags: [ 'depend::php5', 'depend::php5:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    php5_packages: '{{ wordpress_php5_packages }}'
-    php5_pools: [ '{{ wordpress_php5_pool }}' ]
-    when: ('php5' in wordpress_dependencies)
+  - role: debops.php
+    tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    php__default_pools: []
+    php__packages: '{{ wordpress_php_packages }}'
+    php__pools: [ '{{ wordpress_php_pool }}' ]
+    php__ini_post_max_size: '{{ wordpress_php_post_max_size }}'
+    when: ('php' in wordpress_dependencies)
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
@@ -63,12 +68,6 @@ dependencies:
   - role: debops.redis
     tags: [ 'depend::redis', 'depend::redis:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     when: ('redis' in wordpress_dependencies)
-
-  - role: hhvm
-    tags: [ 'depend::hhvm', 'depend::hhvm:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    hhvm_file_post_max_size: '{{ wordpress_php5_upload_size }}'
-    hhvm_server_user: '{{ wordpress_user }}'
-    when: ('hhvm' in wordpress_dependencies)
 
   - role: varnish
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]

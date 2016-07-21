@@ -89,15 +89,12 @@ wordpress_mariadb_user:
 #   PHP configuration
 # --------------------------
 
-wordpress_php5_pool:
+wordpress_php_pool:
   enabled: True
-  name: 'wordpress'
-  user: '{{ wordpress_user }}'
-  group: '{{ wordpress_group }}'
-  pm_max_children: '{{ wordpress_php5_max_children }}'
-  php_value:
-    post_max_size: '{{ wordpress_php5_upload_size }}'
-    upload_max_filesize: '{{ wordpress_php5_upload_size }}'
+  name: '{{ wordpress_php_pool_name }}'
+  user: '{{ wordpress_php_pool_user }}'
+  group: '{{ wordpress_php_pool_group }}'
+  pm_max_children: '{{ wordpress_php_max_children }}'
 
 
 # --------------------------
@@ -130,7 +127,7 @@ wordpress_server_backend:
   by_role: 'carlalexander.wordpress'
   enabled: True
   default: False
-  type: 'php5'
+  type: 'php'
   listen: [ '{{ wordpress_varnish_backend_port }}' ]
   ssl: False
   acme: False
@@ -139,7 +136,7 @@ wordpress_server_backend:
   root: '{{ wordpress_root }}'
 
   options: |
-    client_max_body_size  {{ wordpress_php5_upload_size }};
+    client_max_body_size  {{ wordpress_php_post_max_size }};
     gzip_comp_level 5;
     gzip_min_length 256;
     gzip_proxied any;
@@ -203,9 +200,9 @@ wordpress_server_backend:
   location_allow:
     '/': '{{ wordpress_nginx_allow }}'
 
-  php5: 'php'
+  php_upstream: '{{ wordpress_nginx_upstream_php_name }}'
 
-  php5_options: |
+  php_options: |
     {% if wordpress_allow is defined and wordpress_allow %}
       {% for address in wordpress_allow %}
     allow {{ address }};
@@ -239,10 +236,10 @@ wordpress_server_varnish:
   ocsp_verify: False
   deny_hidden: False
   favicon: False
-  proxy_pass: 'http://varnish'
+  proxy_pass: 'http://{{ wordpress_nginx_upstream_varnish_name }}'
 
   options: |
-    client_max_body_size  {{ wordpress_php5_upload_size }};
+    client_max_body_size  {{ wordpress_php_post_max_size }};
 
 
 # --------------------------
@@ -251,14 +248,13 @@ wordpress_server_varnish:
 
 wordpress_upstream_php:
   enabled: True
-  name: 'php'
+  name: '{{ wordpress_nginx_upstream_php_name }}'
   server:
-   - 'unix:/var/run/hhvm/hhvm.sock'
-   - 'unix:/var/run/php5-fpm-wordpress.sock backup'
+   - 'unix:/var/run/php7.0-fpm-{{ wordpress_php_pool_name }}.sock'
 
 wordpress_upstream_varnish:
   enabled: True
-  name: 'varnish'
+  name: '{{ wordpress_nginx_upstream_varnish_name }}'
   server:
    - '127.0.0.1:{{ wordpress_varnish_listen }}'
    - '127.0.0.1:{{ wordpress_varnish_backend_port }} backup'

@@ -14,10 +14,9 @@
 # List of dependencies that the role manages.
 wordpress_dependencies:
   - 'fail2ban'
-  - 'hhvm'
   - 'mariadb'
   - 'nginx'
-  - 'php5'
+  - 'php'
   - 'pki'
   - 'redis'
   - 'varnish'
@@ -304,6 +303,16 @@ wordpress_nginx_pki_realm: '{{ wordpress_pki_realm }}'
 # List of domain names that the nginx server responds to.
 wordpress_nginx_server_name: [ '{{ wordpress_domain }}' ]
 
+# .. envvar:: wordpress_nginx_upstream_php_name
+#
+# Name of the nginx PHP upstream.
+wordpress_nginx_upstream_php_name: 'php-{{ wordpress_php_pool_name }}'
+
+# .. envvar:: wordpress_nginx_upstream_varnish_name
+#
+# Name of the nginx varnish upstream.
+wordpress_nginx_upstream_varnish_name: 'varnish'
+
 # .. envvar:: wordpress_nginx_user
 #
 # System user used by nginx.
@@ -319,20 +328,35 @@ wordpress_nginx_www: '/var/www'
 #   PHP
 # ---------------------------
 
-# .. envvar:: wordpress_php5_max_children
+# .. envvar:: wordpress_php_max_children
 #
-# Maximum number of PHP5 processes for WordPress.
-wordpress_php5_max_children: '10'
+# Maximum number of PHP processes for WordPress.
+wordpress_php_max_children: '10'
 
-# .. envvar:: wordpress_php5_packages
+# .. envvar:: wordpress_php_packages
 #
-# Additional PHP packages installed with PHP5.
-wordpress_php5_packages: [ 'php5-mysqlnd', 'php5-redis', 'php5-mcrypt', 'php5-gd', 'php5-curl', 'php5-dev' ]
+# Additional PHP packages installed with PHP.
+wordpress_php_packages: [ 'mysql', 'curl', 'dev', 'php-redis' ]
 
-# .. envvar:: wordpress_php5_upload_size
+# .. envvar:: wordpress_php_pool_group
 #
-# Max upload size set in nginx and php5, with amount as M or G.
-wordpress_php5_upload_size: '32M'
+# System group used by the php-fpm pool used by WordPress.
+wordpress_php_pool_group: '{{ wordpress_group }}'
+
+# .. envvar:: wordpress_php_pool_name
+#
+# Name of the php-fpm pool used by WordPress.
+wordpress_php_pool_name: '{{ wordpress_php_pool_user }}'
+
+# .. envvar:: wordpress_php_pool_user
+#
+# System user used by php-fpm.
+wordpress_php_pool_user: '{{ wordpress_user }}'
+
+# .. envvar:: wordpress_php_post_max_size
+#
+# Maximum size of the POST data, with amount as M or G.
+wordpress_php_post_max_size: '32M'
 
 
 # ---------------------------

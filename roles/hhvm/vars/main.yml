@@ -1,6 +1,0 @@
----
-
-# HHVM process files
-hhvm_pid: '/var/run/hhvm/pid'
-hhvm_hhbc: '/var/run/hhvm/hhvm.hhbc'
-hhvm_sock: '/var/run/hhvm/hhvm.sock'
