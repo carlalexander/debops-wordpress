@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Added ``wpcli_installation_method`` variable to control the WP-CLI install method for
+  the ``wpcli`` role. [carlalexander]
+
 - Removed the ``hhvm`` role and the ``debops.php5`` role dependency for the ``wordpress``
   role. Replaced them with the ``debops.php`` which installs PHP7. [carlalexander]
 
