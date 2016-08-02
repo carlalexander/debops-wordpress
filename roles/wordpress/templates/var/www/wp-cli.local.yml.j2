@@ -1,9 +1,9 @@
 # {{ ansible_managed }}
 
-path: {{ wordpress_root }}
-url: {{ wordpress_domain }}
+path: {{ wordpress__root }}
+url: {{ wordpress__domain }}
 
 core config:
   extra-php: |
-    define('DISALLOW_FILE_EDIT', {{ wordpress_disable_file_edit }});
-    {{ wordpress_config_extra_php }}
+    define('DISALLOW_FILE_EDIT', {{ wordpress__disable_file_edit }});
+    {{ wordpress__config_extra_php }}

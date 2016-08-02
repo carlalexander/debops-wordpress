@@ -4,77 +4,77 @@
 
 - name: Create WordPress directory
   file:
-    path: '{{ wordpress_root }}'
+    path: '{{ wordpress__root }}'
     state: 'directory'
-    owner: '{{ wordpress_user }}'
-    group: '{{ wordpress_group }}'
+    owner: '{{ wordpress__user }}'
+    group: '{{ wordpress__group }}'
     mode: '0755'
-  when: wordpress_install_enabled
+  when: wordpress__install_enabled
 
 - name: Configure wp-cli
   template:
     src: 'var/www/wp-cli.local.yml.j2'
-    dest: '{{ wordpress_root }}/wp-cli.local.yml'
-    owner: '{{ wordpress_user }}'
-    group: '{{ wordpress_group }}'
+    dest: '{{ wordpress__root }}/wp-cli.local.yml'
+    owner: '{{ wordpress__user }}'
+    group: '{{ wordpress__group }}'
     mode: '0644'
-  when: wordpress_install_enabled
+  when: wordpress__install_enabled
 
 - name: Check if WordPress is installed
   command: 'wp core is-installed'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  register: wordpress_installed
+    chdir: '{{ wordpress__root }}'
+  register: wordpress__installed
   changed_when: False
   failed_when: False
-  when: wordpress_install_enabled
+  when: wordpress__install_enabled
 
 - name: Download WordPress
   command: 'wp core download'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-    creates: '{{ wordpress_root }}/index.php'
-  when: (wordpress_install_enabled and
-         (wordpress_installed is defined and wordpress_installed.rc == 1))
+    chdir: '{{ wordpress__root }}'
+    creates: '{{ wordpress__root }}/index.php'
+  when: (wordpress__install_enabled and
+         (wordpress__installed is defined and wordpress__installed.rc == 1))
 
 - name: Configure WordPress
-  command: 'wp core config --dbhost="{{ wordpress_database_host }}" --dbname="{{ wordpress_database_name }}" --dbuser="{{ wordpress_database_user }}" --dbpass="{{ wordpress_database_password }}" --dbprefix="{{ wordpress_table_prefix }}"'
-  become_user: '{{ wordpress_user }}'
+  command: 'wp core config --dbhost="{{ wordpress__database_host }}" --dbname="{{ wordpress__database_name }}" --dbuser="{{ wordpress__database_user }}" --dbpass="{{ wordpress__database_password }}" --dbprefix="{{ wordpress__table_prefix }}"'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-    creates: '{{ wordpress_root }}/wp-config.php'
-  when: (wordpress_install_enabled and
-         (wordpress_installed is defined and wordpress_installed.rc == 1))
+    chdir: '{{ wordpress__root }}'
+    creates: '{{ wordpress__root }}/wp-config.php'
+  when: (wordpress__install_enabled and
+         (wordpress__installed is defined and wordpress__installed.rc == 1))
 
 - name: Install WordPress
-  command: 'wp core install --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
-  become_user: '{{ wordpress_user }}'
+  command: 'wp core install --title="{{ wordpress__title }}" --admin_user="{{ wordpress__admin_username }}" --admin_password="{{ wordpress__admin_password }}" --admin_email="{{ wordpress__admin_email }}"'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: (wordpress_install_enabled and not wordpress_multisite and
-         (wordpress_installed is defined and wordpress_installed.rc == 1))
+    chdir: '{{ wordpress__root }}'
+  when: (wordpress__install_enabled and not wordpress__multisite and
+         (wordpress__installed is defined and wordpress__installed.rc == 1))
 
 - name: Install WordPress Multisite
-  command: 'wp core multisite-install --base="{{ wordpress_multisite_path }}" {{ "--subdomains" if wordpress_multisite_subdomains else "" }} --title="{{ wordpress_title }}" --admin_user="{{ wordpress_admin_username }}" --admin_password="{{ wordpress_admin_password }}" --admin_email="{{ wordpress_admin_email }}"'
-  become_user: '{{ wordpress_user }}'
+  command: 'wp core multisite-install --base="{{ wordpress__multisite_path }}" {{ "--subdomains" if wordpress__multisite_subdomains else "" }} --title="{{ wordpress__title }}" --admin_user="{{ wordpress__admin_username }}" --admin_password="{{ wordpress__admin_password }}" --admin_email="{{ wordpress__admin_email }}"'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: (wordpress_install_enabled and not wordpress_multisite and
-         (wordpress_installed is defined and wordpress_installed.rc == 1))
+    chdir: '{{ wordpress__root }}'
+  when: (wordpress__install_enabled and not wordpress__multisite and
+         (wordpress__installed is defined and wordpress__installed.rc == 1))
 
 - name: Schedule regular calls to wp-cron.php
   cron:
-    name: 'Call wp-cron.php at {{ wordpress_domain }}'
-    job: 'curl {{ "-k https" if wordpress_ssl|d() else "http" }}://{{ wordpress_domain }}{{ wordpress_cron_path }} > /dev/null 2>&1'
-    user: '{{ wordpress_user }}'
-    cron_file: '{{ wordpress_domain | replace(".", "_") }}'
+    name: 'Call wp-cron.php at {{ wordpress__domain }}'
+    job: 'curl {{ "-k https" if wordpress__ssl|d() else "http" }}://{{ wordpress__domain }}{{ wordpress__cron_path }} > /dev/null 2>&1'
+    user: '{{ wordpress__user }}'
+    cron_file: '{{ wordpress__domain | replace(".", "_") }}'
 
 - include: manage_plugins.yml
   tags: [ 'role::wordpress:plugins' ]
-  when: wordpress_install_enabled
+  when: wordpress__install_enabled
 
 - include: manage_ssl.yml
   tags: [ 'role::wordpress:ssl' ]
-  when: wordpress_ssl
+  when: wordpress__ssl

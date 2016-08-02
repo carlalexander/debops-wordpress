@@ -2,67 +2,67 @@
 
 - name: Get list of installed WordPress plugins
   command: 'wp plugin list --format=json'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
+    chdir: '{{ wordpress__root }}'
   changed_when: False
   always_run: True
-  register: wordpress_plugin_list_installed_cmd
+  register: wordpress__plugin_list_installed_cmd
 
 - name: Get list of active WordPress plugins
   command: 'wp plugin list --format=json --status=active'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
+    chdir: '{{ wordpress__root }}'
   changed_when: False
   always_run: True
-  register: wordpress_plugin_list_active_cmd
+  register: wordpress__plugin_list_active_cmd
 
   ## Can be rewritten as selectattr("status", "equalto", "active") but this
   ## requires Jinja 2.8.
 - name: Set list of of installed/activated WordPress plugins
   set_fact:
-    wordpress_plugin_installed_list: '{{ wordpress_plugin_list_installed_cmd.stdout|from_json|map(attribute="name")|list }}'
-    wordpress_plugin_active_list: '{{ wordpress_plugin_list_active_cmd.stdout|from_json|map(attribute="name")|list }}'
+    wordpress__plugin_installed_list: '{{ wordpress__plugin_list_installed_cmd.stdout|from_json|map(attribute="name")|list }}'
+    wordpress__plugin_active_list: '{{ wordpress__plugin_list_active_cmd.stdout|from_json|map(attribute="name")|list }}'
 
 - name: Install WordPress plugins
   command: 'wp plugin install "{{ item.name }}"'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: item.name|d() and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress_plugin_installed_list
-  with_items: '{{ wordpress_plugins }}'
+    chdir: '{{ wordpress__root }}'
+  when: item.name|d() and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress__plugin_installed_list
+  with_items: '{{ wordpress__plugins }}'
 
 - name: Activate WordPress plugins
-  command: 'wp plugin activate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
-  become_user: '{{ wordpress_user }}'
+  command: 'wp plugin activate {{ "--network" if wordpress__multisite and item.network|d(True) else "" }} "{{ item.name }}"'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: item.name|d() and (item.enabled|d(True) | bool) and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress_plugin_active_list
-  with_items: '{{ wordpress_plugins }}'
+    chdir: '{{ wordpress__root }}'
+  when: item.name|d() and (item.enabled|d(True) | bool) and (item.state|d("latest") in ['latest', 'present']) and item.name not in wordpress__plugin_active_list
+  with_items: '{{ wordpress__plugins }}'
 
 - name: Update WordPress plugins
   command: 'wp plugin update "{{ item.name }}"'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  register: wordpress_plugin_update_cmd
-  changed_when: ('Updated 0/0 plugins' not in wordpress_plugin_update_cmd.stdout)
-  when: item.name|d() and (item.state|d("latest") in ['latest']) and item.name in wordpress_plugin_installed_list
-  with_items: '{{ wordpress_plugins }}'
+    chdir: '{{ wordpress__root }}'
+  register: wordpress__plugin_update_cmd
+  changed_when: ('Updated 0/0 plugins' not in wordpress__plugin_update_cmd.stdout)
+  when: item.name|d() and (item.state|d("latest") in ['latest']) and item.name in wordpress__plugin_installed_list
+  with_items: '{{ wordpress__plugins }}'
 
 - name: Deactivate WordPress plugins
-  command: 'wp plugin deactivate {{ "--network" if wordpress_multisite and item.network|d(True) else "" }} "{{ item.name }}"'
-  become_user: '{{ wordpress_user }}'
+  command: 'wp plugin deactivate {{ "--network" if wordpress__multisite and item.network|d(True) else "" }} "{{ item.name }}"'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: item.name|d() and not (item.enabled|d(True) | bool) and item.name in wordpress_plugin_active_list
-  with_items: '{{ wordpress_plugins }}'
+    chdir: '{{ wordpress__root }}'
+  when: item.name|d() and not (item.enabled|d(True) | bool) and item.name in wordpress__plugin_active_list
+  with_items: '{{ wordpress__plugins }}'
 
 - name: Uninstall WordPress plugins
   command: 'wp plugin uninstall --deactivate "{{ item.name }}"'
-  become_user: '{{ wordpress_user }}'
+  become_user: '{{ wordpress__user }}'
   args:
-    chdir: '{{ wordpress_root }}'
-  when: item.name|d() and (item.state|d("latest") in ['absent']) and item.name in wordpress_plugin_installed_list
-  with_items: '{{ wordpress_plugins }}'
+    chdir: '{{ wordpress__root }}'
+  when: item.name|d() and (item.state|d("latest") in ['absent']) and item.name in wordpress__plugin_installed_list
+  with_items: '{{ wordpress__plugins }}'

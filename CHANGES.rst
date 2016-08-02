@@ -6,6 +6,8 @@ v0.3.0
 
 *Unreleased*
 
+- Changed ``wordpress`` role prefix from ``wordpress_`` to ``wordpress__``. [carlalexander]
+
 - Changed ``varnish`` role prefix from ``varnish_`` to ``varnish__``. [carlalexander]
 
 - Added ``wpcli_installation_method`` variable to control the WP-CLI install method for

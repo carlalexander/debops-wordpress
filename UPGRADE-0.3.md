@@ -6,3 +6,7 @@ your server. In most cases, this means the name of your server.
 ### Varnish
 
  * Rename all `varnish_*` variables to `varnish__*`.
+
+### WordPress
+
+ * Rename all `wordpress_*` variables to `wordpress__*`.

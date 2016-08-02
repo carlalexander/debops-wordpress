@@ -2,32 +2,32 @@
 
 - name: Create WordPress ACME challenge directory
   file:
-    path: '{{ wordpress_pki_acme_challenge_dir }}'
+    path: '{{ wordpress__pki_acme_challenge_dir }}'
     state: 'directory'
-    owner: '{{ wordpress_pki_acme_user }}'
-    group: '{{ wordpress_pki_acme_group }}'
+    owner: '{{ wordpress__pki_acme_user }}'
+    group: '{{ wordpress__pki_acme_group }}'
     mode: '0750'
-  when: wordpress_ssl_provider == 'letsencrypt'
+  when: wordpress__ssl_provider == 'letsencrypt'
 
 - name: Append PKI ACME group to WordPress user
   user:
-    name: '{{ wordpress_user }}'
+    name: '{{ wordpress__user }}'
     append: 'true'
-    groups: '{{ wordpress_pki_acme_group }}'
-  when: wordpress_ssl_provider == 'letsencrypt'
+    groups: '{{ wordpress__pki_acme_group }}'
+  when: wordpress__ssl_provider == 'letsencrypt'
 
 - name: Append PKI ACME group to nginx user
   user:
-    name: '{{ wordpress_nginx_user }}'
+    name: '{{ wordpress__nginx_user }}'
     append: 'true'
-    groups: '{{ wordpress_pki_acme_group }}'
-  when: wordpress_ssl_provider == 'letsencrypt'
+    groups: '{{ wordpress__pki_acme_group }}'
+  when: wordpress__ssl_provider == 'letsencrypt'
 
 - name: Restart nginx to pickup new user group
   service:
     name: 'nginx'
     state: 'restarted'
-  when: wordpress_ssl_provider == 'letsencrypt'
+  when: wordpress__ssl_provider == 'letsencrypt'
 
 - name: Run PKI realm configuration
   command: '/usr/local/lib/pki/pki-realm schedule'
