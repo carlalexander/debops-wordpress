@@ -6,36 +6,36 @@ vcl 4.0;
 import std;
 import directors;
 
-{% for backend in varnish_backends %}
+{% for backend in varnish__backends %}
 backend {{ backend.name }} {
-  .host = "{{ backend.host|d(varnish_backend_host) }}";
-  .port = "{{ backend.port|d(varnish_backend_port) }}";
-  .max_connections = {{ backend.max_connections|d(varnish_backend_max_connections) }};
+  .host = "{{ backend.host|d(varnish__backend_host) }}";
+  .port = "{{ backend.port|d(varnish__backend_port) }}";
+  .max_connections = {{ backend.max_connections|d(varnish__backend_max_connections) }};
 
 {% if backend.probe|d(True) %}
   .probe = {
     .request =
-      "{{ backend.request|d(varnish_backend_probe_request) }}"
-      "Host: {{ backend.probe_host|d(varnish_backend_probe_host) }}"
+      "{{ backend.request|d(varnish__backend_probe_request) }}"
+      "Host: {{ backend.probe_host|d(varnish__backend_probe_host) }}"
       "Connection: close"
-      "User-Agent: {{ backend.probe_user_agent|d(varnish_backend_probe_user_agent) }}";
+      "User-Agent: {{ backend.probe_user_agent|d(varnish__backend_probe_user_agent) }}";
 
-    .interval  = {{ backend.probe_interval|d(varnish_backend_probe_interval) }};
-    .timeout   = {{ backend.probe_timeout|d(varnish_backend_probe_timeout) }};
-    .window    = {{ backend.probe_window|d(varnish_backend_probe_window) }};
-    .threshold = {{ backend.probe_threshold|d(varnish_backend_probe_threshold) }};
+    .interval  = {{ backend.probe_interval|d(varnish__backend_probe_interval) }};
+    .timeout   = {{ backend.probe_timeout|d(varnish__backend_probe_timeout) }};
+    .window    = {{ backend.probe_window|d(varnish__backend_probe_window) }};
+    .threshold = {{ backend.probe_threshold|d(varnish__backend_probe_threshold) }};
   }
 {% endif %}
 
-  .first_byte_timeout     = {{ backend.first_byte_timeout|d(varnish_backend_first_byte_timeout) }};
-  .connect_timeout        = {{ backend.connect_timeout|d(varnish_backend_connect_timeout) }};
-  .between_bytes_timeout  = {{ backend.between_bytes_timeout|d(varnish_backend_between_bytes_timeout) }};
+  .first_byte_timeout     = {{ backend.first_byte_timeout|d(varnish__backend_first_byte_timeout) }};
+  .connect_timeout        = {{ backend.connect_timeout|d(varnish__backend_connect_timeout) }};
+  .between_bytes_timeout  = {{ backend.between_bytes_timeout|d(varnish__backend_between_bytes_timeout) }};
 }
 {% endfor %}
 
 # ACL we'll use later to allow purges
 acl purge {
-{% for address in varnish_purge_allow %}
+{% for address in varnish__purge_allow %}
   "{{ address }}";
 {% endfor %}
 }
@@ -45,7 +45,7 @@ sub vcl_init {
   # Typically used to initialize VMODs.
 
   new vdir = directors.round_robin();
-{% for backend in varnish_backends %}
+{% for backend in varnish__backends %}
   vdir.add_backend({{ backend.name }});
 {% endfor %}
 }
@@ -64,14 +64,14 @@ sub vcl_recv {
   # Remove the proxy header (see https://httpoxy.org/#mitigate-varnish)
   unset req.http.proxy;
 
-  {% if varnish_normalize_query_parameters %}
+  {% if varnish__normalize_query_parameters %}
   # Normalize the query arguments
   set req.url = std.querysort(req.url);
   {% endif %}
 
   # Allow purging
   if (req.method == "PURGE") {
-{% for condition, value in varnish_purge_conditions.iteritems() %}
+{% for condition, value in varnish__purge_conditions.iteritems() %}
     if ({{ condition }}) {
       {{ value | indent(6) }}
     }
@@ -106,9 +106,9 @@ sub vcl_recv {
 
   # Some generic URL manipulation, useful for all templates that follow
   # First remove unwanted query parameters that are useless for our backend
-  if (req.url ~ "(\?|&)({{ varnish_vcl_recv_remove_parameters }})=") {
-    set req.url = regsuball(req.url, "&({{ varnish_vcl_recv_remove_parameters }})=([A-z0-9_\-\.%25]+)", "");
-    set req.url = regsuball(req.url, "\?({{ varnish_vcl_recv_remove_parameters }})=([A-z0-9_\-\.%25]+)", "?");
+  if (req.url ~ "(\?|&)({{ varnish__vcl_recv_remove_parameters }})=") {
+    set req.url = regsuball(req.url, "&({{ varnish__vcl_recv_remove_parameters }})=([A-z0-9_\-\.%25]+)", "");
+    set req.url = regsuball(req.url, "\?({{ varnish__vcl_recv_remove_parameters }})=([A-z0-9_\-\.%25]+)", "?");
     set req.url = regsub(req.url, "\?&", "?");
     set req.url = regsub(req.url, "\?$", "");
   }
@@ -125,7 +125,7 @@ sub vcl_recv {
 
   # Some generic cookie manipulation, useful for all templates that follow
   # Remove unwanted cookies
-{% for cookie in varnish_vcl_recv_remove_cookies %}
+{% for cookie in varnish__vcl_recv_remove_cookies %}
   set req.http.Cookie = regsuball(req.http.Cookie, "{{ cookie }}", "");
 {% endfor %}
 
@@ -156,7 +156,7 @@ sub vcl_recv {
     return (hash);
   }
 
-{% if varnish_cache_static_files %}
+{% if varnish__cache_static_files %}
   # Remove all cookies for static files
   if (req.url ~ "^[^?]*\.(7z|avi|bmp|bz2|css|csv|doc|docx|eot|flac|flv|gif|gz|ico|jpeg|jpg|js|less|mka|mkv|mov|mp3|mp4|mpeg|mpg|odt|otf|ogg|ogm|opus|pdf|png|ppt|pptx|rar|rtf|svg|svgz|swf|tar|tbz|tgz|ttf|txt|txz|wav|webm|webp|woff|woff2|xls|xlsx|xml|xz|zip)(\?.*)?$") {
     unset req.http.Cookie;
@@ -165,7 +165,7 @@ sub vcl_recv {
 {% endif %}
 
   # Ansible conditions
-{% for condition, value in varnish_vcl_recv_conditions.iteritems() %}
+{% for condition, value in varnish__vcl_recv_conditions.iteritems() %}
   if ({{ condition }}) {
     {{ value | indent(4) }}
   }
@@ -295,13 +295,13 @@ sub vcl_backend_response {
     set beresp.do_esi = true;
   }
 
-{% if varnish_add_ban_lurker_headers %}
+{% if varnish__add_ban_lurker_headers %}
   # Add ban lurker headers
   set beresp.http.X-Host = bereq.http.host;
   set beresp.http.X-URL = bereq.url;
 
 {% endif %}
-{% if varnish_cache_static_files %}
+{% if varnish__cache_static_files %}
   # Enable cache for all static files
   if (bereq.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|flv|gif|gz|ico|jpeg|jpg|js|less|mp[34]|pdf|png|rar|rtf|swf|tar|tgz|txt|wav|woff|xml|zip|webm)(\?.*)?$") {
     unset beresp.http.set-cookie;
@@ -328,7 +328,7 @@ sub vcl_backend_response {
   }
 
   # Ansible conditions
-{% for condition, value in varnish_vcl_backend_response_conditions.iteritems() %}
+{% for condition, value in varnish__vcl_backend_response_conditions.iteritems() %}
   if ({{ condition }}) {
     {{ value | indent(4) }}
   }
@@ -370,7 +370,7 @@ sub vcl_deliver {
   # So take hits with a grain of salt
   set resp.http.X-Cache-Hits = obj.hits;
 
-{% if varnish_add_ban_lurker_headers %}
+{% if varnish__add_ban_lurker_headers %}
   # Remove ban lurker headers
   unset resp.http.X-Host;
   unset resp.http.X-URL;

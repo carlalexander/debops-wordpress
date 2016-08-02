@@ -71,16 +71,16 @@ dependencies:
 
   - role: varnish
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    varnish_listen: '{{ wordpress_varnish_listen }}'
-    varnish_backends: [ '{{ wordpress_varnish_backend }}' ]
-    varnish_ncsa_enabled: '{{ wordpress_varnish_ncsa_enabled }}'
-    varnish_add_ban_lurker_headers: '{{ wordpress_varnish_add_ban_lurker_headers }}'
-    varnish_normalize_query_parameters: '{{ wordpress_varnish_normalize_query_parameters }}'
-    varnish_purge_allow: '{{ wordpress_varnish_purge_allow }}'
-    varnish_purge_conditions: '{{ wordpress_varnish_purge_conditions_default | combine(wordpress_varnish_purge_conditions) }}'
-    varnish_vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions_default | combine(wordpress_varnish_vcl_backend_response_conditions) }}'
-    varnish_vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions_default | combine(wordpress_varnish_vcl_recv_conditions) }}'
-    varnish_vcl_recv_remove_cookies: '{{ wordpress_varnish_vcl_recv_remove_cookies }}'
+    varnish__listen: '{{ wordpress_varnish_listen }}'
+    varnish__backends: [ '{{ wordpress_varnish_backend }}' ]
+    varnish__ncsa_enabled: '{{ wordpress_varnish_ncsa_enabled }}'
+    varnish__add_ban_lurker_headers: '{{ wordpress_varnish_add_ban_lurker_headers }}'
+    varnish__normalize_query_parameters: '{{ wordpress_varnish_normalize_query_parameters }}'
+    varnish__purge_allow: '{{ wordpress_varnish_purge_allow }}'
+    varnish__purge_conditions: '{{ wordpress_varnish_purge_conditions_default | combine(wordpress_varnish_purge_conditions) }}'
+    varnish__vcl_backend_response_conditions: '{{ wordpress_varnish_vcl_backend_response_conditions_default | combine(wordpress_varnish_vcl_backend_response_conditions) }}'
+    varnish__vcl_recv_conditions: '{{ wordpress_varnish_vcl_recv_conditions_default | combine(wordpress_varnish_vcl_recv_conditions) }}'
+    varnish__vcl_recv_remove_cookies: '{{ wordpress_varnish_vcl_recv_remove_cookies }}'
     when: ('varnish' in wordpress_dependencies)
 
   - role: wpcli

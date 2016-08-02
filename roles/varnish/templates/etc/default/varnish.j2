@@ -6,11 +6,11 @@ MEMLOCK=82000
 INSTANCE=$(uname -n)
 VARNISH_VCL_CONF=/etc/varnish/default.vcl
 VARNISH_LISTEN_ADDRESS=
-VARNISH_LISTEN_PORT={{ varnish_listen }}
+VARNISH_LISTEN_PORT={{ varnish__listen }}
 VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1
-VARNISH_ADMIN_LISTEN_PORT={{ varnish_admin_listen }}
-VARNISH_MALLOC={{ varnish_memory_allocation }}
-VARNISH_TTL={{ varnish_ttl }}
+VARNISH_ADMIN_LISTEN_PORT={{ varnish__admin_listen }}
+VARNISH_MALLOC={{ varnish__memory_allocation }}
+VARNISH_TTL={{ varnish__ttl }}
 DAEMON_OPTS="-a *:${VARNISH_LISTEN_PORT} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \

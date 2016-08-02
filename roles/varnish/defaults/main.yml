@@ -9,102 +9,102 @@
 #   Varnish server configuration
 # ------------------------------------
 
-# .. envvar:: varnish_listen
+# .. envvar:: varnish__listen
 #
 # Port that Varnish listens to for requests
-varnish_listen: '6081'
+varnish__listen: '6081'
 
-# .. envvar:: varnish_admin_listen
+# .. envvar:: varnish__admin_listen
 #
 # Port for Varnish admin
-varnish_admin_listen: '6082'
+varnish__admin_listen: '6082'
 
-# .. envvar:: varnish_memory_allocation
+# .. envvar:: varnish__memory_allocation
 #
 # How much memory is reserved for the Varnish cache
-varnish_memory_allocation: '{{ 0.5 * ansible_memtotal_mb|int }}m'
+varnish__memory_allocation: '{{ 0.5 * ansible_memtotal_mb|int }}m'
 
-# .. envvar:: varnish_ncsa_enabled
+# .. envvar:: varnish__ncsa_enabled
 #
 # Is Varnish NCSA-style logging enabled?
-varnish_ncsa_enabled: True
+varnish__ncsa_enabled: True
 
-# .. envvar:: varnish_ttl
+# .. envvar:: varnish__ttl
 #
 # Default time to live (TTL) for cached objects.
-varnish_ttl: '120'
+varnish__ttl: '120'
 
 
 # ------------------------------------
 #   Backend Configuration
 # ------------------------------------
 
-# .. envvar:: varnish_backend_host
+# .. envvar:: varnish__backend_host
 #
 # Backend server host.
-varnish_backend_host: '127.0.0.1'
+varnish__backend_host: '127.0.0.1'
 
-# .. envvar:: varnish_backend_port
+# .. envvar:: varnish__backend_port
 #
 # Backend server port.
-varnish_backend_port: '8080'
+varnish__backend_port: '8080'
 
-# .. envvar:: varnish_backend_max_connections
+# .. envvar:: varnish__backend_max_connections
 #
 # How many connections to the backend are allowed.
-varnish_backend_max_connections: 300
+varnish__backend_max_connections: 300
 
-# .. envvar:: varnish_backend_first_byte_timeout
+# .. envvar:: varnish__backend_first_byte_timeout
 #
 # How long to wait before we receive a response from the backend.
-varnish_backend_first_byte_timeout: '300s'
+varnish__backend_first_byte_timeout: '300s'
 
-# .. envvar:: varnish_backend_connect_timeout
+# .. envvar:: varnish__backend_connect_timeout
 #
 # How long to wait for a connection to the backend.
-varnish_backend_connect_timeout: '5s'
+varnish__backend_connect_timeout: '5s'
 
-# .. envvar:: varnish_backend_between_bytes_timeout
+# .. envvar:: varnish__backend_between_bytes_timeout
 #
 # How long to wait between two subsequent successful reads from the backend.
-varnish_backend_between_bytes_timeout: '2s'
+varnish__backend_between_bytes_timeout: '2s'
 
-# .. envvar:: varnish_backend_probe_request
+# .. envvar:: varnish__backend_probe_request
 #
 # The request sent when polling a Varnish backend.
-varnish_backend_probe_request: 'HEAD / HTTP/1.1'
+varnish__backend_probe_request: 'HEAD / HTTP/1.1'
 
-# .. envvar:: varnish_backend_probe_user_agent
+# .. envvar:: varnish__backend_probe_user_agent
 #
 # The user agent sent when polling a Varnish backend.
-varnish_backend_probe_user_agent: 'Varnish Health Probe'
+varnish__backend_probe_user_agent: 'Varnish Health Probe'
 
-# .. envvar:: varnish_backend_probe_host
+# .. envvar:: varnish__backend_probe_host
 #
 # The value of the host header of the poll.
-varnish_backend_probe_host: 'localhost'
+varnish__backend_probe_host: 'localhost'
 
-# .. envvar:: varnish_backend_probe_interval
+# .. envvar:: varnish__backend_probe_interval
 #
 # How long time to wait between polls to the backend.
-varnish_backend_probe_interval: '5s'
+varnish__backend_probe_interval: '5s'
 
-# .. envvar:: varnish_backend_probe_timeout
+# .. envvar:: varnish__backend_probe_timeout
 #
 # How long to wait before timing out the probe to the backend.
-varnish_backend_probe_timeout: '1s'
+varnish__backend_probe_timeout: '1s'
 
-# .. envvar:: varnish_backend_probe_window
+# .. envvar:: varnish__backend_probe_window
 #
 # How many of the latest polls to consider when determining if the backend is healthy.
-varnish_backend_probe_window: 5
+varnish__backend_probe_window: 5
 
-# .. envvar:: varnish_backend_probe_threshold
+# .. envvar:: varnish__backend_probe_threshold
 #
 # How many of the window last polls must be good for the backend to be declared healthy.
-varnish_backend_probe_threshold: 3
+varnish__backend_probe_threshold: 3
 
-# .. envvar:: varnish_backends
+# .. envvar:: varnish__backends
 #
 # Manage Varnish backends.
 #
@@ -153,7 +153,7 @@ varnish_backend_probe_threshold: 3
 # ``between_bytes_timeout``
 #   How long to wait between two subsequent successful reads from the backend.
 #
-varnish_backends:
+varnish__backends:
   - name: 'default'
 
 
@@ -161,55 +161,55 @@ varnish_backends:
 #   Varnish caching configuration
 # ------------------------------------
 
-# .. envvar:: varnish_add_ban_lurker_headers
+# .. envvar:: varnish__add_ban_lurker_headers
 #
 # Whether to add ban lurker headers to backend response. These headers are the primary mechanism
 # used by the Varnish ban lurker to clear out banned cache objects.
-varnish_add_ban_lurker_headers: False
+varnish__add_ban_lurker_headers: False
 
-# .. envvar:: varnish_cache_static_files
+# .. envvar:: varnish__cache_static_files
 #
 # Determines if the cache should store static files. This consumes a lot more memory. Disable this
 # if your dynamic pages are getting evicted too fast.
 # Read more here: https://ma.ttias.be/stop-caching-static-files/
-varnish_cache_static_files: True
+varnish__cache_static_files: True
 
-# .. envvar:: varnish_normalize_query_parameters
+# .. envvar:: varnish__normalize_query_parameters
 #
 # Normalizing query parameters lets Varnish cache variations of the same URL.
 # This might cause some issues with some script minimization systems.
-varnish_normalize_query_parameters: True
+varnish__normalize_query_parameters: True
 
-# .. envvar:: varnish_purge_allow
+# .. envvar:: varnish__purge_allow
 #
 # List of IP addresses that are allowed to purge the Varnish cache.
-varnish_purge_allow: [ '127.0.0.1', '::1' ]
+varnish__purge_allow: [ '127.0.0.1', '::1' ]
 
-# .. envvar:: varnish_purge_condition
+# .. envvar:: varnish__purge_condition
 #
 # Dictionary of conditions that will run when vcl_recv receives a purge request.
-varnish_purge_conditions:
+varnish__purge_conditions:
   '!client.ip ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
 
-# .. envvar:: varnish_vcl_backend_response_conditions
+# .. envvar:: varnish__vcl_backend_response_conditions
 #
 # Dictionary of conditions that will run at the end the vcl_recv subroutine.
-varnish_vcl_backend_response_conditions: {}
+varnish__vcl_backend_response_conditions: {}
 
-# .. envvar:: varnish_vcl_recv_conditions
+# .. envvar:: varnish__vcl_recv_conditions
 #
 # Dictionary of conditions that will run at the end the vcl_recv subroutine.
-varnish_vcl_recv_conditions: {}
+varnish__vcl_recv_conditions: {}
 
-# .. envvar:: varnish_vcl_recv_remove_parameters
+# .. envvar:: varnish__vcl_recv_remove_parameters
 #
 # Regular expression for query parameters that need to be removed during the vcl_recv subroutine.
-varnish_vcl_recv_remove_parameters: 'utm_(campaign|medium|source|term)|gclid|cx|ie|cof|siteurl'
+varnish__vcl_recv_remove_parameters: 'utm_(campaign|medium|source|term)|gclid|cx|ie|cof|siteurl'
 
-# .. envvar:: varnish_vcl_recv_remove_cookies
+# .. envvar:: varnish__vcl_recv_remove_cookies
 #
 # List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
-varnish_vcl_recv_remove_cookies:
+varnish__vcl_recv_remove_cookies:
   - 'has_js=[^;]+(; )?'
   - '__utm.=[^;]+(; )?'
   - '_ga=[^;]+(; )?'
