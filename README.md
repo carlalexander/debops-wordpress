@@ -9,7 +9,7 @@ require little to no system administrator knowledge.
 It takes care of everything for you. It does more than just install WordPress for you. It
 also takes care of all server configuration and maintenance tasks.
 
-All that you need to do is type in two commands (after installation) and wait for the magic to happen.
+All that you need to do is type in three commands (after installation) and wait for the magic to happen.
 
 ## Documentation
 
@@ -42,11 +42,12 @@ wordpress.example.com
 wordpress.example.com
 ```
 
-Once that's done, you just need to run two command lines. Each of them can take several minutes to run.
+Once that's done, you just need to run three commands. Each of them can take several minutes to run.
 
 ```bash
-$ debops -u root
-$ debops wordpress -u root
+$ debops bootstrap -u root
+$ debops
+$ debops wordpress
 ```
 
 ## Acknowledgements
