@@ -6,6 +6,8 @@ v0.3.0
 
 *Unreleased*
 
+- Changed ``wpcli`` role prefix from ``wpcli_`` to ``wpcli__``. [carlalexander]
+
 - Changed ``wordpress`` role prefix from ``wordpress_`` to ``wordpress__``. [carlalexander]
 
 - Changed ``varnish`` role prefix from ``varnish_`` to ``varnish__``. [carlalexander]

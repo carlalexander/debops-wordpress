@@ -10,3 +10,7 @@ your server. In most cases, this means the name of your server.
 ### WordPress
 
  * Rename all `wordpress_*` variables to `wordpress__*`.
+
+### WP-CLI
+
+ * Rename all `wpcli_*` variables to `wpcli__*`.
