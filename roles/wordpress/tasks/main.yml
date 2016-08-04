@@ -67,7 +67,7 @@
 - name: Schedule regular calls to wp-cron.php
   cron:
     name: 'Call wp-cron.php at {{ wordpress__domain }}'
-    job: 'curl {{ "-k https" if wordpress__ssl|d() else "http" }}://{{ wordpress__domain }}{{ wordpress__cron_path }} > /dev/null 2>&1'
+    job: 'curl {{ "-k https" if wordpress__ssl else "http" }}://{{ wordpress__domain }}{{ wordpress__cron_path }} > /dev/null 2>&1'
     user: '{{ wordpress__user }}'
     cron_file: '{{ wordpress__domain | replace(".", "_") }}'
 
