@@ -197,18 +197,9 @@ wordpress__server_backend:
       expires max;
       add_header Cache-Control "public";
 
-  location_allow:
-    '/': '{{ wordpress__nginx_allow }}'
-
   php_upstream: '{{ wordpress__nginx_upstream_php_name }}'
 
   php_options: |
-    {% if wordpress__allow is defined and wordpress__allow %}
-      {% for address in wordpress__allow %}
-    allow {{ address }};
-      {% endfor %}
-    deny all;
-    {% endif %}
     set $php_https off;
 
     if ($http_x_forwarded_proto = "https") {
@@ -240,6 +231,9 @@ wordpress__server_varnish:
 
   options: |
     client_max_body_size  {{ wordpress__php_post_max_size }};
+
+  location_allow:
+    '/': '{{ wordpress__nginx_location_allow }}'
 
 
 # --------------------------

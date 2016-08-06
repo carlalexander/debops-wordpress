@@ -250,11 +250,11 @@ wordpress__fail2ban_jail_permanent_maxretry: '10'
 # Global directory where ACME challenges will be served from.
 wordpress__nginx_acme_root: '{{ wordpress__nginx_www }}/acme'
 
-# .. envvar:: wordpress__nginx_allow
+# .. envvar:: wordpress__nginx_location_allow
 #
 # List of IP addresses or network ranges in CIDR format, allowed to access
 # WordPress. Leave empty to allow access from all IP addresses/networks.
-wordpress__nginx_allow: []
+wordpress__nginx_location_allow: []
 
 # .. envvar:: wordpress__nginx_csp
 #
