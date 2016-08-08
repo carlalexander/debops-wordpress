@@ -38,11 +38,12 @@ dependencies:
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_acme: False
     nginx_acme_root: '{{ wordpress__nginx_acme_root }}'
-    nginx_default_servers: []
-    nginx_internal_servers: []
+    nginx__default_upstreams: []
+    nginx__default_servers: []
+    nginx__internal_servers: []
     nginx_pki_realm: '{{ wordpress__nginx_pki_realm }}'
-    nginx_servers: [ '{{ wordpress__server_varnish }}', '{{ wordpress__server_backend }}' ]
-    nginx_upstreams: [ '{{ wordpress__upstream_php }}', '{{ wordpress__upstream_varnish }}' ]
+    nginx__servers: [ '{{ wordpress__server_varnish }}', '{{ wordpress__server_backend }}' ]
+    nginx__upstreams: [ '{{ wordpress__upstream_php }}', '{{ wordpress__upstream_varnish }}' ]
     nginx_webroot_create: False
     nginx_user: '{{ wordpress__nginx_user }}'
     nginx_www: '{{ wordpress__nginx_www }}'
