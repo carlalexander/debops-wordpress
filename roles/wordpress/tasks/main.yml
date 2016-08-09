@@ -61,7 +61,7 @@
   become_user: '{{ wordpress__user }}'
   args:
     chdir: '{{ wordpress__root }}'
-  when: (wordpress__install_enabled and not wordpress__multisite and
+  when: (wordpress__install_enabled and wordpress__multisite and
          (wordpress__installed is defined and wordpress__installed.rc == 1))
 
 - name: Schedule regular calls to wp-cron.php
