@@ -47,47 +47,47 @@ wordpress__group: 'www-data'
 #   Database configuration
 # --------------------------
 
-# .. envvar:: wordpress__mariadb_server
+# .. envvar:: wordpress__mariadb__server
 #
 # FQDN of the database server.
-wordpress__mariadb_server: '{{ ansible_local.mariadb.server
+wordpress__mariadb__server: '{{ ansible_local.mariadb.server
                                  if (ansible_local|d() and ansible_local.mariadb|d() and
                                      ansible_local.mariadb.server|d())
                                  else "127.0.0.1" }}'
 
-# .. envvar:: wordpress__mariadb_databases
+# .. envvar:: wordpress__mariadb__client
 #
 # When the WordPress database server is used remotely, this variable defines
 # the “host” part of the client username.
-wordpress__mariadb_client: '{{ mariadb__client }}'
+wordpress__mariadb__client: '{{ mariadb__client }}'
 
-# .. envvar:: wordpress__mariadb_databases
+# .. envvar:: wordpress__mariadb__databases
 #
 # List of databases configured on the WordPress MariaDB server.
-wordpress__mariadb_databases:
-  - '{{ wordpress__mariadb_database }}'
+wordpress__mariadb__databases:
+  - '{{ wordpress__mariadb__database }}'
 
-# .. envvar:: wordpress__mariadb_users
+# .. envvar:: wordpress__mariadb__users
 #
 # List of user accounts configured on the WordPress MariaDB server.
-wordpress__mariadb_users:
-  - '{{ wordpress__mariadb_user }}'
+wordpress__mariadb__users:
+  - '{{ wordpress__mariadb__user }}'
 
 
 # ---------------------------
 #   Fail2ban configuration
 # ---------------------------
 
-# .. envvar:: wordpress__fail2ban_actions
+# .. envvar:: wordpress__fail2ban__actions
 #
 # List of dicts which define custom local ``fail2ban`` actions.
-wordpress__fail2ban_actions:
-  - '{{ wordpress__fail2ban_action_permanent_ban }}'
+wordpress__fail2ban__actions:
+  - '{{ wordpress__fail2ban__action_permanent_ban }}'
 
-# .. envvar:: wordpress__fail2ban_custom_actions
+# .. envvar:: wordpress__fail2ban__custom_actions
 #
 # List of custom named actions to perform when a ban is executed.
-wordpress__fail2ban_custom_actions:
+wordpress__fail2ban__custom_actions:
   'wordpress_permanent_action_': |
     wordpress-permanent[name=%(__name__)s]
   'wordpress_permanent_action_mw': |
@@ -97,309 +97,299 @@ wordpress__fail2ban_custom_actions:
     wordpress-permanent[name=%(__name__)s]
     %(mta)s-whois-lines[name=%(__name__)s, dest="%(destemail)s", logpath=%(logpath)s]
 
-# .. envvar:: wordpress__fail2ban_default_action
+# .. envvar:: wordpress__fail2ban__default_action
 #
 # Default action performed by ``fail2ban`` when IP address is banned.
-wordpress__fail2ban_default_action: 'action_'
+wordpress__fail2ban__default_action: 'action_'
 
-# .. envvar:: wordpress__fail2ban_default_bantime
+# .. envvar:: wordpress__fail2ban__default_bantime
 #
 # Default length of time in seconds for the ban to persist. (Default: 2 hours)
-wordpress__fail2ban_default_bantime: '{{ 60 * 60 * 2 }}'
+wordpress__fail2ban__default_bantime: '{{ 60 * 60 * 2 }}'
 
-# .. envvar:: wordpress__fail2ban_default_findtime
+# .. envvar:: wordpress__fail2ban__default_findtime
 #
 # Default length of time in seconds under which the given ``maxretry`` needs
 # to happen to trigger a DDOS ban. (Default: 10 minutes)
-wordpress__fail2ban_default_findtime: '{{ 60 * 10 }}'
+wordpress__fail2ban__default_findtime: '{{ 60 * 10 }}'
 
-# .. envvar:: wordpress__fail2ban_default_maxretry
+# .. envvar:: wordpress__fail2ban__default_maxretry
 #
 # Default maximum number of attempts in the given ``findtime`` to trigger
 # a ban.
-wordpress__fail2ban_default_maxretry: '3'
+wordpress__fail2ban__default_maxretry: '3'
 
-# .. envvar:: wordpress__fail2ban_filters
+# .. envvar:: wordpress__fail2ban__filters
 #
 # List of dicts which define custom local ``fail2ban`` filters.
-wordpress__fail2ban_filters:
-  - '{{ wordpress__fail2ban_filter_ddos }}'
-  - '{{ wordpress__fail2ban_filter_login }}'
-  - '{{ wordpress__fail2ban_filter_repeat_bans }}'
+wordpress__fail2ban__filters:
+  - '{{ wordpress__fail2ban__filter_ddos }}'
+  - '{{ wordpress__fail2ban__filter_login }}'
+  - '{{ wordpress__fail2ban__filter_repeat_bans }}'
 
-# .. envvar:: wordpress__fail2ban_ignoreip
+# .. envvar:: wordpress__fail2ban__ignoreip
 #
 # List of IP addresses or CIDR networks which should be ignored by fail2ban.
-wordpress__fail2ban_ignoreip: [ '{{ ansible_default_ipv4.address }}' ]
+wordpress__fail2ban__ignoreip: [ '{{ ansible_default_ipv4.address }}' ]
 
-# .. envvar:: wordpress__fail2ban_jails
+# .. envvar:: wordpress__fail2ban__jails
 #
 # List of dicts which define custom local ``fail2ban`` jails.
-wordpress__fail2ban_jails:
-  - '{{ wordpress__fail2ban_jail_badbots }}'
-  - '{{ wordpress__fail2ban_jail_ddos }}'
-  - '{{ wordpress__fail2ban_jail_login }}'
-  - '{{ wordpress__fail2ban_jail_permanent }}'
+wordpress__fail2ban__jails:
+  - '{{ wordpress__fail2ban__jail_badbots }}'
+  - '{{ wordpress__fail2ban__jail_ddos }}'
+  - '{{ wordpress__fail2ban__jail_login }}'
+  - '{{ wordpress__fail2ban__jail_permanent }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_action
+# .. envvar:: wordpress__fail2ban__jail_badbots_action
 #
 # Action performed by ``fail2ban`` when IP address is banned by the badbots jail.
-wordpress__fail2ban_jail_badbots_action: '{{ wordpress__fail2ban_default_action }}'
+wordpress__fail2ban__jail_badbots_action: '{{ wordpress__fail2ban__default_action }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_bantime
+# .. envvar:: wordpress__fail2ban__jail_badbots_bantime
 #
 # Length of time in seconds for the badbots jail ban to persist. (Default: 2 hours)
-wordpress__fail2ban_jail_badbots_bantime: '{{ wordpress__fail2ban_default_bantime }}'
+wordpress__fail2ban__jail_badbots_bantime: '{{ wordpress__fail2ban__default_bantime }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_enabled
+# .. envvar:: wordpress__fail2ban__jail_badbots_enabled
 #
 # Whether the badbots jail is enabled or not.
-wordpress__fail2ban_jail_badbots_enabled: 'true'
+wordpress__fail2ban__jail_badbots_enabled: 'true'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_findtime
+# .. envvar:: wordpress__fail2ban__jail_badbots_findtime
 #
 # Length of time in seconds under which the given ``maxretry`` needs to happen
 # to trigger a badbots ban. (Default: 2 hours)
-wordpress__fail2ban_jail_badbots_findtime: '{{ wordpress__fail2ban_default_findtime }}'
+wordpress__fail2ban__jail_badbots_findtime: '{{ wordpress__fail2ban__default_findtime }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_maxretry
+# .. envvar:: wordpress__fail2ban__jail_badbots_maxretry
 #
 # Maximum number of requests in the given ``findtime`` to trigger a badbots ban.
-wordpress__fail2ban_jail_badbots_maxretry: '1'
+wordpress__fail2ban__jail_badbots_maxretry: '1'
 
-# .. envvar:: wordpress__fail2ban_jail_ddos_action
+# .. envvar:: wordpress__fail2ban__jail_ddos_action
 #
 # Action performed by ``fail2ban`` when IP address is banned by the DDOS jail.
-wordpress__fail2ban_jail_ddos_action: '{{ wordpress__fail2ban_default_action }}'
+wordpress__fail2ban__jail_ddos_action: '{{ wordpress__fail2ban__default_action }}'
 
-# .. envvar:: wordpress__fail2ban_jail_ddos_bantime
+# .. envvar:: wordpress__fail2ban__jail_ddos_bantime
 #
 # Length of time in seconds for the DDOS jail ban to persist. (Default: 2 hours)
-wordpress__fail2ban_jail_ddos_bantime: '{{ wordpress__fail2ban_default_bantime }}'
+wordpress__fail2ban__jail_ddos_bantime: '{{ wordpress__fail2ban__default_bantime }}'
 
-# .. envvar:: wordpress__fail2ban_jail_ddos_enabled
+# .. envvar:: wordpress__fail2ban__jail_ddos_enabled
 #
 # Whether the DDOS jail is enabled or not.
-wordpress__fail2ban_jail_ddos_enabled: 'true'
+wordpress__fail2ban__jail_ddos_enabled: 'true'
 
-# .. envvar:: wordpress__fail2ban_jail_ddos_findtime
+# .. envvar:: wordpress__fail2ban__jail_ddos_findtime
 #
 # Length of time in seconds under which the given ``maxretry`` needs to happen
 # to trigger a DDOS ban. (Default: 5 minutes)
-wordpress__fail2ban_jail_ddos_findtime: '300'
+wordpress__fail2ban__jail_ddos_findtime: '300'
 
-# .. envvar:: wordpress__fail2ban_jail_ddos_maxretry
+# .. envvar:: wordpress__fail2ban__jail_ddos_maxretry
 #
 # Maximum number of requests in the given ``findtime`` to trigger a DDOS ban.
-wordpress__fail2ban_jail_ddos_maxretry: '300'
+wordpress__fail2ban__jail_ddos_maxretry: '300'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_action
+# .. envvar:: wordpress__fail2ban__jail_badbots_action
 #
 # Action performed by ``fail2ban`` when IP address is banned by the login jail.
-wordpress__fail2ban_jail_login_action: '{{ wordpress__fail2ban_default_action }}'
+wordpress__fail2ban__jail_login_action: '{{ wordpress__fail2ban__default_action }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_bantime
+# .. envvar:: wordpress__fail2ban__jail_badbots_bantime
 #
 # Length of time in seconds for the login jail ban to persist. (Default: 10 minutes)
-wordpress__fail2ban_jail_login_bantime: '{{ 60 * 10 }}'
+wordpress__fail2ban__jail_login_bantime: '{{ 60 * 10 }}'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_enabled
+# .. envvar:: wordpress__fail2ban__jail_badbots_enabled
 #
 # Whether the login jail is enabled or not.
-wordpress__fail2ban_jail_login_enabled: 'true'
+wordpress__fail2ban__jail_login_enabled: 'true'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_findtime
+# .. envvar:: wordpress__fail2ban__jail_badbots_findtime
 #
 # Length of time in seconds under which the given ``maxretry`` needs to happen
 # to trigger a login ban. (Default: 60 seconds)
-wordpress__fail2ban_jail_login_findtime: '60'
+wordpress__fail2ban__jail_login_findtime: '60'
 
-# .. envvar:: wordpress__fail2ban_jail_badbots_maxretry
+# .. envvar:: wordpress__fail2ban__jail_badbots_maxretry
 #
 # Maximum number of requests in the given ``findtime`` to trigger a login ban.
-wordpress__fail2ban_jail_login_maxretry: '5'
+wordpress__fail2ban__jail_login_maxretry: '5'
 
-# .. envvar:: wordpress__fail2ban_jail_permanent_action
+# .. envvar:: wordpress__fail2ban__jail_permanent_action
 #
 # Action performed by ``fail2ban`` when IP address is banned by the permanent jail.
-wordpress__fail2ban_jail_permanent_action: 'wordpress_permanent_{{ wordpress__fail2ban_default_action }}'
+wordpress__fail2ban__jail_permanent_action: 'wordpress_permanent_{{ wordpress__fail2ban__default_action }}'
 
-# .. envvar:: wordpress__fail2ban_jail_permanent_enabled
+# .. envvar:: wordpress__fail2ban__jail_permanent_enabled
 #
 # Whether the permanent jail is enabled or not.
-wordpress__fail2ban_jail_permanent_enabled: 'true'
+wordpress__fail2ban__jail_permanent_enabled: 'true'
 
-# .. envvar:: wordpress__fail2ban_jail_permanent_findtime
+# .. envvar:: wordpress__fail2ban__jail_permanent_findtime
 #
 # Length of time in seconds under which the given ``maxretry`` needs to happen
 # to trigger a permanent ban. (Default: 1 week)
-wordpress__fail2ban_jail_permanent_findtime: '{{ 60 * 60 * 24 * 7 }}'
+wordpress__fail2ban__jail_permanent_findtime: '{{ 60 * 60 * 24 * 7 }}'
 
-# .. envvar:: wordpress__fail2ban_jail_permanent_maxretry
+# .. envvar:: wordpress__fail2ban__jail_permanent_maxretry
 #
 # Maximum number of requests in the given ``findtime`` to trigger a permanent ban.
-wordpress__fail2ban_jail_permanent_maxretry: '10'
+wordpress__fail2ban__jail_permanent_maxretry: '10'
 
 
 # ---------------------------
 #   Webserver configuration
 # ---------------------------
 
-# .. envvar:: wordpress__nginx_acme_root
+# .. envvar:: wordpress__nginx__acme_root
 #
 # Global directory where ACME challenges will be served from.
-wordpress__nginx_acme_root: '{{ wordpress__nginx_www }}/acme'
+wordpress__nginx__acme_root: '{{ wordpress__nginx__www }}/acme'
 
-# .. envvar:: wordpress__nginx_location_allow
+# .. envvar:: wordpress__nginx__location_allow
 #
 # List of IP addresses or network ranges in CIDR format, allowed to access
 # WordPress. Leave empty to allow access from all IP addresses/networks.
-wordpress__nginx_location_allow: []
+wordpress__nginx__location_allow: []
 
-# .. envvar:: wordpress__nginx_csp
+# .. envvar:: wordpress__nginx__csp
 #
 # Whether the WordPress vhost will use the Content-Security-Policy header or not.
-wordpress__nginx_csp: False
+wordpress__nginx__csp: False
 
-# .. envvar:: wordpress__nginx_csp_policy
+# .. envvar:: wordpress__nginx__csp_policy
 #
 # Determines the Content-Security-Policy header configured in the WordPress vhost.
 # By default, blocks all non-https content.
-wordpress__nginx_csp_policy: "default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'"
+wordpress__nginx__csp_policy: "default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'"
 
-# .. envvar:: wordpress__nginx_csp_report
+# .. envvar:: wordpress__nginx__csp_report
 #
 # Whether the WordPress vhost will use the Content-Security-Policy-Report-Only
 # header or not. Overrides the ``wordpress__nginx_csp`` option.
-wordpress__nginx_csp_report: False
+wordpress__nginx__csp_report: False
 
-# .. envvar:: wordpress__nginx_crt
-#
-# Relative path to the SSL certificate file used by ``debops.nginx``.
-wordpress__nginx_crt: 'private/{{ wordpress__domain }}.crt'
-
-# .. envvar:: wordpress__nginx_key
-#
-# Relative path to the SSL key file used by ``debops.nginx``.
-wordpress__nginx_key: 'private/{{ wordpress__domain }}.key'
-
-# .. envvar:: wordpress__nginx_listen
+# .. envvar:: wordpress__nginx__listen
 #
 # Default listen port for HTTP connections used by ``debops.nginx``.
-wordpress__nginx_listen: [ '[::]:80' ]
+wordpress__nginx__listen: [ '[::]:80' ]
 
-# .. envvar:: wordpress__nginx_listen_ssl
+# .. envvar:: wordpress__nginx__listen_ssl
 #
 # Default listen port for HTTPS connections used by ``debops.nginx``.
-wordpress__nginx_listen_ssl: [ '[::]:443' ]
+wordpress__nginx__listen_ssl: [ '[::]:443' ]
 
-# .. envvar:: wordpress__nginx_pki_realm
+# .. envvar:: wordpress__nginx__pki_realm
 #
 # Default PKI realm used by ``debops.nginx``.
-wordpress__nginx_pki_realm: '{{ wordpress__pki_realm }}'
+wordpress__nginx__pki_realm: '{{ wordpress__pki__realm }}'
 
-# .. envvar:: wordpress__nginx_server_name
+# .. envvar:: wordpress__nginx__server_name
 #
 # List of domain names that the nginx server responds to.
-wordpress__nginx_server_name: [ '{{ wordpress__domain }}' ]
+wordpress__nginx__server_name: [ '{{ wordpress__domain }}' ]
 
-# .. envvar:: wordpress__nginx_upstream_php_name
+# .. envvar:: wordpress__nginx__upstream_php_name
 #
 # Name of the nginx PHP upstream.
-wordpress__nginx_upstream_php_name: 'php-{{ wordpress__php_pool_name }}'
+wordpress__nginx__upstream_php_name: 'php-{{ wordpress__php__pool_name }}'
 
-# .. envvar:: wordpress__nginx_upstream_varnish_name
+# .. envvar:: wordpress__nginx__upstream_varnish_name
 #
 # Name of the nginx varnish upstream.
-wordpress__nginx_upstream_varnish_name: 'varnish'
+wordpress__nginx__upstream_varnish_name: 'varnish'
 
-# .. envvar:: wordpress__nginx_user
+# .. envvar:: wordpress__nginx__user
 #
 # System user used by nginx.
-wordpress__nginx_user: 'www-data'
+wordpress__nginx__user: 'www-data'
 
-# .. envvar:: wordpress__nginx_www
+# .. envvar:: wordpress__nginx__www
 #
 # Base path for nginx root directories.
-wordpress__nginx_www: '/var/www'
+wordpress__nginx__www: '/var/www'
 
 
 # ---------------------------
 #   PHP
 # ---------------------------
 
-# .. envvar:: wordpress__php_max_children
+# .. envvar:: wordpress__php__max_children
 #
 # Maximum number of PHP processes for WordPress.
-wordpress__php_max_children: '10'
+wordpress__php__max_children: '10'
 
-# .. envvar:: wordpress__php_packages
+# .. envvar:: wordpress__php__packages
 #
 # Additional PHP packages installed with PHP.
-wordpress__php_packages: [ 'mysql', 'curl', 'dev', 'php-redis' ]
+wordpress__php__packages: [ 'mysql', 'curl', 'dev', 'php-redis' ]
 
-# .. envvar:: wordpress__php_pool_group
+# .. envvar:: wordpress__php__pool_group
 #
 # System group used by the php-fpm pool used by WordPress.
-wordpress__php_pool_group: '{{ wordpress__group }}'
+wordpress__php__pool_group: '{{ wordpress__group }}'
 
-# .. envvar:: wordpress__php_pool_name
+# .. envvar:: wordpress__php__pool_name
 #
 # Name of the php-fpm pool used by WordPress.
-wordpress__php_pool_name: '{{ wordpress__php_pool_user }}'
+wordpress__php__pool_name: '{{ wordpress__php__pool_user }}'
 
-# .. envvar:: wordpress__php_pool_user
+# .. envvar:: wordpress__php__pool_user
 #
 # System user used by php-fpm.
-wordpress__php_pool_user: '{{ wordpress__user }}'
+wordpress__php__pool_user: '{{ wordpress__user }}'
 
-# .. envvar:: wordpress__php_post_max_size
+# .. envvar:: wordpress__php__post_max_size
 #
 # Maximum size of the POST data, with amount as M or G.
-wordpress__php_post_max_size: '32M'
+wordpress__php__post_max_size: '32M'
 
 
 # ---------------------------
 #   PKI
 # ---------------------------
 
-# .. envvar:: wordpress__pki_acme_challenge_dir
+# .. envvar:: wordpress__pki__acme_challenge_dir
 #
 # Path to global ACME challenge directory.
-wordpress__pki_acme_challenge_dir: '{{ wordpress__nginx_acme_root }}/.well-known/acme-challenge'
+wordpress__pki__acme_challenge_dir: '{{ wordpress__nginx__acme_root }}/.well-known/acme-challenge'
 
-# .. envvar:: wordpress__pki_acme_group
+# .. envvar:: wordpress__pki__acme_group
 #
 # Name of the system group which will be used to interact with the ACME
 # Certificate Authority.
-wordpress__pki_acme_group: '{{ wordpress__pki_acme_user }}'
+wordpress__pki__acme_group: '{{ wordpress__pki__acme_user }}'
 
-# .. envvar:: wordpress__pki_acme_user
+# .. envvar:: wordpress__pki__acme_user
 #
 # Name of the system user account which will be used to interact with the ACME
 # Certificate Authority.
-wordpress__pki_acme_user: 'pki-acme'
+wordpress__pki__acme_user: 'pki-acme'
 
-# .. envvar:: wordpress__pki_realm
+# .. envvar:: wordpress__pki__realm
 #
 # PKI realm used by WordPress.
-wordpress__pki_realm: '{{ wordpress__pki_default_realm_name }}'
+wordpress__pki__realm: '{{ wordpress__pki__default_realm_name }}'
 
-# .. envvar:: wordpress__pki_default_realm_name
+# .. envvar:: wordpress__pki__default_realm_name
 #
 # Default name of the PKI realm used by WordPress.
-wordpress__pki_default_realm_name: '{{ wordpress__domain }}'
+wordpress__pki__default_realm_name: '{{ wordpress__domain }}'
 
-# .. envvar:: wordpress__pki_default_realm_subdomains
+# .. envvar:: wordpress__pki__default_realm_subdomains
 #
 # Subdomains configured in the default PKI realm used by WordPress.
-wordpress__pki_default_realm_subdomains: "{{ [ 'www' ] if wordpress__domain == ansible_domain else [] }}"
+wordpress__pki__default_realm_subdomains: "{{ [ 'www' ] if wordpress__domain == ansible_domain else [] }}"
 
-# .. envvar:: wordpress__pki_host_realms
+# .. envvar:: wordpress__pki__host_realms
 #
 # List of PKI realms configured with WordPress.
-wordpress__pki_host_realms:
-  - '{{ wordpress__pki_default_realm }}'
+wordpress__pki__host_realms:
+  - '{{ wordpress__pki__default_realm }}'
 
 
 # ---------------------------
@@ -431,57 +421,52 @@ wordpress__ssl_key: ''
 #   Varnish
 # ---------------------------
 
-# .. envvar:: wordpress__varnish_listen
+# .. envvar:: wordpress__varnish__listen
 #
 # Port that varnish is listening to.
-wordpress__varnish_listen: '6081'
+wordpress__varnish__listen: '6081'
 
-# .. envvar:: wordpress__varnish_backend_port
+# .. envvar:: wordpress__varnish__backend_port
 #
 # Port used by the varnish backend server (WordPress in this case)
-wordpress__varnish_backend_port: '8080'
+wordpress__varnish__backend_port: '8080'
 
-# .. envvar:: wordpress__varnish_ncsa_enabled
-#
-# Is Varnish NCSA-style logging enabled?
-wordpress__varnish_ncsa_enabled: False
-
-# .. envvar:: wordpress__varnish_add_ban_lurker_headers
+# .. envvar:: wordpress__varnish__add_ban_lurker_headers
 #
 # Whether to add ban lurker headers to backend response. These headers are the primary mechanism
 # used by the Varnish ban lurker to clear out banned cache objects.
-wordpress__varnish_add_ban_lurker_headers: False
+wordpress__varnish__add_ban_lurker_headers: False
 
-# .. envvar:: wordpress__varnish_normalize_query_parameters
+# .. envvar:: wordpress__varnish__normalize_query_parameters
 #
 # Normalizing query parameters lets Varnish cache variations of the same URL.
 # This might cause some issues with some script minimization systems.
-wordpress__varnish_normalize_query_parameters: False
+wordpress__varnish__normalize_query_parameters: False
 
-# .. envvar:: wordpress__varnish_purge_allow
+# .. envvar:: wordpress__varnish__purge_allow
 #
 # List of IP addresses that are allowed to purge the Varnish cache
-wordpress__varnish_purge_allow: [ '{{ ansible_default_ipv4.address }}', '127.0.0.1', '::1' ]
+wordpress__varnish__purge_allow: [ '{{ ansible_default_ipv4.address }}', '127.0.0.1', '::1' ]
 
-# .. envvar:: wordpress__varnish_purge_condition
+# .. envvar:: wordpress__varnish__purge_condition
 #
 # Dictionary of conditions that will run when vcl_recv receives a purge request.
-wordpress__varnish_purge_conditions: {}
+wordpress__varnish__purge_conditions: {}
 
-# .. envvar:: wordpress__varnish_vcl_backend_response_conditions
+# .. envvar:: wordpress__varnish__vcl_backend_response_conditions
 #
 # Dictionary of conditions that will run at the end the vcl_recv subroutine.
-wordpress__varnish_vcl_backend_response_conditions: {}
+wordpress__varnish__vcl_backend_response_conditions: {}
 
-# .. envvar:: wordpress__varnish_vcl_recv_conditions
+# .. envvar:: wordpress__varnish__vcl_recv_conditions
 #
 # Dictionary of conditions that will run at the end the vcl_recv subroutine
-wordpress__varnish_vcl_recv_conditions: {}
+wordpress__varnish__vcl_recv_conditions: {}
 
-# .. envvar:: wordpress__varnish_vcl_recv_remove_cookies
+# .. envvar:: wordpress__varnish__vcl_recv_remove_cookies
 #
 # List of regular expressions for cookies that need to be removed during the vcl_recv subroutine
-wordpress__varnish_vcl_recv_remove_cookies:
+wordpress__varnish__vcl_recv_remove_cookies:
   - 'wordpress-settings-[0-9]+?=[^;]+(; )?'
   - 'wordpress-settings-time-[0-9]+?=[^;]+(; )?'
   - 'wordpress_test_cookie=[^;]+(; )?'
@@ -529,7 +514,7 @@ wordpress__cron_path: '/wp-cron.php'
 # .. envvar:: wordpress__database_host
 #
 # Hostname or IP address of the WordPress database.
-wordpress__database_host: '{{ wordpress__mariadb_server }}'
+wordpress__database_host: '{{ wordpress__mariadb__server }}'
 
 # .. envvar:: wordpress__database_user
 #
@@ -564,7 +549,7 @@ wordpress__domain: '{{ inventory_hostname }}'
 # .. envvar:: wordpress__root
 #
 # WordPress root directory.
-wordpress__root: '{{ wordpress__nginx_www }}/{{ wordpress__domain }}'
+wordpress__root: '{{ wordpress__nginx__www }}/{{ wordpress__domain }}'
 
 # .. envvar:: wordpress__title
 #

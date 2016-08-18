@@ -9,6 +9,7 @@ your server. In most cases, this means the name of your server.
 
 ### WordPress
 
+ * Rename all role dependency variables to follow the format `wordpress__role__variable`.
  * Rename all `wordpress_*` variables to `wordpress__*`.
 
 ### WP-CLI

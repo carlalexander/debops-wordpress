@@ -4,7 +4,7 @@
 #   Fail2ban configuration
 # --------------------------
 
-wordpress__fail2ban_action_permanent_ban:
+wordpress__fail2ban__action_permanent_ban:
   name: 'wordpress-permanent'
   start: cat /etc/fail2ban/wordpress-banlist.<name> | while read IP; do ip route list | grep -q "unreachable $IP" || ip route add unreachable $IP; done
   stop: touch /etc/fail2ban/wordpress-banlist.<name>
@@ -14,73 +14,73 @@ wordpress__fail2ban_action_permanent_ban:
     grep -q "<ip>" "$FILE" || ip route list | grep -q 'unreachable <ip>' || ip route add unreachable <ip>
     grep -q "<ip>" "$FILE" || echo "<ip>" >> "$FILE"
 
-wordpress__fail2ban_filter_ddos:
+wordpress__fail2ban__filter_ddos:
   name: 'wordpress-ddos'
   failregex: '^<HOST> .* "(GET|POST)'
 
-wordpress__fail2ban_filter_login:
+wordpress__fail2ban__filter_login:
   name: 'wordpress-login'
   failregex: '^<HOST> .* "POST .*?/(wp-login|xmlrpc).php'
 
-wordpress__fail2ban_filter_repeat_bans:
+wordpress__fail2ban__filter_repeat_bans:
   name: 'wordpress-repeat-bans'
   failregex: 'fail2ban\.actions:\s+WARNING\s+\[(?:.*)\]\s+Ban\s+<HOST>'
   ignoreregex: 'fail2ban\.actions:\s+WARNING\s+\[wordpress-permanent\]\s+Ban\s+<HOST>'
 
-wordpress__fail2ban_jail_badbots:
+wordpress__fail2ban__jail_badbots:
   name: 'wordpress-badbots'
-  enabled: '{{ wordpress__fail2ban_jail_badbots_enabled }}'
-  action: '{{ wordpress__fail2ban_jail_badbots_action }}'
+  enabled: '{{ wordpress__fail2ban__jail_badbots_enabled }}'
+  action: '{{ wordpress__fail2ban__jail_badbots_action }}'
   filter: 'apache-badbots'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  findtime: '{{ wordpress__fail2ban_jail_badbots_findtime }}'
-  maxretry: '{{ wordpress__fail2ban_jail_badbots_maxretry }}'
-  bantime: '{{ wordpress__fail2ban_jail_badbots_bantime }}'
+  findtime: '{{ wordpress__fail2ban__jail_badbots_findtime }}'
+  maxretry: '{{ wordpress__fail2ban__jail_badbots_maxretry }}'
+  bantime: '{{ wordpress__fail2ban__jail_badbots_bantime }}'
 
-wordpress__fail2ban_jail_ddos:
+wordpress__fail2ban__jail_ddos:
   name: 'wordpress-ddos'
-  enabled: '{{ wordpress__fail2ban_jail_ddos_enabled }}'
-  action: '{{ wordpress__fail2ban_jail_ddos_action }}'
+  enabled: '{{ wordpress__fail2ban__jail_ddos_enabled }}'
+  action: '{{ wordpress__fail2ban__jail_ddos_action }}'
   filter: 'wordpress-ddos'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  findtime: '{{ wordpress__fail2ban_jail_ddos_findtime }}'
-  maxretry: '{{ wordpress__fail2ban_jail_ddos_maxretry }}'
-  bantime: '{{ wordpress__fail2ban_jail_ddos_bantime }}'
+  findtime: '{{ wordpress__fail2ban__jail_ddos_findtime }}'
+  maxretry: '{{ wordpress__fail2ban__jail_ddos_maxretry }}'
+  bantime: '{{ wordpress__fail2ban__jail_ddos_bantime }}'
 
-wordpress__fail2ban_jail_login:
+wordpress__fail2ban__jail_login:
   name: 'wordpress-login'
-  enabled: '{{ wordpress__fail2ban_jail_login_enabled }}'
-  action: '{{ wordpress__fail2ban_jail_login_action }}'
+  enabled: '{{ wordpress__fail2ban__jail_login_enabled }}'
+  action: '{{ wordpress__fail2ban__jail_login_action }}'
   filter: 'wordpress-login'
   port: 'http,https'
   logpath: '/var/log/nginx/varnish*access.log'
-  findtime: '{{ wordpress__fail2ban_jail_login_findtime }}'
-  maxretry: '{{ wordpress__fail2ban_jail_login_maxretry }}'
-  bantime: '{{ wordpress__fail2ban_jail_login_bantime }}'
+  findtime: '{{ wordpress__fail2ban__jail_login_findtime }}'
+  maxretry: '{{ wordpress__fail2ban__jail_login_maxretry }}'
+  bantime: '{{ wordpress__fail2ban__jail_login_bantime }}'
 
-wordpress__fail2ban_jail_permanent:
+wordpress__fail2ban__jail_permanent:
   name: 'wordpress-permanent'
-  enabled: '{{ wordpress__fail2ban_jail_permanent_enabled }}'
-  action: '{{ wordpress__fail2ban_jail_permanent_action }}'
+  enabled: '{{ wordpress__fail2ban__jail_permanent_enabled }}'
+  action: '{{ wordpress__fail2ban__jail_permanent_action }}'
   filter: 'wordpress-repeat-bans'
   logpath: '/var/log/fail2ban.log'
-  findtime: '{{ wordpress__fail2ban_jail_permanent_findtime }}'
-  maxretry: '{{ wordpress__fail2ban_jail_permanent_maxretry }}'
+  findtime: '{{ wordpress__fail2ban__jail_permanent_findtime }}'
+  maxretry: '{{ wordpress__fail2ban__jail_permanent_maxretry }}'
   bantime: '-1'
 
 # --------------------------
 #   MariaDB configuration
 # --------------------------
 
-wordpress__mariadb_database:
+wordpress__mariadb__database:
   name: '{{ wordpress__database_name }}'
 
-wordpress__mariadb_user:
+wordpress__mariadb__user:
   name: '{{ wordpress__database_user }}'
   password: '{{ wordpress__database_password }}'
-  host: '{{ wordpress__mariadb_client }}'
+  host: '{{ wordpress__mariadb__client }}'
   priv: '{{ wordpress__database_name }}.*:ALL'
   state: 'present'
 
@@ -89,54 +89,54 @@ wordpress__mariadb_user:
 #   PHP configuration
 # --------------------------
 
-wordpress__php_pool:
+wordpress__php__pool:
   enabled: True
-  name: '{{ wordpress__php_pool_name }}'
-  user: '{{ wordpress__php_pool_user }}'
-  group: '{{ wordpress__php_pool_group }}'
-  pm_max_children: '{{ wordpress__php_max_children }}'
+  name: '{{ wordpress__php__pool_name }}'
+  user: '{{ wordpress__php__pool_user }}'
+  group: '{{ wordpress__php__pool_group }}'
+  pm_max_children: '{{ wordpress__php__max_children }}'
 
 
 # --------------------------
 #   PKI configuration
 # --------------------------
 
-wordpress__pki_default_realm:
-  name: '{{ wordpress__pki_default_realm_name }}'
+wordpress__pki__default_realm:
+  name: '{{ wordpress__pki__default_realm_name }}'
   acme: "{{ wordpress__ssl_provider == 'letsencrypt' }}"
-  acme_challenge_dir: '{{ wordpress__pki_acme_challenge_dir }}'
-  acme_default_subdomains: '{{ wordpress__pki_default_realm_subdomains }}'
-  acme_subdomains: '{{ wordpress__pki_default_realm_subdomains }}'
-  default_subdomains: '{{ wordpress__pki_default_realm_subdomains }}'
-  subdomains: '{{ wordpress__pki_default_realm_subdomains }}'
+  acme_challenge_dir: '{{ wordpress__pki__acme_challenge_dir }}'
+  acme_default_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
+  acme_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
+  default_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
+  subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
 
-wordpress__pki_private_files:
+wordpress__pki__private_files:
   - src: '{{ wordpress__ssl_key }}'
-    dest: '/etc/pki/realms/{{ wordpress__pki_realm }}/private/key.pem'
+    dest: '/etc/pki/realms/{{ wordpress__pki__realm }}/private/key.pem'
 
-wordpress__pki_public_files:
+wordpress__pki__public_files:
   - src: '{{ wordpress__ssl_crt }}'
-    dest: '/etc/pki/realms/{{ wordpress__pki_realm }}/external/cert.pem'
+    dest: '/etc/pki/realms/{{ wordpress__pki__realm }}/external/cert.pem'
 
 
 # --------------------------
 #   nginx server configuration
 # --------------------------
 
-wordpress__server_backend:
+wordpress__nginx__server_backend:
   by_role: 'carlalexander.wordpress'
   enabled: True
   default: False
   type: 'php'
-  listen: [ '{{ wordpress__varnish_backend_port }}' ]
+  listen: [ '{{ wordpress__varnish__backend_port }}' ]
   ssl: False
   acme: False
   filename: '{{ wordpress__domain }}'
-  name: '{{ wordpress__nginx_server_name }}'
+  name: '{{ wordpress__nginx__server_name }}'
   root: '{{ wordpress__root }}'
 
   options: |
-    client_max_body_size  {{ wordpress__php_post_max_size }};
+    client_max_body_size  {{ wordpress__php__post_max_size }};
     gzip_comp_level 5;
     gzip_min_length 256;
     gzip_proxied any;
@@ -197,7 +197,7 @@ wordpress__server_backend:
       expires max;
       add_header Cache-Control "public";
 
-  php_upstream: '{{ wordpress__nginx_upstream_php_name }}'
+  php_upstream: '{{ wordpress__nginx__upstream_php_name }}'
 
   php_options: |
     set $php_https off;
@@ -209,66 +209,66 @@ wordpress__server_backend:
     fastcgi_param HTTPS $php_https;
     fastcgi_next_upstream error timeout invalid_header http_500;
 
-wordpress__server_varnish:
+wordpress__nginx__server_varnish:
   by_role: 'carlalexander.wordpress'
   type: 'proxy'
   enabled: True
   default: False
   filename: 'varnish.{{ wordpress__domain }}'
-  name: '{{ wordpress__nginx_server_name }}'
+  name: '{{ wordpress__nginx__server_name }}'
   root: False
-  listen: '{{ wordpress__nginx_listen }}'
-  listen_ssl: '{{ wordpress__nginx_listen_ssl }}'
+  listen: '{{ wordpress__nginx__listen }}'
+  listen_ssl: '{{ wordpress__nginx__listen_ssl }}'
   ssl: '{{ wordpress__ssl }}'
   acme: "{{ wordpress__ssl_provider == 'letsencrypt' }}"
-  csp: '{{ wordpress__nginx_csp }}'
-  csp_report: '{{ wordpress__nginx_csp_report }}'
-  csp_policy: '{{ wordpress__nginx_csp_policy }}'
+  csp: '{{ wordpress__nginx__csp }}'
+  csp_report: '{{ wordpress__nginx__csp_report }}'
+  csp_policy: '{{ wordpress__nginx__csp_policy }}'
   ocsp_verify: False
   deny_hidden: False
   favicon: False
-  proxy_pass: 'http://{{ wordpress__nginx_upstream_varnish_name }}'
+  proxy_pass: 'http://{{ wordpress__nginx__upstream_varnish_name }}'
 
   options: |
-    client_max_body_size  {{ wordpress__php_post_max_size }};
+    client_max_body_size  {{ wordpress__php__post_max_size }};
 
   location_allow:
-    '/': '{{ wordpress__nginx_location_allow }}'
+    '/': '{{ wordpress__nginx__location_allow }}'
 
 
 # --------------------------
 #   nginx upstream configuration
 # --------------------------
 
-wordpress__upstream_php:
+wordpress__nginx__upstream_php:
   enabled: True
-  name: '{{ wordpress__nginx_upstream_php_name }}'
+  name: '{{ wordpress__nginx__upstream_php_name }}'
   server:
-   - 'unix:/var/run/php7.0-fpm-{{ wordpress__php_pool_name }}.sock'
+   - 'unix:/var/run/php7.0-fpm-{{ wordpress__php__pool_name }}.sock'
 
-wordpress__upstream_varnish:
+wordpress__nginx__upstream_varnish:
   enabled: True
-  name: '{{ wordpress__nginx_upstream_varnish_name }}'
+  name: '{{ wordpress__nginx__upstream_varnish_name }}'
   server:
-   - '127.0.0.1:{{ wordpress__varnish_listen }}'
-   - '127.0.0.1:{{ wordpress__varnish_backend_port }} backup'
+   - '127.0.0.1:{{ wordpress__varnish__listen }}'
+   - '127.0.0.1:{{ wordpress__varnish__backend_port }} backup'
 
 
 # --------------------------
 #   Varnish configuration
 # --------------------------
 
-wordpress__varnish_backend:
+wordpress__varnish__backend:
   name: 'wordpress'
-  port: '{{ wordpress__varnish_backend_port }}'
+  port: '{{ wordpress__varnish__backend_port }}'
   probe: False
 
-wordpress__varnish_purge_conditions_default:
+wordpress__varnish__purge_conditions_default:
   '!std.ip(req.http.X-Real-IP, "0.0.0.0") ~ purge': 'return (synth(405, "This IP is not allowed to send PURGE requests."));'
 
-wordpress__varnish_vcl_backend_response_conditions_default:
+wordpress__varnish__vcl_backend_response_conditions_default:
   'beresp.http.Set-Cookie && bereq.url !~ "wp-(login|admin)"': 'unset beresp.http.Set-Cookie;'
 
-wordpress__varnish_vcl_recv_conditions_default:
+wordpress__varnish__vcl_recv_conditions_default:
   'req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_"': 'return (pass);'
   'req.url ~ "wp-(admin|cron|login)" || req.url ~ "preview=true" || req.url ~ "xmlrpc.php"': 'return (pass);'

@@ -4,7 +4,7 @@ dependencies:
 
   - role: debops.pki/env
     tags: ['depend::pki', 'depend::pki:wordpress', 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
-    pki_host_realms: "{{ wordpress__pki_host_realms if wordpress__ssl else [] }}"
+    pki_host_realms: "{{ wordpress__pki__host_realms if wordpress__ssl else [] }}"
 
   - role: debops.php/env
     tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
@@ -16,54 +16,54 @@ dependencies:
 
   - role: debops.fail2ban
     tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    fail2ban_action: '{{ wordpress__fail2ban_default_action }}'
-    fail2ban_actions: '{{ wordpress__fail2ban_actions }}'
-    fail2ban_custom_actions: '{{ wordpress__fail2ban_custom_actions }}'
-    fail2ban_bantime: '{{ wordpress__fail2ban_default_bantime }}'
-    fail2ban_filters: '{{ wordpress__fail2ban_filters }}'
-    fail2ban_findtime: '{{ wordpress__fail2ban_default_findtime }}'
-    fail2ban_host_jails: '{{ wordpress__fail2ban_jails }}'
-    fail2ban_ignoreip: '{{ wordpress__fail2ban_ignoreip }}'
-    fail2ban_maxretry: '{{ wordpress__fail2ban_default_maxretry }}'
+    fail2ban_action: '{{ wordpress__fail2ban__default_action }}'
+    fail2ban_actions: '{{ wordpress__fail2ban__actions }}'
+    fail2ban_custom_actions: '{{ wordpress__fail2ban__custom_actions }}'
+    fail2ban_bantime: '{{ wordpress__fail2ban__default_bantime }}'
+    fail2ban_filters: '{{ wordpress__fail2ban__filters }}'
+    fail2ban_findtime: '{{ wordpress__fail2ban__default_findtime }}'
+    fail2ban_host_jails: '{{ wordpress__fail2ban__jails }}'
+    fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
+    fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
     when: ('fail2ban' in wordpress__dependencies)
 
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    mariadb__databases: [ '{{ wordpress__mariadb_databases }}' ]
-    mariadb__users: [ '{{ wordpress__mariadb_users }}' ]
-    mariadb__server: '{{ wordpress__mariadb_server }}'
+    mariadb__databases: [ '{{ wordpress__mariadb__databases }}' ]
+    mariadb__users: [ '{{ wordpress__mariadb__users }}' ]
+    mariadb__server: '{{ wordpress__mariadb__server }}'
     when: ('mariadb' in wordpress__dependencies)
 
   - role: debops.nginx
     tags: [ 'depend::nginx', 'depend::nginx:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     nginx_acme: False
-    nginx_acme_root: '{{ wordpress__nginx_acme_root }}'
+    nginx_acme_root: '{{ wordpress__nginx__acme_root }}'
     nginx__default_upstreams: []
     nginx__default_servers: []
     nginx__internal_servers: []
-    nginx_pki_realm: '{{ wordpress__nginx_pki_realm }}'
-    nginx__servers: [ '{{ wordpress__server_varnish }}', '{{ wordpress__server_backend }}' ]
-    nginx__upstreams: [ '{{ wordpress__upstream_php }}', '{{ wordpress__upstream_varnish }}' ]
+    nginx_pki_realm: '{{ wordpress__nginx__pki_realm }}'
+    nginx__servers: [ '{{ wordpress__nginx__server_backend }}', '{{ wordpress__nginx__server_varnish }}' ]
+    nginx__upstreams: [ '{{ wordpress__nginx__upstream_php }}', '{{ wordpress__nginx__upstream_varnish }}' ]
     nginx_webroot_create: False
-    nginx_user: '{{ wordpress__nginx_user }}'
-    nginx_www: '{{ wordpress__nginx_www }}'
+    nginx_user: '{{ wordpress__nginx__user }}'
+    nginx_www: '{{ wordpress__nginx__www }}'
     when: ('nginx' in wordpress__dependencies)
 
   - role: debops.php
     tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     php__default_pools: []
-    php__packages: '{{ wordpress__php_packages }}'
-    php__pools: [ '{{ wordpress__php_pool }}' ]
-    php__ini_post_max_size: '{{ wordpress__php_post_max_size }}'
+    php__packages: '{{ wordpress__php__packages }}'
+    php__pools: [ '{{ wordpress__php__pool }}' ]
+    php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
     when: ('php' in wordpress__dependencies)
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    pki_acme_group: '{{ wordpress__pki_acme_group }}'
-    pki_acme_user: '{{ wordpress__pki_acme_user }}'
-    pki_host_private_files: "{{ wordpress__pki_private_files if wordpress__ssl_provider == 'manual' else [] }}"
-    pki_host_public_files: "{{ wordpress__pki_public_files if wordpress__ssl_provider == 'manual' else [] }}"
-    pki_host_realms: "{{ wordpress__pki_host_realms }}"
+    pki_acme_group: '{{ wordpress__pki__acme_group }}'
+    pki_acme_user: '{{ wordpress__pki__acme_user }}'
+    pki_host_private_files: "{{ wordpress__pki__private_files if wordpress__ssl_provider == 'manual' else [] }}"
+    pki_host_public_files: "{{ wordpress__pki__public_files if wordpress__ssl_provider == 'manual' else [] }}"
+    pki_host_realms: "{{ wordpress__pki__host_realms }}"
     when: ('pki' in wordpress__dependencies and wordpress__ssl)
 
   - role: debops.redis
@@ -72,15 +72,15 @@ dependencies:
 
   - role: varnish
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    varnish__listen: '{{ wordpress__varnish_listen }}'
-    varnish__backends: [ '{{ wordpress__varnish_backend }}' ]
-    varnish__add_ban_lurker_headers: '{{ wordpress__varnish_add_ban_lurker_headers }}'
-    varnish__normalize_query_parameters: '{{ wordpress__varnish_normalize_query_parameters }}'
-    varnish__purge_allow: '{{ wordpress__varnish_purge_allow }}'
-    varnish__purge_conditions: '{{ wordpress__varnish_purge_conditions_default | combine(wordpress__varnish_purge_conditions) }}'
-    varnish__vcl_backend_response_conditions: '{{ wordpress__varnish_vcl_backend_response_conditions_default | combine(wordpress__varnish_vcl_backend_response_conditions) }}'
-    varnish__vcl_recv_conditions: '{{ wordpress__varnish_vcl_recv_conditions_default | combine(wordpress__varnish_vcl_recv_conditions) }}'
-    varnish__vcl_recv_remove_cookies: '{{ wordpress__varnish_vcl_recv_remove_cookies }}'
+    varnish__listen: '{{ wordpress__varnish__listen }}'
+    varnish__backends: [ '{{ wordpress__varnish__backend }}' ]
+    varnish__add_ban_lurker_headers: '{{ wordpress__varnish__add_ban_lurker_headers }}'
+    varnish__normalize_query_parameters: '{{ wordpress__varnish__normalize_query_parameters }}'
+    varnish__purge_allow: '{{ wordpress__varnish__purge_allow }}'
+    varnish__purge_conditions: '{{ wordpress__varnish__purge_conditions_default | combine(wordpress__varnish__purge_conditions) }}'
+    varnish__vcl_backend_response_conditions: '{{ wordpress__varnish__vcl_backend_response_conditions_default | combine(wordpress__varnish__vcl_backend_response_conditions) }}'
+    varnish__vcl_recv_conditions: '{{ wordpress__varnish__vcl_recv_conditions_default | combine(wordpress__varnish__vcl_recv_conditions) }}'
+    varnish__vcl_recv_remove_cookies: '{{ wordpress__varnish__vcl_recv_remove_cookies }}'
     when: ('varnish' in wordpress__dependencies)
 
   - role: wpcli

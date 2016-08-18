@@ -6,6 +6,8 @@ v0.3.0
 
 *Unreleased*
 
+- Namespaced all dependency variables for the ``wordpress`` role. [carlalexander]
+
 - Changed ``wpcli`` role prefix from ``wpcli_`` to ``wpcli__``. [carlalexander]
 
 - Changed ``wordpress`` role prefix from ``wordpress_`` to ``wordpress__``. [carlalexander]
