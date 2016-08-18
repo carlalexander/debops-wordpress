@@ -1,12 +1,13 @@
 ---
 
-- include: common.yml
-
 - name: Manage WordPress web server
   hosts: 'wordpress'
   become: True
 
   roles:
+    - role: debops.swapfile
+      tags: [ 'role::swap', 'swap' ]
+      swapfile__swappiness: '15'
     - role: debops.mariadb_server
       tags: [ 'role::mariadb_server', 'mariadb_server' ]
     - role: wordpress
