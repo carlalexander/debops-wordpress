@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Varnish HTTP accelerator
+Documentation=https://www.varnish-cache.org/docs/4.1/ man:varnishd
+
+[Service]
+Type=simple
+LimitNOFILE=131072
+LimitMEMLOCK=82000
+PIDFile=/run/varnishd.pid
+ExecStart=/usr/sbin/varnishd -j unix,user=vcache -P /run/varnishd.pid -F -a *:{{ varnish__listen }} -T localhost:{{ varnish__admin_listen }} -t {{ varnish__ttl }} -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,{{ varnish__memory_allocation }}
+ExecReload=/usr/share/varnish/reload-vcl
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+
+[Install]
+WantedBy=multi-user.target

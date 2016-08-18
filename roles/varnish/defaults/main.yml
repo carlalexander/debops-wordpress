@@ -24,11 +24,6 @@ varnish__admin_listen: '6082'
 # How much memory is reserved for the Varnish cache
 varnish__memory_allocation: '{{ 0.5 * ansible_memtotal_mb|int }}m'
 
-# .. envvar:: varnish__ncsa_enabled
-#
-# Is Varnish NCSA-style logging enabled?
-varnish__ncsa_enabled: True
-
 # .. envvar:: varnish__ttl
 #
 # Default time to live (TTL) for cached objects.

@@ -1,13 +1,8 @@
 ---
 
+- name: Reload systemd daemon
+  shell: systemctl daemon-reload
+  notify: Restart varnish
+
 - name: Restart varnish
   service: name=varnish state=restarted
-
-- name: Reload varnish
-  service: name=varnish state=reloaded
-
-- name: Restart varnishncsa
-  service: name=varnishncsa state=restarted
-
-- name: Reload varnishncsa
-  service: name=varnishncsa state=reloaded

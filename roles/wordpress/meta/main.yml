@@ -74,7 +74,6 @@ dependencies:
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     varnish__listen: '{{ wordpress__varnish_listen }}'
     varnish__backends: [ '{{ wordpress__varnish_backend }}' ]
-    varnish__ncsa_enabled: '{{ wordpress__varnish_ncsa_enabled }}'
     varnish__add_ban_lurker_headers: '{{ wordpress__varnish_add_ban_lurker_headers }}'
     varnish__normalize_query_parameters: '{{ wordpress__varnish_normalize_query_parameters }}'
     varnish__purge_allow: '{{ wordpress__varnish_purge_allow }}'

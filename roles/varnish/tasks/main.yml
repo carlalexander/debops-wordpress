@@ -10,29 +10,14 @@
   with_flattened:
     - 'varnish'
 
-- name: Configure Varnish
+- name: Configure Varnish service
   template:
-    src: 'etc/default/varnish.j2'
-    dest: '/etc/default/varnish'
+    src: 'etc/systemd/system/varnish.service.j2'
+    dest: '/etc/systemd/system/varnish.service'
     owner: 'root'
     group: 'root'
     mode: '0644'
-  notify: [ 'Restart varnish' ]
-
-- name: Append "varnish" group to "varnishlog" user
-  user:
-    name: 'varnishlog'
-    append: 'true'
-    groups: 'varnish'
-
-- name: Configure Varnish NCSA-style logging
-  template:
-    src: 'etc/default/varnishncsa.j2'
-    dest: '/etc/default/varnishncsa'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  notify: [ 'Restart varnishncsa' ]
+  notify: [ 'Reload systemd daemon' ]
 
 - name: Configure default.vcl for Varnish
   template:
