@@ -23,11 +23,11 @@
     groups: '{{ wordpress__pki__acme_group }}'
   when: wordpress__ssl_provider == 'letsencrypt'
 
+- name: Run PKI realm configuration
+  command: '/usr/local/lib/pki/pki-realm schedule'
+
 - name: Restart nginx to pickup new user group
   service:
     name: 'nginx'
     state: 'restarted'
   when: wordpress__ssl_provider == 'letsencrypt'
-
-- name: Run PKI realm configuration
-  command: '/usr/local/lib/pki/pki-realm schedule'
