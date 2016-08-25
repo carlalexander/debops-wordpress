@@ -1,7 +1,7 @@
 # All DebOps defaults are stored here.
 # You should overwrite these values in either a group or host vars file.
 
-ntp_timezone: 'Etc/UTC'
+ntp__timezone: 'Etc/UTC'
 
 pki_internal: False
 pki_authorities: []

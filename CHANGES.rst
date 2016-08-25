@@ -6,6 +6,8 @@ v0.3.0
 
 *Unreleased*
 
+- Renamed ``ntp_timezone`` to ``ntp__timezone``. [carlalexander]
+
 - Add ``debops.postfix`` role to ``wordpress`` playbook. [carlalexander]
 
 - Namespaced all dependency variables for the ``wordpress`` role. [carlalexander]
