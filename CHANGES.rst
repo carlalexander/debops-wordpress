@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Fixed issue where you could access a WordPress site using its IP address
+  instead of the domain name. [carlalexander]
+
 - Fixed issue with ``wordpress-repeat-bans`` filter not detecting bans with
   fail2ban 0.9.3. [carlalexander]
 

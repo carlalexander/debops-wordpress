@@ -232,6 +232,10 @@ wordpress__nginx__server_varnish:
   options: |
     client_max_body_size  {{ wordpress__php__post_max_size }};
 
+    if ($host != $server_name) {
+        return 444;
+    }
+
   location_allow:
     '/': '{{ wordpress__nginx__location_allow }}'
 
