@@ -24,8 +24,8 @@ wordpress__fail2ban__filter_login:
 
 wordpress__fail2ban__filter_repeat_bans:
   name: 'wordpress-repeat-bans'
-  failregex: 'fail2ban\.actions:\s+WARNING\s+\[(?:.*)\]\s+Ban\s+<HOST>'
-  ignoreregex: 'fail2ban\.actions:\s+WARNING\s+\[wordpress-permanent\]\s+Ban\s+<HOST>'
+  failregex: 'fail2ban\.actions.+NOTICE\s+\[(?:.*)\]\s+Ban\s+<HOST>'
+  ignoreregex: 'fail2ban\.actions.+NOTICE\s+\[wordpress-permanent\]\s+Ban\s+<HOST>'
 
 wordpress__fail2ban__jail_badbots:
   name: 'wordpress-badbots'

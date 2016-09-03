@@ -25,6 +25,7 @@ dependencies:
     fail2ban_host_jails: '{{ wordpress__fail2ban__jails }}'
     fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
     fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
+    fail2ban_loglevel: '{{ wordpress__fail2ban__loglevel }}'
     when: ('fail2ban' in wordpress__dependencies)
 
   - role: debops.mariadb

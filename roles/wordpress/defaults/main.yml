@@ -240,6 +240,11 @@ wordpress__fail2ban__jail_permanent_findtime: '{{ 60 * 60 * 24 * 7 }}'
 # Maximum number of requests in the given ``findtime`` to trigger a permanent ban.
 wordpress__fail2ban__jail_permanent_maxretry: '10'
 
+# .. envvar:: wordpress__fail2ban__loglevel
+#
+# Fail2ban log verbosity.
+wordpress__fail2ban__loglevel: 'NOTICE'
+
 
 # ---------------------------
 #   Webserver configuration

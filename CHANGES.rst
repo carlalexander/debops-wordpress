@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Fixed issue with ``wordpress-repeat-bans`` filter not detecting bans with
+  fail2ban 0.9.3. [carlalexander]
+
 - Renamed ``ntp_timezone`` to ``ntp__timezone``. [carlalexander]
 
 - Add ``debops.postfix`` role to ``wordpress`` playbook. [carlalexander]
