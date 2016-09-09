@@ -353,6 +353,12 @@ wordpress__php__pool_user: '{{ wordpress__user }}'
 # Maximum size of the POST data, with amount as M or G.
 wordpress__php__post_max_size: '32M'
 
+# .. envvar:: wordpress__php__request_terminate_timeout
+#
+# Specify maximum request time after which the WordPress worker process
+# will be killed.
+wordpress__php__request_terminate_timeout: '60'
+
 
 # ---------------------------
 #   PKI

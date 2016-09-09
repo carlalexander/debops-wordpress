@@ -95,6 +95,7 @@ wordpress__php__pool:
   user: '{{ wordpress__php__pool_user }}'
   group: '{{ wordpress__php__pool_group }}'
   pm_max_children: '{{ wordpress__php__max_children }}'
+  request_terminate_timeout: '{{ wordpress__php__request_terminate_timeout }}'
 
 
 # --------------------------
