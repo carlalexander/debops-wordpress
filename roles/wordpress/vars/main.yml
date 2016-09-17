@@ -70,6 +70,7 @@ wordpress__fail2ban__jail_permanent:
   maxretry: '{{ wordpress__fail2ban__jail_permanent_maxretry }}'
   bantime: '-1'
 
+
 # --------------------------
 #   MariaDB configuration
 # --------------------------
@@ -92,8 +93,8 @@ wordpress__mariadb__user:
 wordpress__php__pool:
   enabled: True
   name: '{{ wordpress__php__pool_name }}'
-  user: '{{ wordpress__php__pool_user }}'
-  group: '{{ wordpress__php__pool_group }}'
+  owner: '{{ wordpress__php__pool_user }}'
+  home: '{{ wordpress__root }}'
   pm_max_children: '{{ wordpress__php__max_children }}'
   request_terminate_timeout: '{{ wordpress__php__request_terminate_timeout }}'
 

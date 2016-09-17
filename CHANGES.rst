@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Changed the default WordPress system user from ``www-data`` to
+  ``wordpress``. [carlalexander]
+
 - Fixed issue where you could access a WordPress site using its IP address
   instead of the domain name. [carlalexander]
 

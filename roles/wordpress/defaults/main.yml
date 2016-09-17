@@ -32,15 +32,15 @@ wordpress__install_enabled: True
 # Length of randomly generated passwords (it's a string).
 wordpress__password_length: '48'
 
-# .. envvar:: wordpress__user
+# .. envvar:: wordpress__user_name
 #
-# User that will be used for the WordPress instance.
-wordpress__user: 'www-data'
+# Name of the WordPress system user.
+wordpress__user_name: 'wordpress'
 
-# .. envvar:: wordpress__group
+# .. envvar:: wordpress__user_group
 #
-# Group that will be used for the WordPress instance.
-wordpress__group: 'www-data'
+# Default system group of the WordPress system user.
+wordpress__user_group: '{{ wordpress__user_name }}'
 
 
 # --------------------------
@@ -333,11 +333,6 @@ wordpress__php__max_children: '10'
 # Additional PHP packages installed with PHP.
 wordpress__php__packages: [ 'mysql', 'curl', 'dev', 'php-redis', 'xml' ]
 
-# .. envvar:: wordpress__php__pool_group
-#
-# System group used by the php-fpm pool used by WordPress.
-wordpress__php__pool_group: '{{ wordpress__group }}'
-
 # .. envvar:: wordpress__php__pool_name
 #
 # Name of the php-fpm pool used by WordPress.
@@ -345,8 +340,8 @@ wordpress__php__pool_name: '{{ wordpress__php__pool_user }}'
 
 # .. envvar:: wordpress__php__pool_user
 #
-# System user used by php-fpm.
-wordpress__php__pool_user: '{{ wordpress__user }}'
+# System user used by the php-fpm pool used by WordPress.
+wordpress__php__pool_user: '{{ wordpress__user_name }}'
 
 # .. envvar:: wordpress__php__post_max_size
 #

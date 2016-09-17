@@ -11,7 +11,7 @@
 
 - name: Append PKI ACME group to WordPress user
   user:
-    name: '{{ wordpress__user }}'
+    name: '{{ wordpress__user_name }}'
     append: 'true'
     groups: '{{ wordpress__pki__acme_group }}'
   when: wordpress__ssl_provider == 'letsencrypt'
