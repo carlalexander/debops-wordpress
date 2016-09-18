@@ -399,6 +399,16 @@ wordpress__pki__host_realms:
 
 
 # ---------------------------
+#   Redis
+# ---------------------------
+
+# .. envvar:: wordpress__redis__auth_password
+#
+# Password used to authenticate with the redis server.
+wordpress__redis__auth_password: ''
+
+
+# ---------------------------
 #   SSL
 # ---------------------------
 

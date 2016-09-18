@@ -69,6 +69,7 @@ dependencies:
 
   - role: debops.redis
     tags: [ 'depend::redis', 'depend::redis:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    redis__auth_password: '{{ wordpress__redis__auth_password }}'
     when: ('redis' in wordpress__dependencies)
 
   - role: varnish

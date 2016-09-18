@@ -6,6 +6,9 @@ v0.3.0
 
 *Unreleased*
 
+- Added ``wordpress__redis__auth_password`` variable to control the password used
+  to authenticate with the redis server. [carlalexander]
+
 - Changed the default WordPress system user from ``www-data`` to
   ``wordpress``. [carlalexander]
 
