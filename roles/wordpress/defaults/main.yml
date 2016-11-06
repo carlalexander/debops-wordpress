@@ -331,7 +331,7 @@ wordpress__php__max_children: '10'
 # .. envvar:: wordpress__php__packages
 #
 # Additional PHP packages installed with PHP.
-wordpress__php__packages: [ 'mysql', 'curl', 'dev', 'php-redis', 'xml' ]
+wordpress__php__packages: [ 'mysql', 'curl', 'dev', 'redis', 'xml' ]
 
 # .. envvar:: wordpress__php__pool_name
 #

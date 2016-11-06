@@ -1,10 +1,17 @@
 Changelog
 =========
 
+v0.3.1
+------
+
+*Released: 2016-11-06*
+
+- Fixed issue with ``php-redis`` package. [carlalexander]
+
 v0.3.0
 ------
 
-*Unreleased*
+*Released: 2016-09-18*
 
 - Added ``wordpress__redis__auth_password`` variable to control the password used
   to authenticate with the redis server. [carlalexander]
