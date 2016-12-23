@@ -293,10 +293,15 @@ wordpress__nginx__listen_ssl: [ '[::]:443' ]
 # Default PKI realm used by ``debops.nginx``.
 wordpress__nginx__pki_realm: '{{ wordpress__pki__realm }}'
 
+# .. envvar:: wordpress__nginx__redirect_from
+#
+# List of domain names that the nginx server will redirect to the WordPress site.
+wordpress__nginx__redirect_from: "{{ [ 'www.' + wordpress__domain ] if wordpress__domain == ansible_domain else [] }}"
+
 # .. envvar:: wordpress__nginx__server_name
 #
 # List of domain names that the nginx server responds to.
-wordpress__nginx__server_name: [ '{{ wordpress__domain }}' ]
+wordpress__nginx__server_name: "{{ [ wordpress__domain, 'www.' + wordpress__domain ] if wordpress__domain == ansible_domain else [ wordpress__domain ] }}"
 
 # .. envvar:: wordpress__nginx__upstream_php_name
 #

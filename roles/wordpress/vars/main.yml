@@ -221,6 +221,8 @@ wordpress__nginx__server_varnish:
   root: False
   listen: '{{ wordpress__nginx__listen }}'
   listen_ssl: '{{ wordpress__nginx__listen_ssl }}'
+  redirect_from: '{{ wordpress__nginx__redirect_from }}'
+  redirect_code: '301'
   ssl: '{{ wordpress__ssl }}'
   acme: "{{ wordpress__ssl_provider == 'letsencrypt' }}"
   csp: '{{ wordpress__nginx__csp }}'
