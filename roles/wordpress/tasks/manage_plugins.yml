@@ -6,7 +6,7 @@
   args:
     chdir: '{{ wordpress__root }}'
   changed_when: False
-  always_run: True
+  check_mode: 'no'
   register: wordpress__plugin_list_installed_cmd
 
 - name: Get list of active WordPress plugins
@@ -15,7 +15,7 @@
   args:
     chdir: '{{ wordpress__root }}'
   changed_when: False
-  always_run: True
+  check_mode: 'no'
   register: wordpress__plugin_list_active_cmd
 
   ## Can be rewritten as selectattr("status", "equalto", "active") but this
