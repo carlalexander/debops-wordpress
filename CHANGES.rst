@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v0.4.0
+------
+
+*Unreleased*
+
+- Added ``varnish__privileged_group`` variable to give access to varnish to a
+  system group. [carlalexander]
+
+
 v0.3.1
 ------
 

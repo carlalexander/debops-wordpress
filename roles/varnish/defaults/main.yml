@@ -6,6 +6,16 @@
 #    :local:
 #
 # ------------------------------------
+#   General configuration
+# ------------------------------------
+
+# .. envvar:: varnish__privileged_group
+#
+# What system group has privileged access to :program:`varnish` service.
+varnish__privileged_group: 'webadmins'
+
+
+# ------------------------------------
 #   Varnish server configuration
 # ------------------------------------
 

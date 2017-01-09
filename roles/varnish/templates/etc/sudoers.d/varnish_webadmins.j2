@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+Cmnd_Alias VARNISH_RELOAD = /etc/init.d/varnish reload
+
+%{{ varnish__privileged_group }} ALL = (root) NOPASSWD: VARNISH_RELOAD

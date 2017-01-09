@@ -10,6 +10,14 @@
   with_flattened:
     - 'varnish'
 
+- name: Allow webadmins to reload varnish using sudo
+  template:
+    src: 'etc/sudoers.d/varnish_webadmins.j2'
+    dest: '/etc/sudoers.d/varnish_webadmins'
+    owner: 'root'
+    group: 'root'
+    mode: '0440'
+
 - name: Configure Varnish service
   template:
     src: 'etc/systemd/system/varnish.service.j2'
