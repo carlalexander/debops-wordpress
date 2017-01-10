@@ -100,7 +100,10 @@ wordpress__users__account_generate_ssh_key: "{{ wordpress__user_allow_remote }}"
 
 # .. envvar:: wordpress__users__account_generate_ssh_key
 #
-# Whether to whether to generate a SSH key for the WordPress system account or not.
+# List of SSH keys configured on the WordPress system account. It takes all
+# active keys from your current ssh agent session plus all public keys which you
+# keep in the :file:`~/.ssh/` directory of the user which you are using DebOps
+# from.
 wordpress__users__account_ssh_keys: [ '{{ lookup("pipe","ssh-add -L | grep ^ssh || cat ~/.ssh/*.pub || true") }}' ]
 
 
