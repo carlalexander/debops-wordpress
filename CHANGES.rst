@@ -6,6 +6,9 @@ v0.4.0
 
 *Unreleased*
 
+- Added ``wordpress__user_allow_remote`` variable to control whether the WordPress
+  system account can connect remotely or not. [carlalexander]
+
 - Added ``varnish__privileged_group`` variable to give access to varnish to a
   system group. [carlalexander]
 

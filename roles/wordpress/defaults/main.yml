@@ -32,6 +32,16 @@ wordpress__install_enabled: True
 # Length of randomly generated passwords (it's a string).
 wordpress__password_length: '48'
 
+
+# --------------------------
+#   User configuration
+# --------------------------
+
+# .. envvar:: wordpress__user_allow_remote
+#
+# Whether to allow the WordPress system account to connect remotely or not.
+wordpress__user_allow_remote: False
+
 # .. envvar:: wordpress__user_name
 #
 # Name of the WordPress system user.
@@ -41,6 +51,57 @@ wordpress__user_name: 'wordpress'
 #
 # Default system group of the WordPress system user.
 wordpress__user_group: '{{ wordpress__user_name }}'
+
+
+# --------------------------
+#  System account configuration
+# --------------------------
+
+# .. envvar:: wordpress__users__accounts
+#
+# List of system accounts to manage.
+wordpress__users__accounts:
+  - '{{ wordpress__users__account }}'
+
+# .. envvar:: wordpress__users__account_name
+#
+# Name of the WordPress system account.
+wordpress__users__account_name: '{{ wordpress__user_name }}'
+
+# .. envvar:: wordpress__users__account_group
+#
+# Default system group of the WordPress system account.
+wordpress__users__account_group: '{{ wordpress__user_group }}'
+
+# .. envvar:: wordpress__users__account_groups
+#
+# System groups that the WordPress system account should belong to.
+wordpress__users__account_groups: "{{ [ 'sshusers', 'webadmins' ] if wordpress__user_allow_remote else [] }}"
+
+# .. envvar:: wordpress__users__account_home
+#
+# Path to the home directory of the WordPress system account.
+wordpress__users__account_home: "{{ '/home/{{ wordpress__users__account_name }}' if wordpress__user_allow_remote else wordpress__root }}"
+
+# .. envvar:: wordpress__users__account_shell
+#
+# Default shell to run when the WordPress system account logs in.
+wordpress__users__account_shell: "{{ '/bin/bash' if wordpress__user_allow_remote else '/usr/sbin/nologin' }}"
+
+# .. envvar:: wordpress__users__account_create_home
+#
+# Whether to create a home account for the WordPress system account or not.
+wordpress__users__account_create_home: "{{ wordpress__user_allow_remote }}"
+
+# .. envvar:: wordpress__users__account_generate_ssh_key
+#
+# Whether to whether to generate a SSH key for the WordPress system account or not.
+wordpress__users__account_generate_ssh_key: "{{ wordpress__user_allow_remote }}"
+
+# .. envvar:: wordpress__users__account_generate_ssh_key
+#
+# Whether to whether to generate a SSH key for the WordPress system account or not.
+wordpress__users__account_ssh_keys: [ '{{ lookup("pipe","ssh-add -L | grep ^ssh || cat ~/.ssh/*.pub || true") }}' ]
 
 
 # --------------------------
@@ -377,7 +438,7 @@ wordpress__pki__acme_group: '{{ wordpress__pki__acme_user }}'
 
 # .. envvar:: wordpress__pki__acme_user
 #
-# Name of the system user account which will be used to interact with the ACME
+# Name of the system account which will be used to interact with the ACME
 # Certificate Authority.
 wordpress__pki__acme_user: 'pki-acme'
 

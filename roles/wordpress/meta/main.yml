@@ -14,6 +14,10 @@ dependencies:
     secret_directories:
         - '{{ pki_env_secret_directories }}'
 
+  - role: debops.users
+    tags: [ 'depend::users', 'depend::users:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+    users__accounts: '{{ wordpress__users__accounts }}'
+
   - role: debops.fail2ban
     tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     fail2ban_action: '{{ wordpress__fail2ban__default_action }}'

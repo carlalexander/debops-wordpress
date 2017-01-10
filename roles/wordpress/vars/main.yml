@@ -94,7 +94,6 @@ wordpress__php__pool:
   enabled: True
   name: '{{ wordpress__php__pool_name }}'
   owner: '{{ wordpress__php__pool_user }}'
-  home: '{{ wordpress__root }}'
   pm_max_children: '{{ wordpress__php__max_children }}'
   request_terminate_timeout: '{{ wordpress__php__request_terminate_timeout }}'
 
@@ -261,6 +260,22 @@ wordpress__nginx__upstream_varnish:
    - '127.0.0.1:{{ wordpress__varnish__listen }}'
    - '127.0.0.1:{{ wordpress__varnish__backend_port }} backup'
 
+
+# --------------------------
+#   System account configuration
+# --------------------------
+
+wordpress__users__account:
+  name: '{{ wordpress__users__account_name }}'
+  group: '{{ wordpress__users__account_group }}'
+  groups: '{{ wordpress__users__account_groups }}'
+  system: True
+  home: '{{ wordpress__users__account_home }}'
+  shell: '{{ wordpress__users__account_shell }}'
+  createhome: '{{ wordpress__users__account_create_home }}'
+  generate_ssh_key: '{{ wordpress__users__account_generate_ssh_key }}'
+  sshkeys: '{{ wordpress__users__account_ssh_keys }}'
+  sshkeys_exclusive: True
 
 # --------------------------
 #   Varnish configuration
