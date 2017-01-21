@@ -6,6 +6,8 @@ v0.4.0
 
 *Unreleased*
 
+- Reworked wp-cron to use WP-CLI instead of curl. [carlalexander]
+
 - Added ``wordpress__permalink_structure`` to control the default WordPress
   permalink structure. [carlalexander]
 

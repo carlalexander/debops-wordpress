@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# {{ ansible_managed }}
+
+# Run wp-cron using WP-CLI.
+
+pid="$$"
+script="${0}"
+wp=/usr/local/bin/wp
+wp_path="${1}"
+
+log_message () {
+    if tty -s > /dev/null 2>&1 ; then
+        echo "$(basename ${script}): ${@}"
+    elif type logger > /dev/null 2>&1 ; then
+        logger -t "$(basename ${script})[${pid}]" "${@}"
+    fi
+}
+
+# Check if WP-CLI is installed.
+if ! [ -f ${wp} ] ; then
+    log_message "WP-CLI is not available"
+    exit 0
+fi
+
+# Check if WordPress is installed at the given path.
+if ! $($wp core is-installed --path="$wp_path" --quiet) ; then
+    log_message "WordPress is not installed here: ${wp_path}"
+    exit 0
+fi
+
+# Get all the site urls of the WordPress installation.
+if $($wp core is-installed --path="$wp_path" --quiet --network) ; then
+    site_urls=`$wp site list --fields=url --archived=0 --deleted=0 --format=csv --path="$wp_path" | sed 1d`
+else
+    site_urls=(`$wp option get siteurl --path="$wp_path"`)
+fi
+
+# Loop through all the sites urls and call wp-cron for each.
+for site_url in $site_urls ; do
+    log_message "Running wp-cron for ${site_url} in ${wp_path}"
+    (${wp} cron event run --due-now --url="$site_url" --path="$wp_path" --quiet) &
+done

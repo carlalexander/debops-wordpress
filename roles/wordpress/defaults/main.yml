@@ -586,15 +586,35 @@ wordpress__admin_email: '{{ wordpress__admin_username }}@{{ wordpress__domain }}
 # Password for the WordPress admin user.
 wordpress__admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress__domain + '/credentials/' + wordpress__admin_username + '/password length=' + wordpress__password_length) }}"
 
+# .. envvar:: wordpress__config_disable_wp_cron
+#
+# Whether to disable WordPress calls to wp-cron.php or not.
+wordpress__config_disable_wp_cron: '{{ wordpress__cron_enabled }}'
+
+# .. envvar:: wordpress__config_disable_file_edit
+#
+# Whether to disable file editing or not.
+wordpress__config_disable_file_edit: False
+
 # .. envvar:: wordpress__config_extra_php
 #
 # Extra PHP code that's appended at the end of the ``wp-confip.php`` file.
 wordpress__config_extra_php: ''
 
-# .. envvar:: wordpress__cron_path
+# .. envvar:: wordpress__cron_enabled
 #
-# Path to ``wp-cron.php`` for the WordPress cron job.
-wordpress__cron_path: '/wp-cron.php'
+# Whether the wp-cron cron job is enabled or not.
+wordpress__cron_enabled: True
+
+# .. envvar:: wordpress__cron_minute
+#
+# Minute when wp-cron cron job should run.
+wordpress__cron_minute: '*'
+
+# .. envvar:: wordpress__cron_minute
+#
+# Hour when wp-cron cron job should run.
+wordpress__cron_hour: '*'
 
 # .. envvar:: wordpress__database_host
 #
@@ -620,11 +640,6 @@ wordpress__database_password: "{{ lookup('password', secret + '/mariadb/' + ansi
 #
 # WordPress database table prefix.
 wordpress__table_prefix: 'wp_'
-
-# .. envvar:: wordpress__disable_file_edit
-#
-# Whether to disable file editing or not.
-wordpress__disable_file_edit: False
 
 # .. envvar:: wordpress__domain
 #

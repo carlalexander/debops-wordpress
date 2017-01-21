@@ -76,12 +76,23 @@
   args:
     chdir: '{{ wordpress__root }}'
 
-- name: Schedule regular calls to wp-cron.php
+- name: Install custom script to run wp-cron with WP-CLI
+  template:
+    src: 'usr/local/lib/run-wp-cron.j2'
+    dest: '/usr/local/lib/run-wp-cron'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: Schedule regular calls to wp-cron using WP-CLI
   cron:
-    name: 'Call wp-cron.php at {{ wordpress__domain }}'
-    job: 'curl {{ "-k https" if wordpress__ssl else "http" }}://{{ wordpress__domain }}{{ wordpress__cron_path }} > /dev/null 2>&1'
+    name: 'Run wp-cron for {{ wordpress__root }}'
+    job: 'test -x /usr/local/lib/run-wp-cron && /usr/local/lib/run-wp-cron {{ wordpress__root }} || true'
     user: '{{ wordpress__user_name }}'
     cron_file: '{{ wordpress__domain | replace(".", "_") }}'
+    minute: '{{ wordpress__cron_minute }}'
+    hour: '{{ wordpress__cron_hour }}'
+  when: wordpress__cron_enabled
 
 - include: manage_plugins.yml
   tags: [ 'role::wordpress:plugins' ]
