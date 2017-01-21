@@ -70,6 +70,12 @@
   when: (wordpress__install_enabled and wordpress__multisite and
          (wordpress__installed is defined and wordpress__installed.rc == 1))
 
+- name: Setup WordPress permalink structure
+  command: 'wp rewrite structure {{ wordpress__permalink_structure }}'
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+
 - name: Schedule regular calls to wp-cron.php
   cron:
     name: 'Call wp-cron.php at {{ wordpress__domain }}'

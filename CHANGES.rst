@@ -6,6 +6,9 @@ v0.4.0
 
 *Unreleased*
 
+- Added ``wordpress__permalink_structure`` to control the default WordPress
+  permalink structure. [carlalexander]
+
 - Added ``wordpress__user_allow_remote`` variable to control whether the WordPress
   system account can connect remotely or not. [carlalexander]
 

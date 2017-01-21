@@ -641,6 +641,11 @@ wordpress__root: '{{ wordpress__nginx__www }}/{{ wordpress__domain }}'
 # WordPress site title
 wordpress__title: '{{ wordpress__domain }}'
 
+# .. envvar:: wordpress__permalink_structure
+#
+# WordPress permalink structure
+wordpress__permalink_structure: '/%postname%/'
+
 # .. envvar:: wordpress__plugins
 #
 # Manage plugins.
