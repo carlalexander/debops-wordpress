@@ -1,10 +1,10 @@
 # {{ ansible_managed }}
 
-path: {{ wordpress__root }}
-url: {{ wordpress__domain }}
+path: {{ wordpress__root + '/web/wp' if wordpress__install_type == 'bedrock' else wordpress__root }}
+url: {{ 'https://' if wordpress__ssl else 'http://' }}{{ wordpress__domain }}
 
 core config:
   extra-php: |
     define('DISABLE_WP_CRON', {{ wordpress__config_disable_wp_cron }});
     define('DISALLOW_FILE_EDIT', {{ wordpress__config_disable_file_edit }});
-    {{ wordpress__config_extra_php }}
+    {{ wordpress__config_extra_php|indent(4) }}

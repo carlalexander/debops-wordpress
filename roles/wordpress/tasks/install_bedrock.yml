@@ -1,0 +1,58 @@
+---
+
+- name: Create Bedrock project
+  composer:
+    command: 'create-project'
+    arguments: 'roots/bedrock .'
+    working_dir: '{{ wordpress__root }}'
+  become_user: '{{ wordpress__user_name }}'
+
+- name: Configure Bedrock
+  template:
+    src: 'var/www/.env.j2'
+    dest: '{{ wordpress__root }}/.env'
+    owner: '{{ wordpress__user_name }}'
+    group: '{{ wordpress__user_group }}'
+    mode: '0644'
+
+- name: Configure WP-CLI
+  template:
+    src: 'var/www/wp-cli.local.yml.j2'
+    dest: '{{ wordpress__root }}/wp-cli.local.yml'
+    owner: '{{ wordpress__user_name }}'
+    group: '{{ wordpress__user_group }}'
+    mode: '0644'
+
+- name: Install WP-CLI packages
+  command: 'wp package install aaemnnosttv/wp-cli-dotenv-command'
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+
+- name: Generate authentication keys and salts
+  command: 'wp dotenv salts regenerate'
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+
+- name: Install dependencies with Composer
+  composer:
+    no_dev: no
+    optimize_autoloader: no
+    working_dir: '{{ wordpress__root }}'
+  become_user: '{{ wordpress__user_name }}'
+
+- name: Install WordPress
+  command: |
+           wp core {{ 'multisite-install' if wordpress__multisite else 'install' }}
+           --title="{{ wordpress__title }}"
+           {% if wordpress__multisite %}
+           --base="{{ wordpress__multisite_path }}"
+           {{ '--subdomains' if wordpress__multisite_subdomains else '' }}
+           {% endif %}
+           --admin_user="{{ wordpress__admin_username }}"
+           --admin_password="{{ wordpress__admin_password }}"
+           --admin_email="{{ wordpress__admin_email }}"
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'

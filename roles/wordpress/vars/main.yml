@@ -134,7 +134,7 @@ wordpress__nginx__server_backend:
   acme: False
   filename: '{{ wordpress__domain }}'
   name: '{{ wordpress__nginx__server_name }}'
-  root: '{{ wordpress__root }}'
+  root: '{{ wordpress__nginx__server_root }}'
 
   options: |
     client_max_body_size  {{ wordpress__php__post_max_size }};
@@ -175,11 +175,15 @@ wordpress__nginx__server_backend:
       text/xml;
 
     rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+    {% if wordpress__install_type == 'bedrock' %}
+    rewrite ^/(wp-.*.php)$ /wp/$1 last;
+    rewrite ^/(wp-(content|admin|includes).*) /wp/$1 last;
+    {% endif %}
     {% if wordpress__multisite and not wordpress__multisite_subdomains %}
 
     if (!-e $request_filename) {
-      rewrite ^(/[^/]+)?(/wp-.*) $2 last;
-      rewrite ^(/[^/]+)?(/.*\.php) $2 last;
+      rewrite ^(/[^/]+)?(/wp-.*) {% if wordpress__install_type == 'bedrock' %}/wp{% endif %}$2 last;
+      rewrite ^(/[^/]+)?(/.*\.php) {% if wordpress__install_type == 'bedrock' %}/wp{% endif %}$2 last;
     }
     {% endif %}
 

@@ -23,21 +23,23 @@ if ! [ -f ${wp} ] ; then
     exit 0
 fi
 
+cd $wp_path
+
 # Check if WordPress is installed at the given path.
-if ! $($wp core is-installed --path="$wp_path" --quiet) ; then
-    log_message "WordPress is not installed here: ${wp_path}"
+if ! $($wp core is-installed --quiet) ; then
+    log_message "WordPress is not installed here in ${wp_path}"
     exit 0
 fi
 
 # Get all the site urls of the WordPress installation.
-if $($wp core is-installed --path="$wp_path" --quiet --network) ; then
+if $($wp core is-installed --quiet --network) ; then
     site_urls=`$wp site list --fields=url --archived=0 --deleted=0 --format=csv --path="$wp_path" | sed 1d`
 else
-    site_urls=(`$wp option get siteurl --path="$wp_path"`)
+    site_urls=(`$wp option get siteurl`)
 fi
 
 # Loop through all the sites urls and call wp-cron for each.
 for site_url in $site_urls ; do
     log_message "Running wp-cron for ${site_url} in ${wp_path}"
-    (${wp} cron event run --due-now --url="$site_url" --path="$wp_path" --quiet) &
+    (${wp} cron event run --due-now --url="$site_url" --quiet) &
 done

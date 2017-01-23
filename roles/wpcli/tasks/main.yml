@@ -1,6 +1,6 @@
 ---
 
-- name: Create wp-cli source directory
+- name: Create WP-CLI source directory
   file:
     path: '{{ wpcli__src_dir }}'
     state: 'directory'
@@ -9,35 +9,31 @@
     mode: '0755'
   when: wpcli__installation_method == 'package'
 
-- name: Get filename of latest wp-cli package version
+- name: Get filename of latest WP-CLI package version
   uri:
     url: '{{ wpcli__base_url }}/deb/php-wpcli__latest_all.deb'
     return_content: yes
   register: wpcli__wp_cli_package
   when: wpcli__installation_method == 'package'
-  tags: [ 'role::wpcli:install' ]
 
-- name: Download latest wp-cli package
+- name: Download latest WP-CLI package
   get_url:
     url: '{{ wpcli__base_url }}/deb/{{ wpcli__wp_cli_package.content }}'
     dest: '{{ wpcli__src_dir }}/{{ wpcli__wp_cli_package.content }}'
     mode: '0644'
     force: no
   when: wpcli__installation_method == 'package'
-  tags: [ 'role::wpcli:install' ]
 
-- name: Install wp-cli package
+- name: Install WP-CLI package
   apt:
     deb: '{{ wpcli__src_dir }}/{{ wpcli__wp_cli_package.content }}'
     state: 'present'
   when: wpcli__installation_method == 'package'
-  tags: [ 'role::wpcli:install' ]
 
-- name: Download wp-cli
+- name: Download WP-CLI
   get_url:
     url: '{{ wpcli__base_url }}/phar/wp-cli.phar'
     dest: '{{ wpcli__bin_dir }}/wp'
     mode: '0755'
     force: 'yes'
   when: wpcli__installation_method == 'download'
-  tags: [ 'role::wpcli:install' ]

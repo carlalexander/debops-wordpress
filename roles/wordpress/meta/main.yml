@@ -59,6 +59,7 @@ dependencies:
     php__default_pools: []
     php__packages: '{{ wordpress__php__packages }}'
     php__pools: [ '{{ wordpress__php__pool }}' ]
+    php__ini_memory_limit: '{{ wordpress__php__memory_limit }}'
     php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
     when: ('php' in wordpress__dependencies)
 
@@ -76,6 +77,10 @@ dependencies:
     redis__auth_password: '{{ wordpress__redis__auth_password }}'
     when: ('redis' in wordpress__dependencies)
 
+  - role: composer
+    tags: [ 'depend::composer', 'depend::composer:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    when: ('composer' in wordpress__dependencies and wordpress__install_type == 'bedrock')
+
   - role: varnish
     tags: [ 'depend::varnish', 'depend::varnish:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     varnish__listen: '{{ wordpress__varnish__listen }}'
@@ -91,4 +96,5 @@ dependencies:
 
   - role: wpcli
     tags: [ 'depend::wpcli', 'depend::wpcli:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    wpcli__packages: '{{ wordpress__wpcli__packages }}'
     when: ('wpcli' in wordpress__dependencies)

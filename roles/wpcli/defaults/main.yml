@@ -6,17 +6,17 @@
 #    :local:
 #
 # ---------------------------
-#   wp-cli configuration
+#   WP-CLI configuration
 # ---------------------------
 
 # .. envvar:: wpcli__installation_method
 #
-# Installation method used to install wp-cli. Can be 'download' or 'package'.
+# Installation method used to install WP-CLI. Can be 'download' or 'package'.
 wpcli__installation_method: 'download'
 
 # .. envvar:: wpcli__base_url
 #
-# Base URL where the wp-cli program is downloaded from.
+# Base URL where the WP-CLI program is downloaded from.
 wpcli__base_url: 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages'
 
 # .. envvar:: wpcli__bin_dir
@@ -29,7 +29,7 @@ wpcli__bin_dir: '{{ ansible_local.root.bin
 
 # .. envvar:: wpcli__src_dir
 #
-# Root directory for wp-cli sources.
+# Root directory for WP-CLI sources.
 wpcli__src_dir: '{{ (ansible_local.root.src
                          if (ansible_local|d() and ansible_local.root|d() and
                              ansible_local.root.src|d())

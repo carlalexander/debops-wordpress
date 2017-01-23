@@ -1,0 +1,9 @@
+---
+
+- name: Check if Composer is installed
+  stat:
+    path: '{{ composer__bin_dir }}/composer'
+  register: composer__register_installed
+
+- include: install_composer.yml
+  when: composer__register_installed is defined and not composer__register_installed.stat.exists

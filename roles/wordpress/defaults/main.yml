@@ -13,6 +13,7 @@
 #
 # List of dependencies that the role manages.
 wordpress__dependencies:
+  - 'composer'
   - 'fail2ban'
   - 'mariadb'
   - 'nginx'
@@ -22,10 +23,10 @@ wordpress__dependencies:
   - 'varnish'
   - 'wpcli'
 
-# .. envvar:: wordpress__install_enabled
+# .. envvar:: wordpress__install_type
 #
-# Should the ``carlalexander.wordpress`` role install WordPress?
-wordpress__install_enabled: True
+# The type of WordPress installation. Can be 'bedrock' or 'default'.
+wordpress__install_type: 'default'
 
 # .. envvar:: wordpress__password_length
 #
@@ -367,6 +368,11 @@ wordpress__nginx__redirect_from: "{{ [ 'www.' + wordpress__domain ] if wordpress
 # List of domain names that the nginx server responds to.
 wordpress__nginx__server_name: "{{ [ wordpress__domain, 'www.' + wordpress__domain ] if wordpress__domain == ansible_domain else [ wordpress__domain ] }}"
 
+# .. envvar:: wordpress__nginx__server_root
+#
+# Root of the nginx server.
+wordpress__nginx__server_root: "{{ wordpress__root + '/web' if wordpress__install_type == 'bedrock' else wordpress__root }}"
+
 # .. envvar:: wordpress__nginx__upstream_php_name
 #
 # Name of the nginx PHP upstream.
@@ -411,6 +417,11 @@ wordpress__php__pool_name: '{{ wordpress__php__pool_user }}'
 #
 # System user used by the php-fpm pool used by WordPress.
 wordpress__php__pool_user: '{{ wordpress__user_name }}'
+
+# .. envvar:: wordpress__php__memory_limit
+#
+# Maximum memory limit for PHP processes.
+wordpress__php__memory_limit: '128M'
 
 # .. envvar:: wordpress__php__post_max_size
 #
@@ -565,6 +576,17 @@ wordpress__varnish__vcl_recv_remove_cookies:
   - '__gads=[^;]+(; )?'
   - '__qc.=[^;]+(; )?'
   - '__atuv.=[^;]+(; )?'
+
+
+# ---------------------------
+#   WP-CLI configuration
+# ---------------------------
+
+# .. envvar:: wordpress__wpcli__packages
+#
+# Packages to install with WP-CLI.
+wordpress__wpcli__packages:
+  - name: 'aaemnnosttv/wp-cli-dotenv-command'
 
 
 # ---------------------------

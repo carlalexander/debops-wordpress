@@ -1,0 +1,46 @@
+---
+
+- name: Configure WP-CLI
+  template:
+    src: 'var/www/wp-cli.local.yml.j2'
+    dest: '{{ wordpress__root }}/wp-cli.local.yml'
+    owner: '{{ wordpress__user_name }}'
+    group: '{{ wordpress__user_group }}'
+    mode: '0644'
+
+- name: Download WordPress
+  command: 'wp core download'
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+    creates: '{{ wordpress__root }}/index.php'
+
+- name: Configure WordPress
+  command: |
+           wp core config
+           --dbhost="{{ wordpress__database_host }}"
+           --dbname="{{ wordpress__database_name }}"
+           --dbuser="{{ wordpress__database_user }}"
+           --dbpass="{{ wordpress__database_password }}"
+           --dbprefix="{{ wordpress__table_prefix }}"
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+    creates: '{{ wordpress__root }}/wp-config.php'
+
+- name: Install WordPress
+  command: |
+           wp core {{ 'multisite-install' if wordpress__multisite else 'install' }}
+           --title="{{ wordpress__title }}"
+           {% if wordpress__multisite %}
+           --base="{{ wordpress__multisite_path }}"
+           {{ '--subdomains' if wordpress__multisite_subdomains else '' }}
+           {% endif %}
+           --admin_user="{{ wordpress__admin_username }}"
+           --admin_password="{{ wordpress__admin_password }}"
+           --admin_email="{{ wordpress__admin_email }}"
+  become_user: '{{ wordpress__user_name }}'
+  args:
+    chdir: '{{ wordpress__root }}'
+
+- include: manage_plugins.yml
