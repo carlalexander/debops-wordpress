@@ -579,17 +579,6 @@ wordpress__varnish__vcl_recv_remove_cookies:
 
 
 # ---------------------------
-#   WP-CLI configuration
-# ---------------------------
-
-# .. envvar:: wordpress__wpcli__packages
-#
-# Packages to install with WP-CLI.
-wordpress__wpcli__packages:
-  - name: 'aaemnnosttv/wp-cli-dotenv-command'
-
-
-# ---------------------------
 #   WordPress configuration
 # ---------------------------
 

@@ -96,5 +96,4 @@ dependencies:
 
   - role: wpcli
     tags: [ 'depend::wpcli', 'depend::wpcli:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    wpcli__packages: '{{ wordpress__wpcli__packages }}'
     when: ('wpcli' in wordpress__dependencies)

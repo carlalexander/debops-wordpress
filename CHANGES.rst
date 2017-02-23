@@ -6,6 +6,11 @@ v0.4.0
 
 *Unreleased*
 
+- Added ``wordpress__install_type`` variable so that you can choose which
+  type of WordPress installation to install. [carlalexander]
+
+- Added ``composer`` role. [carlalexander]
+
 - Reworked wp-cron to use WP-CLI instead of curl. [carlalexander]
 
 - Added ``wordpress__permalink_structure`` to control the default WordPress
