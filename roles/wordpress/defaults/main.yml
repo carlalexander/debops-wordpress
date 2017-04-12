@@ -328,20 +328,14 @@ wordpress__nginx__location_allow: []
 
 # .. envvar:: wordpress__nginx__csp
 #
-# Whether the WordPress vhost will use the Content-Security-Policy header or not.
-wordpress__nginx__csp: False
-
-# .. envvar:: wordpress__nginx__csp_policy
-#
 # Determines the Content-Security-Policy header configured in the WordPress vhost.
 # By default, blocks all non-https content.
-wordpress__nginx__csp_policy: "default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'"
+wordpress__nginx__csp: "default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'"
 
-# .. envvar:: wordpress__nginx__csp_report
+# .. envvar:: wordpress__nginx__csp_enabled
 #
-# Whether the WordPress vhost will use the Content-Security-Policy-Report-Only
-# header or not. Overrides the ``wordpress__nginx_csp`` option.
-wordpress__nginx__csp_report: False
+# Whether the WordPress vhost will use the Content-Security-Policy header or not.
+wordpress__nginx__csp_enabled: False
 
 # .. envvar:: wordpress__nginx__listen
 #

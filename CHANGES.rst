@@ -22,6 +22,12 @@ v0.4.0
 - Added ``varnish__privileged_group`` variable to give access to varnish to a
   system group. [carlalexander]
 
+- Update DebOps for WordPress to the redesigned Content Security Policy support of debops.nginx_.
+  ``wordpress__nginx__csp`` has been renamed to ``wordpress__nginx__csp_enabled`` and
+  ``wordpress__nginx__csp_policy`` has been renamed to ``wordpress__nginx__csp``.
+  ``wordpress__nginx__csp_report`` has been dropped. You can use
+  ``nginx__http_csp_append`` to set a custom ``report-uri`` for all policies. [ypid_]
+
 
 v0.3.1
 ------
@@ -195,4 +201,3 @@ v0.1.0
 *Released: 2015-10-11*
 
 - First release, add CHANGES.rst [carlalexander]
-
