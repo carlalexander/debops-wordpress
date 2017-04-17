@@ -28,6 +28,8 @@ v0.4.0
   ``wordpress__nginx__csp_report`` has been dropped. You can use
   ``nginx__http_csp_append`` to set a custom ``report-uri`` for all policies. [ypid_]
 
+- Update role dependencies of the wordpress role to work with debops.nginx v0.2.0 and above. [ypid_]
+
 
 v0.3.1
 ------
