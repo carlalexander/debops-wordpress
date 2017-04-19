@@ -228,9 +228,9 @@ wordpress__nginx__server_varnish:
   redirect_code: '301'
   ssl: '{{ wordpress__ssl }}'
   acme: "{{ wordpress__ssl_provider == 'letsencrypt' }}"
-  csp: '{{ wordpress__nginx__csp }}'
+  csp_enabled: '{{ wordpress__nginx__csp }}'
   csp_report: '{{ wordpress__nginx__csp_report }}'
-  csp_policy: '{{ wordpress__nginx__csp_policy }}'
+  csp: '{{ wordpress__nginx__csp_policy }}'
   ocsp_verify: False
   deny_hidden: False
   favicon: False
