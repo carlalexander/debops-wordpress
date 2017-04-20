@@ -36,6 +36,7 @@ dependencies:
     fail2ban_bantime: '{{ wordpress__fail2ban__default_bantime }}'
     fail2ban_filters: '{{ wordpress__fail2ban__filters }}'
     fail2ban_findtime: '{{ wordpress__fail2ban__default_findtime }}'
+    fail2ban_jails: []
     fail2ban_host_jails: '{{ wordpress__fail2ban__jails }}'
     fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
     fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
