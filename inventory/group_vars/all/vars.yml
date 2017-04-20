@@ -3,5 +3,7 @@
 
 ntp__timezone: 'Etc/UTC'
 
+nullmailer__enabled: False
+
 pki_internal: False
 pki_authorities: []
