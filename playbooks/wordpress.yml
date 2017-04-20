@@ -8,8 +8,6 @@
     - role: debops.swapfile
       tags: [ 'role::swap', 'swap' ]
       swapfile__swappiness: '15'
-    - role: debops.postfix
-      tags: [ 'role::postfix', 'postfix' ]
     - role: debops.mariadb_server
       tags: [ 'role::mariadb_server', 'mariadb_server' ]
     - role: wordpress
