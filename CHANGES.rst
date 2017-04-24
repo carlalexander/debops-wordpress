@@ -6,6 +6,8 @@ v0.4.0
 
 *Unreleased*
 
+- Changed default value of ``wordpress__database_user`` to match ``wordpress__user_name``. [carlalexander]
+
 - Removed ``debops.postfix`` role. [carlalexander]
 
 - Set ``nullmailer__enabled`` to ``False`` to disable installation of ``debops.nullmailer``. [carlalexander]

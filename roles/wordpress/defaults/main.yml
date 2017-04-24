@@ -629,7 +629,7 @@ wordpress__database_host: '{{ wordpress__mariadb__server }}'
 # .. envvar:: wordpress__database_user
 #
 # WordPress database user.
-wordpress__database_user: 'wordpress'
+wordpress__database_user: '{{ wordpress__user_name }}'
 
 # .. envvar:: wordpress__database_name
 #
