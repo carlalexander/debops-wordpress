@@ -4,7 +4,7 @@ Changelog
 v0.4.0
 ------
 
-*Unreleased*
+*Released: 2017-04-30*
 
 - Changed default value of ``wordpress__database_user`` to match ``wordpress__user_name``. [carlalexander]
 
