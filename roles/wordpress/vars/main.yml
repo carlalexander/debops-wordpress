@@ -230,7 +230,6 @@ wordpress__nginx__server_varnish:
   acme: '{{ wordpress__ssl_provider == "letsencrypt" }}'
   csp: '{{ wordpress__nginx__csp }}'
   csp_enabled: '{{ wordpress__nginx__csp_enabled|bool }}'
-  ocsp_verify: False
   deny_hidden: False
   favicon: False
   proxy_pass: 'http://{{ wordpress__nginx__upstream_varnish_name }}'
