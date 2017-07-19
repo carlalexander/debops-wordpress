@@ -1,14 +1,5 @@
 ---
 
-- name: Create WordPress ACME challenge directory
-  file:
-    path: '{{ wordpress__pki__acme_challenge_dir }}'
-    state: 'directory'
-    owner: '{{ wordpress__pki__acme_user }}'
-    group: '{{ wordpress__pki__acme_group }}'
-    mode: '0750'
-  when: wordpress__ssl_provider == 'letsencrypt'
-
 - name: Append PKI ACME group to WordPress user
   user:
     name: '{{ wordpress__user_name }}'

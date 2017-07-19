@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.4.1
+------
+
+*Unreleased*
+
+- Removed custom ACME directory for ``wordpress__pki__default_realm``. [carlalexander]
+
 v0.4.0
 ------
 

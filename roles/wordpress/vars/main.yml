@@ -105,7 +105,6 @@ wordpress__php__pool:
 wordpress__pki__default_realm:
   name: '{{ wordpress__pki__default_realm_name }}'
   acme: "{{ wordpress__ssl_provider == 'letsencrypt' }}"
-  acme_challenge_dir: '{{ wordpress__pki__acme_challenge_dir }}'
   acme_default_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
   acme_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
   default_subdomains: '{{ wordpress__pki__default_realm_subdomains }}'
