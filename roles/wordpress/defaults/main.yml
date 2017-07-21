@@ -20,6 +20,7 @@ wordpress__dependencies:
   - 'php'
   - 'pki'
   - 'redis'
+  - 'elasticsearch'
   - 'varnish'
   - 'wpcli'
 
@@ -475,6 +476,16 @@ wordpress__pki__host_realms:
 #
 # Password used to authenticate with the redis server.
 wordpress__redis__auth_password: ''
+
+
+# ---------------------------
+#   Elasticsearch
+# ---------------------------
+
+# .. envvar:: wordpress__elasticsearch_enabled
+#
+# Whether our WordPress site is using Elasticsearch or not.
+wordpress__elasticsearch_enabled: False
 
 
 # ---------------------------
