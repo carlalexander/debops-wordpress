@@ -11,32 +11,32 @@ dependencies:
 
   - role: debops.elasticsearch/env
     tags: [ 'depend::elasticsearch', 'depend::elasticsearch:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
-    when: ('elasticsearch' in wordpress__dependencies and wordpress__elasticsearch_enabled)
+    when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.secret
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     secret_directories:
         - '{{ pki_env_secret_directories }}'
-        - '{{ elasticsearch__secret__directories if wordpress__elasticsearch_enabled else [] }}'
+        - "{{ elasticsearch__secret__directories if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.apt_preferences
     tags: [ 'role::apt_preferences' ]
     apt_preferences__dependent_list:
       - '{{ nginx__apt_preferences__dependent_list }}'
-      - '{{ java__apt_preferences__dependent_list if wordpress__elasticsearch_enabled else [] }}'
-      - '{{ elastic_co__apt_preferences__dependent_list if wordpress__elasticsearch_enabled else [] }}'
+      - "{{ java__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
+      - "{{ elastic_co__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.etc_services
     tags: [ 'role::etc_services' ]
     etc_services__dependent_list:
       - '{{ elasticsearch__etc_services__dependent_list }}'
-    when: ('elasticsearch' in wordpress__dependencies and wordpress__elasticsearch_enabled)
+    when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.ferm
     tags: [ 'role::ferm' ]
     ferm__dependent_rules:
       - '{{ nginx__ferm__dependent_rules }}'
-      - '{{ elasticsearch__ferm__dependent_rules if wordpress__elasticsearch_enabled else [] }}'
+      - "{{ elasticsearch__ferm__dependent_rules if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.users
     tags: [ 'depend::users', 'depend::users:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
@@ -104,17 +104,17 @@ dependencies:
 
   - role: debops.java
     tags: [ 'depend::elasticsearch', 'depend::elasticsearch:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    when: ('elasticsearch' in wordpress__dependencies and wordpress__elasticsearch_enabled)
+    when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.elastic_co
     tags: [ 'depend::elasticsearch', 'depend::elasticsearch:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     elastic_co__dependent_packages:
       - '{{ elasticsearch__elastic_co__dependent_packages }}'
-    when: ('elasticsearch' in wordpress__dependencies and wordpress__elasticsearch_enabled)
+    when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.elasticsearch
     tags: [ 'depend::elasticsearch', 'depend::elasticsearch:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    when: ('elasticsearch' in wordpress__dependencies and wordpress__elasticsearch_enabled)
+    when: ('elasticsearch' in wordpress__dependencies)
 
   - role: composer
     tags: [ 'depend::composer', 'depend::composer:wordpress', 'depend-of::wordpress', 'type::dependency' ]
