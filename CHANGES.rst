@@ -8,8 +8,6 @@ v0.4.1
 
 - Added ``zip`` and ``unzip`` packages to ``wordpress__php__packages``. [carlalexander]
 
-- Removed custom ACME directory for ``wordpress__pki__default_realm``. [carlalexander]
-
 v0.4.0
 ------
 

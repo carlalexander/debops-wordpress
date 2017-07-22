@@ -433,6 +433,11 @@ wordpress__php__request_terminate_timeout: '60'
 #   PKI
 # ---------------------------
 
+# .. envvar:: wordpress__pki__acme_challenge_dir
+#
+# Path to global ACME challenge directory.
+wordpress__pki__acme_challenge_dir: '{{ wordpress__nginx__acme_root }}/.well-known/acme-challenge'
+
 # .. envvar:: wordpress__pki__acme_group
 #
 # Name of the system group which will be used to interact with the ACME
