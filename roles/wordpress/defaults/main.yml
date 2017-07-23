@@ -20,6 +20,7 @@ wordpress__dependencies:
   - 'php'
   - 'pki'
   - 'redis'
+  - 'elasticsearch'
   - 'varnish'
   - 'wpcli'
 
