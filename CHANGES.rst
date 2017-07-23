@@ -6,6 +6,8 @@ v0.4.1
 
 *Unreleased*
 
+- Added support for elasticsearch. [schrapel]
+
 - Added ``zip`` and ``unzip`` packages to ``wordpress__php__packages``. [carlalexander]
 
 v0.4.0
