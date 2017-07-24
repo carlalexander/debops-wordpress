@@ -15,6 +15,7 @@
     owner: '{{ wordpress__user_name }}'
     group: '{{ wordpress__user_group }}'
     mode: '0755'
+    follow: True
 
 - name: Check if WordPress is installed
   command: 'wp core is-installed'

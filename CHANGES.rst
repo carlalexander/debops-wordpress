@@ -6,6 +6,8 @@ v0.4.1
 
 *Unreleased*
 
+- Fix issue with symlinks when checking if the WordPress directory exists. [carlalexander]
+
 - Added support for elasticsearch. [schrapel]
 
 - Added ``zip`` and ``unzip`` packages to ``wordpress__php__packages``. [carlalexander]
