@@ -20,20 +20,20 @@ dependencies:
         - "{{ elasticsearch__secret__directories if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.apt_preferences
-    tags: [ 'role::apt_preferences' ]
+    tags: [ 'depend::apt_preferences' ]
     apt_preferences__dependent_list:
       - '{{ nginx__apt_preferences__dependent_list }}'
       - "{{ java__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
       - "{{ elastic_co__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.etc_services
-    tags: [ 'role::etc_services' ]
+    tags: [ 'depend::etc_services' ]
     etc_services__dependent_list:
       - '{{ elasticsearch__etc_services__dependent_list }}'
     when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.ferm
-    tags: [ 'role::ferm' ]
+    tags: [ 'depend::ferm' ]
     ferm__dependent_rules:
       - '{{ nginx__ferm__dependent_rules }}'
       - "{{ elasticsearch__ferm__dependent_rules if 'elasticsearch' in wordpress__dependencies else [] }}"
