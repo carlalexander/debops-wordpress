@@ -4,7 +4,7 @@ Changelog
 v0.4.1
 ------
 
-*Unreleased*
+*Released: 2017-10-17*
 
 - Fix issue with symlinks when checking if the WordPress directory exists. [carlalexander]
 
