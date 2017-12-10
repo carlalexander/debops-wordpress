@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.4.2
+------
+
+*Unreleased*
+
+- Added the ``wordpress__config_cache_key_salt`` variable to control the cache key prefix
+  used by WordPress. [carlalexander]
+
 v0.4.1
 ------
 

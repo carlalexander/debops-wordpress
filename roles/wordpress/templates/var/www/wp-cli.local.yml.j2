@@ -7,4 +7,5 @@ core config:
   extra-php: |
     define('DISABLE_WP_CRON', {{ wordpress__config_disable_wp_cron }});
     define('DISALLOW_FILE_EDIT', {{ wordpress__config_disable_file_edit }});
+    define('WP_CACHE_KEY_SALT', '{{ wordpress__config_cache_key_salt }}');
     {{ wordpress__config_extra_php|indent(4) }}

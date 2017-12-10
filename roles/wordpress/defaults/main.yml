@@ -592,6 +592,11 @@ wordpress__admin_email: '{{ wordpress__admin_username }}@{{ wordpress__domain }}
 # Password for the WordPress admin user.
 wordpress__admin_password: "{{ lookup('password', secret + '/wordpress/' + wordpress__domain + '/credentials/' + wordpress__admin_username + '/password length=' + wordpress__password_length) }}"
 
+# .. envvar:: wordpress__config_cache_key_salt
+#
+# Prefix used to for WordPress cache keys.
+wordpress__config_cache_key_salt: '{{ wordpress__database_name }}_'
+
 # .. envvar:: wordpress__config_disable_wp_cron
 #
 # Whether to disable WordPress calls to wp-cron.php or not.
