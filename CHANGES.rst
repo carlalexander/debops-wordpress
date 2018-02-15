@@ -4,7 +4,9 @@ Changelog
 v0.4.2
 ------
 
-*Unreleased*
+*Released: 2018-02-15*
+
+- Reordered `debops.fail2ban` dependency to prevent fail2ban error. [carlalexander]
 
 - Added the ``wordpress__config_cache_key_salt`` variable to control the cache key prefix
   used by WordPress. [carlalexander]
