@@ -42,21 +42,6 @@ dependencies:
     tags: [ 'depend::users', 'depend::users:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     users__accounts: '{{ wordpress__users__accounts }}'
 
-  - role: debops.fail2ban
-    tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    fail2ban_action: '{{ wordpress__fail2ban__default_action }}'
-    fail2ban_actions: '{{ wordpress__fail2ban__actions }}'
-    fail2ban_custom_actions: '{{ wordpress__fail2ban__custom_actions }}'
-    fail2ban_bantime: '{{ wordpress__fail2ban__default_bantime }}'
-    fail2ban_filters: '{{ wordpress__fail2ban__filters }}'
-    fail2ban_findtime: '{{ wordpress__fail2ban__default_findtime }}'
-    fail2ban_jails: []
-    fail2ban_host_jails: '{{ wordpress__fail2ban__jails }}'
-    fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
-    fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
-    fail2ban_loglevel: '{{ wordpress__fail2ban__loglevel }}'
-    when: ('fail2ban' in wordpress__dependencies)
-
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
     mariadb__databases: [ '{{ wordpress__mariadb__databases }}' ]
@@ -78,6 +63,21 @@ dependencies:
     nginx_user: '{{ wordpress__nginx__user }}'
     nginx_www: '{{ wordpress__nginx__www }}'
     when: ('nginx' in wordpress__dependencies)
+
+  - role: debops.fail2ban
+    tags: [ 'depend::fail2ban', 'depend::fail2ban:wordpress', 'depend-of::wordpress', 'type::dependency' ]
+    fail2ban_action: '{{ wordpress__fail2ban__default_action }}'
+    fail2ban_actions: '{{ wordpress__fail2ban__actions }}'
+    fail2ban_custom_actions: '{{ wordpress__fail2ban__custom_actions }}'
+    fail2ban_bantime: '{{ wordpress__fail2ban__default_bantime }}'
+    fail2ban_filters: '{{ wordpress__fail2ban__filters }}'
+    fail2ban_findtime: '{{ wordpress__fail2ban__default_findtime }}'
+    fail2ban_jails: []
+    fail2ban_host_jails: '{{ wordpress__fail2ban__jails }}'
+    fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
+    fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
+    fail2ban_loglevel: '{{ wordpress__fail2ban__loglevel }}'
+    when: ('fail2ban' in wordpress__dependencies)
 
   - role: debops.php
     tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency' ]
