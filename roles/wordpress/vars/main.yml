@@ -237,7 +237,7 @@ wordpress__nginx__server_varnish:
   options: |
     client_max_body_size  {{ wordpress__php__post_max_size }};
 
-    if ($host != $server_name) {
+    if ($host != {{ wordpress__domain }}) {
         return 444;
     }
 
