@@ -58,5 +58,5 @@ by [Maciej Delmanowski](https://github.com/drybjed).
 A lot of the initial inspiration for the roles came from WPEngine's [Mecury project](https://github.com/wpengine/hgv)
 and [the port](https://github.com/zach-adams/hgv-deploy-full) done by [Zach Adams](http://zach-adams.com/).
 
-The [default Varnish configuration](https://github.com/mattiasgeniar/varnish-4.0-configuration-templates) work by
+The [default Varnish configuration](https://github.com/mattiasgeniar/varnish-5.0-configuration-templates) work by
 [Mattias Geniar](http://ma.ttias.be/) was critical to get a solid foundation for Varnish in WordPress.
