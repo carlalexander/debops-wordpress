@@ -1,12 +1,24 @@
 Changelog
 =========
 
+v0.5.0
+------
+
+*Released: 2018-08-12*
+
+- Use the ``wordpress__domain`` instead of ``server_name`` nginx variable to secure vhosts. [carlalexander]
+
+- Switch to ``php`` upstream type so that we don't hardcode the PHP version in the upstream
+  configuration. [carlalexander]
+
+- Updated varnish configuration to support Varnish 5.0. [carlalexander]
+
 v0.4.2
 ------
 
 *Released: 2018-02-15*
 
-- Reordered `debops.fail2ban` dependency to prevent fail2ban error. [carlalexander]
+- Reordered ``debops.fail2ban`` dependency to prevent fail2ban error. [carlalexander]
 
 - Added the ``wordpress__config_cache_key_salt`` variable to control the cache key prefix
   used by WordPress. [carlalexander]
