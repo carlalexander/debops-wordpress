@@ -252,8 +252,8 @@ wordpress__nginx__server_varnish:
 wordpress__nginx__upstream_php:
   enabled: True
   name: '{{ wordpress__nginx__upstream_php_name }}'
-  server:
-   - 'unix:/var/run/php7.0-fpm-{{ wordpress__php__pool_name }}.sock'
+  type: 'php'
+  php_pool: '{{ wordpress__php__pool_name }}'
 
 wordpress__nginx__upstream_varnish:
   enabled: True
