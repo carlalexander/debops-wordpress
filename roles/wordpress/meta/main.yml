@@ -2,6 +2,9 @@
 
 dependencies:
 
+  # Environment dependencies
+  #
+
   - role: debops.pki/env
     tags: ['depend::pki', 'depend::pki:wordpress', 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     pki_host_realms: "{{ wordpress__pki__host_realms if wordpress__ssl else [] }}"
@@ -13,34 +16,49 @@ dependencies:
     tags: [ 'depend::elasticsearch', 'depend::elasticsearch:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     when: ('elasticsearch' in wordpress__dependencies)
 
+ # Hard dependencies
+ #
+
   - role: debops.secret
     tags: [ 'depend::secret', 'depend::secret:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
     secret_directories:
         - '{{ pki_env_secret_directories }}'
         - "{{ elasticsearch__secret__directories if 'elasticsearch' in wordpress__dependencies else [] }}"
 
+  - role: debops.php
+    tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+    php__default_pools: []
+    php__packages: '{{ wordpress__php__packages }}'
+    php__pools: [ '{{ wordpress__php__pool }}' ]
+    php__ini_memory_limit: '{{ wordpress__php__memory_limit }}'
+    php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
+    when: ('php' in wordpress__dependencies)
+
+  - role: debops.users
+    tags: [ 'depend::users', 'depend::users:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
+    users__accounts: '{{ wordpress__users__accounts }}'
+
+  # Regular dependencies
+  #
+
   - role: debops.apt_preferences
-    tags: [ 'depend::apt_preferences' ]
+    tags: [ 'depend::apt_preferences', 'depend-of::wordpress', 'type::dependency' ]
     apt_preferences__dependent_list:
       - '{{ nginx__apt_preferences__dependent_list }}'
       - "{{ java__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
       - "{{ elastic_co__apt_preferences__dependent_list if 'elasticsearch' in wordpress__dependencies else [] }}"
 
   - role: debops.etc_services
-    tags: [ 'depend::etc_services' ]
+    tags: [ 'depend::etc_services', 'depend-of::wordpress', 'type::dependency' ]
     etc_services__dependent_list:
       - '{{ elasticsearch__etc_services__dependent_list }}'
     when: ('elasticsearch' in wordpress__dependencies)
 
   - role: debops.ferm
-    tags: [ 'depend::ferm' ]
+    tags: [ 'depend::ferm', 'depend-of::wordpress', 'type::dependency' ]
     ferm__dependent_rules:
       - '{{ nginx__ferm__dependent_rules }}'
       - "{{ elasticsearch__ferm__dependent_rules if 'elasticsearch' in wordpress__dependencies else [] }}"
-
-  - role: debops.users
-    tags: [ 'depend::users', 'depend::users:wordpress', 'depend-of::wordpress', 'type::dependency:hard' ]
-    users__accounts: '{{ wordpress__users__accounts }}'
 
   - role: debops.mariadb
     tags: [ 'depend::mariadb', 'depend::mariadb:wordpress', 'depend-of::wordpress', 'type::dependency' ]
@@ -78,15 +96,6 @@ dependencies:
     fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
     fail2ban_loglevel: '{{ wordpress__fail2ban__loglevel }}'
     when: ('fail2ban' in wordpress__dependencies)
-
-  - role: debops.php
-    tags: [ 'depend::php', 'depend::php:wordpress', 'depend-of::wordpress', 'type::dependency' ]
-    php__default_pools: []
-    php__packages: '{{ wordpress__php__packages }}'
-    php__pools: [ '{{ wordpress__php__pool }}' ]
-    php__ini_memory_limit: '{{ wordpress__php__memory_limit }}'
-    php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
-    when: ('php' in wordpress__dependencies)
 
   - role: debops.pki
     tags: [ 'depend::pki', 'depend::pki:wordpress', 'depend-of::wordpress', 'type::dependency' ]

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.5.1
+------
+
+*Released: 2018-10-07*
+
+- Fix issues with dependencies causing problems with PHP 7.2 [carlalexander]
+
 v0.5.0
 ------
 
