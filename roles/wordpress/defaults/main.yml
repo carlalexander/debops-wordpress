@@ -9,21 +9,6 @@
 #   Basic options
 # -------------------
 
-# .. envvar:: wordpress__dependencies
-#
-# List of dependencies that the role manages.
-wordpress__dependencies:
-  - 'composer'
-  - 'fail2ban'
-  - 'mariadb'
-  - 'nginx'
-  - 'php'
-  - 'pki'
-  - 'redis'
-  - 'elasticsearch'
-  - 'varnish'
-  - 'wpcli'
-
 # .. envvar:: wordpress__install_type
 #
 # The type of WordPress installation. Can be 'bedrock' or 'default'.
@@ -59,10 +44,10 @@ wordpress__user_group: '{{ wordpress__user_name }}'
 #  System account configuration
 # --------------------------
 
-# .. envvar:: wordpress__users__accounts
+# .. envvar:: wordpress__users__dependent_accounts
 #
 # List of system accounts to manage.
-wordpress__users__accounts:
+wordpress__users__dependent_accounts:
   - '{{ wordpress__users__account }}'
 
 # .. envvar:: wordpress__users__account_name
@@ -127,16 +112,16 @@ wordpress__mariadb__server: '{{ ansible_local.mariadb.server
 # the “host” part of the client username.
 wordpress__mariadb__client: '{{ mariadb__client }}'
 
-# .. envvar:: wordpress__mariadb__databases
+# .. envvar:: wordpress__mariadb__dependent_databases
 #
 # List of databases configured on the WordPress MariaDB server.
-wordpress__mariadb__databases:
+wordpress__mariadb__dependent_databases:
   - '{{ wordpress__mariadb__database }}'
 
-# .. envvar:: wordpress__mariadb__users
+# .. envvar:: wordpress__mariadb__dependent_users
 #
 # List of user accounts configured on the WordPress MariaDB server.
-wordpress__mariadb__users:
+wordpress__mariadb__dependent_users:
   - '{{ wordpress__mariadb__user }}'
 
 
@@ -198,10 +183,10 @@ wordpress__fail2ban__filters:
 # List of IP addresses or CIDR networks which should be ignored by fail2ban.
 wordpress__fail2ban__ignoreip: [ '{{ ansible_default_ipv4.address }}' ]
 
-# .. envvar:: wordpress__fail2ban__jails
+# .. envvar:: wordpress__fail2ban__dependent_jails
 #
 # List of dicts which define custom local ``fail2ban`` jails.
-wordpress__fail2ban__jails:
+wordpress__fail2ban__dependent_jails:
   - '{{ wordpress__fail2ban__jail_badbots }}'
   - '{{ wordpress__fail2ban__jail_ddos }}'
   - '{{ wordpress__fail2ban__jail_login }}'
@@ -338,6 +323,20 @@ wordpress__nginx__csp: "default-src https:; script-src https: 'unsafe-eval' 'uns
 # Whether the WordPress vhost will use the Content-Security-Policy header or not.
 wordpress__nginx__csp_enabled: False
 
+# .. envvar:: wordpress__nginx__dependent_servers
+#
+# Nginx servers used by WordPress.
+wordpress__nginx__dependent_servers:
+  - '{{ wordpress__nginx__server_backend }}'
+  - '{{ wordpress__nginx__server_varnish }}'
+
+# .. envvar:: wordpress__nginx__dependent_upstreams
+#
+# Nginx upstreams used by WordPress.
+wordpress__nginx__dependent_upstreams: 
+  - '{{ wordpress__nginx__upstream_php }}'
+  - '{{ wordpress__nginx__upstream_varnish }}'
+
 # .. envvar:: wordpress__nginx__listen
 #
 # Default listen port for HTTP connections used by ``debops.nginx``.
@@ -398,10 +397,16 @@ wordpress__nginx__www: '/var/www'
 # Maximum number of PHP processes for WordPress.
 wordpress__php__max_children: '10'
 
-# .. envvar:: wordpress__php__packages
+# .. envvar:: wordpress__php__dependent_packages
 #
-# Additional PHP packages installed with PHP.
-wordpress__php__packages: [ 'mysql', 'curl', 'dev', 'redis', 'unzip', 'xml', 'zip' ]
+# Additional PHP packages used by WordPress.
+wordpress__php__dependent_packages: [ 'mysql', 'curl', 'dev', 'redis', 'unzip', 'xml', 'zip' ]
+
+# .. envvar:: wordpress__php__dependent_pools
+#
+# php-fpm pools used by WordPress.
+wordpress__php__dependent_pools:
+  - '{{ wordpress__php__pool }}'
 
 # .. envvar:: wordpress__php__pool_name
 #
@@ -466,10 +471,10 @@ wordpress__pki__default_realm_name: '{{ wordpress__domain }}'
 # Subdomains configured in the default PKI realm used by WordPress.
 wordpress__pki__default_realm_subdomains: "{{ [ 'www' ] if wordpress__domain == ansible_domain else [] }}"
 
-# .. envvar:: wordpress__pki__host_realms
+# .. envvar:: wordpress__pki__dependent_realms
 #
-# List of PKI realms configured with WordPress.
-wordpress__pki__host_realms:
+# List of PKI realms needed by WordPress.
+wordpress__pki__dependent_realms:
   - '{{ wordpress__pki__default_realm }}'
 
 
@@ -477,10 +482,10 @@ wordpress__pki__host_realms:
 #   Redis
 # ---------------------------
 
-# .. envvar:: wordpress__redis__auth_password
+# .. envvar:: wordpress__redis_server__auth_password
 #
 # Password used to authenticate with the redis server.
-wordpress__redis__auth_password: ''
+wordpress__redis_server__auth_password: ''
 
 
 # ---------------------------

@@ -3,7 +3,11 @@
 
 ntp__timezone: 'Etc/UTC'
 
+netbase__domain: '{{ ansible_domain }}'
+
 nullmailer__enabled: False
 
 pki_internal: False
 pki_authorities: []
+
+python__raw_apt_cache_valid_time: 0

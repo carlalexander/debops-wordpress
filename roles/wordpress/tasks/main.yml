@@ -51,7 +51,7 @@
     cron_file: '{{ wordpress__domain | replace(".", "_") }}'
     minute: '{{ wordpress__cron_minute }}'
     hour: '{{ wordpress__cron_hour }}'
-  when: wordpress__cron_enabled
+  when: wordpress__cron_enabled|bool
 
 - include: manage_ssl.yml
-  when: wordpress__ssl
+  when: wordpress__ssl|bool

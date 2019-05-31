@@ -1,0 +1,5 @@
+---
+
+- name: Prepare WordPress environment
+  set_fact:
+    wordpress__secret__directories: '{{ lookup("template", "lookup/wordpress__secret__directories.j2") | from_yaml }}'

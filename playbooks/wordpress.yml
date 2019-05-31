@@ -1,14 +1,210 @@
 ---
 
-- name: Manage WordPress web server
+- name: Install and manage WordPress instances
   hosts: 'wordpress'
   become: True
 
   roles:
+
+    # Environment roles
+    #
+
+    - role: wordpress/env
+      tags: [ 'role::mariadb', 'role::pki', 'role::users' ]
+
+    - role: debops.elasticsearch/env
+      tags: [ 'role::elasticsearch', 'role::elasticsearch:env', 'role::apt_preferences', 'role::pki', 'role::secret' ]
+
+    - role: debops.pki/env
+      tags: [ 'role::pki', 'role::pki:env', 'role::apt_preferences', 'role::secret' ]
+      pki_dependent_realms:
+        - '{{ wordpress__pki__dependent_realms }}'
+      when: wordpress__ssl|bool
+
+    - role: debops.php/env
+      tags: [ 'role::php', 'role::php:env', 'role::apt_preferences', 'role::logrotate' ]
+
+    - role: debops.redis_server/env
+      tags: [ 'role::redis_server', 'role::redis_server:env', 'role::apt_preferences', 'role::ferm' ]
+
+    - role: debops.sysfs/env
+      tags: [ 'role::sysfs', 'role::sysfs:env', 'role::secret', 'role::pki' ]
+
+
+    # Configuration roles
+    #
+
+    - role: debops.keyring
+      tags: [ 'role::keyring', 'skip::keyring', 'role::elastic_co' ]
+      keyring__dependent_apt_keys:
+        - '{{ elastic_co__keyring__dependent_apt_keys }}'
+
+    - role: debops.apt_preferences
+      tags: [ 'role::apt_preferences', 'skip::apt_preferences', 'role::elasticsearch', 'role::java', 'role::nginx', 'role::php',  'role::redis_server' ]
+      apt_preferences__dependent_list:
+        - '{{ elastic_co__apt_preferences__dependent_list }}'
+        - '{{ java__apt_preferences__dependent_list }}'
+        - '{{ nginx__apt_preferences__dependent_list }}'
+        - '{{ php__apt_preferences__dependent_list }}'
+        - '{{ redis_server__apt_preferences__dependent_list }}'
+
+    - role: debops.etc_services
+      tags: [ 'role::etc_services', 'skip::etc_services', 'role::elasticsearch', 'role::redis_server' ]
+      etc_services__dependent_list:
+        - '{{ elasticsearch__etc_services__dependent_list }}'
+        - '{{ redis_server__etc_services__dependent_list }}'
+
+    - role: debops.ferm
+      tags: [ 'role::ferm', 'skip::ferm', 'role::elasticsearch', 'role::nginx' ]
+      ferm__dependent_rules:
+        - '{{ elasticsearch__ferm__dependent_rules }}'
+        - '{{ nginx__ferm__dependent_rules }}'
+
+    - role: debops.java
+      tags: [ 'role::java', 'skip::java', 'role::elasticsearch' ]
+
+    - role: debops.logrotate
+      tags: [ 'role::logrotate', 'skip::logrotate', 'role::php' ]
+      logrotate__dependent_config:
+        - '{{ php__logrotate__dependent_config }}'
+
+    - role: debops.python
+      tags: [ 'role::python', 'skip::python', 'role::mariadb', 'role::mariadb_server', 'role::redis_server' ]
+      python__dependent_packages3:
+        - '{{ mariadb__python__dependent_packages3 }}'
+        - '{{ mariadb_server__python__dependent_packages3 }}'
+        - '{{ redis_server__python__dependent_packages3 }}'
+      python__dependent_packages2:
+        - '{{ mariadb__python__dependent_packages2 }}'
+        - '{{ mariadb_server__python__dependent_packages2 }}'
+        - '{{ redis_server__python__dependent_packages2 }}'
+
+    - role: debops.secret
+      tags: [ 'role::secret', 'skip::secret', 'role::elasticsearch', 'role::pki', 'role::sysfs' ]
+      secret_directories:
+        - '{{ pki_env_secret_directories }}'
+        - '{{ elasticsearch__secret__directories }}'
+        - '{{ sysfs__secret__directories | d([]) }}'
+        - '{{ wordpress__secret__directories }}'
+
+    - role: debops.sysctl
+      tags: [ 'role::sysctl', 'skip::sysctl', 'role::elasticsearch', 'role::redis_server' ]
+      sysctl__dependent_parameters:
+        - '{{ elasticsearch__sysctl__dependent_parameters }}'
+        - '{{ redis_server__sysctl__dependent_parameters }}'
+
+    - role: debops.sysfs
+      tags: [ 'role::sysfs', 'skip::sysfs', 'role::redis_server' ]
+      sysfs__dependent_attributes:
+        - '{{ redis_server__sysfs__dependent_attributes }}'
+
     - role: debops.swapfile
-      tags: [ 'role::swap', 'swap' ]
-      swapfile__swappiness: '15'
+      tags: [ 'role::swapfile', 'skip::swapfile' ]
+
+    - role: debops.users
+      tags: [ 'role::users', 'skip::users' ]
+      users__dependent_accounts: '{{ wordpress__users__dependent_accounts }}'
+
+
+    # Database roles
+    #
+
     - role: debops.mariadb_server
-      tags: [ 'role::mariadb_server', 'mariadb_server' ]
+      tags: [ 'role::mariadb_server', 'skip::mariadb_server' ]
+
+    - role: debops.mariadb
+      tags: [ 'role::mariadb', 'skip::mariadb' ]
+      mariadb__dependent_databases:
+        - '{{ wordpress__mariadb__dependent_databases }}'
+      mariadb__dependent_users:
+        - '{{ wordpress__mariadb__dependent_users }}'
+
+
+    # Elasticsearch roles
+    #
+
+    - role: debops.elastic_co
+      tags: [ 'role::elastic_co', 'skip::elastic_co', 'role::elasticsearch' ]
+      elastic_co__dependent_packages:
+        - '{{ elasticsearch__elastic_co__dependent_packages }}'
+
+    - role: debops.elasticsearch
+      tags: [ 'role::elasticsearch', 'skip::elasticsearch' ]
+
+    # Web server roles
+    #
+
+    - role: debops.fail2ban
+      tags: [ 'role::fail2ban', 'skip::fail2ban' ]
+      fail2ban_action: '{{ wordpress__fail2ban__default_action }}'
+      fail2ban_actions:
+        - '{{ wordpress__fail2ban__actions }}'
+      fail2ban_bantime: '{{ wordpress__fail2ban__default_bantime }}'
+      fail2ban_custom_actions: '{{ wordpress__fail2ban__custom_actions }}'
+      fail2ban_dependent_jails:
+        - '{{ wordpress__fail2ban__dependent_jails }}'
+      fail2ban_filters:
+        - '{{ wordpress__fail2ban__filters }}'
+      fail2ban_findtime: '{{ wordpress__fail2ban__default_findtime }}'
+      fail2ban_ignoreip: '{{ wordpress__fail2ban__ignoreip }}'
+      fail2ban_jails: []
+      fail2ban_loglevel: '{{ wordpress__fail2ban__loglevel }}'
+      fail2ban_maxretry: '{{ wordpress__fail2ban__default_maxretry }}'
+
+    - role: debops.php
+      tags: [ 'role::php', 'skip::php' ]
+      php__default_pools: []
+      php__dependent_packages:
+        - '{{ wordpress__php__dependent_packages }}'
+      php__dependent_pools:
+        - '{{ wordpress__php__dependent_pools }}'
+      php__ini_memory_limit: '{{ wordpress__php__memory_limit }}'
+      php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
+
+    - role: debops.nginx
+      tags: [ 'role::nginx', 'skip::ngix' ]
+      nginx_acme: False
+      nginx_acme_root: '{{ wordpress__nginx__acme_root }}'
+      nginx__default_servers: []
+      nginx__default_upstreams: []
+      nginx__dependent_servers:
+        - '{{ wordpress__nginx__dependent_servers }}'
+      nginx__dependent_upstreams:
+        - '{{ wordpress__nginx__dependent_upstreams }}'
+      nginx__internal_servers: []
+      nginx_pki_realm: '{{ wordpress__nginx__pki_realm }}'
+      nginx_user: '{{ wordpress__nginx__user }}'
+      nginx_webroot_create: False
+      nginx_www: '{{ wordpress__nginx__www }}'
+
+    - role: debops.pki
+      tags: [ 'role::pki', 'skip::pki' ]
+      pki_acme_group: '{{ wordpress__pki__acme_group }}'
+      pki_acme_user: '{{ wordpress__pki__acme_user }}'
+      pki_dependent_realms:
+        - '{{ wordpress__pki__dependent_realms }}'
+      pki_host_private_files: "{{ wordpress__pki__private_files if wordpress__ssl_provider == 'manual' else [] }}"
+      pki_host_public_files: "{{ wordpress__pki__public_files if wordpress__ssl_provider == 'manual' else [] }}"
+      when: wordpress__ssl|bool
+
+    - role: debops.redis_server
+      tags: [ 'role::redis_server', 'skip::redis_server' ]
+      redis_server__auth_password: '{{ wordpress__redis_server__auth_password }}'
+
+    - role: varnish
+      tags: [ 'role::varnish', 'skip::varnish' ]
+      varnish__listen: '{{ wordpress__varnish__listen }}'
+      varnish__backends: [ '{{ wordpress__varnish__backend }}' ]
+      varnish__add_ban_lurker_headers: '{{ wordpress__varnish__add_ban_lurker_headers }}'
+      varnish__normalize_query_parameters: '{{ wordpress__varnish__normalize_query_parameters }}'
+      varnish__purge_allow: '{{ wordpress__varnish__purge_allow }}'
+      varnish__purge_conditions: '{{ wordpress__varnish__purge_conditions_default | combine(wordpress__varnish__purge_conditions) }}'
+      varnish__vcl_backend_response_conditions: '{{ wordpress__varnish__vcl_backend_response_conditions_default | combine(wordpress__varnish__vcl_backend_response_conditions) }}'
+      varnish__vcl_recv_conditions: '{{ wordpress__varnish__vcl_recv_conditions_default | combine(wordpress__varnish__vcl_recv_conditions) }}'
+      varnish__vcl_recv_remove_cookies: '{{ wordpress__varnish__vcl_recv_remove_cookies }}'
+
+    - role: wpcli
+      tags: [ 'role::wpcli', 'skip::wpcli' ]
+
     - role: wordpress
-      tags: [ 'role::wordpress', 'wordpress' ]
+      tags: [ 'role::wordpress', 'skip::wordpress' ]
