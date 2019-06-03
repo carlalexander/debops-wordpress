@@ -6,13 +6,13 @@
 
 wordpress__fail2ban__action_permanent_ban:
   name: 'wordpress-permanent'
-  start: cat /etc/fail2ban/wordpress-banlist.<name> | while read IP; do ip route list | grep -q "unreachable $IP" || ip route add unreachable $IP; done
+  start: cat /etc/fail2ban/wordpress-banlist.<name> | while read IP; do ip route list | grep -q "unreachable ${IP}"'\s' || ip route add unreachable $IP; done
   stop: touch /etc/fail2ban/wordpress-banlist.<name>
   check: test -e /etc/fail2ban/wordpress-banlist.<name>
   ban: |
     FILE=/etc/fail2ban/wordpress-banlist.<name>
-    grep -q "<ip>" "$FILE" || ip route list | grep -q 'unreachable <ip>' || ip route add unreachable <ip>
-    grep -q "<ip>" "$FILE" || echo "<ip>" >> "$FILE"
+    grep -q "<ip>"'$' "$FILE" || ip route list | grep -q "unreachable <ip>"'\s' || ip route add unreachable <ip>
+    grep -q "<ip>"'$' "$FILE" || echo "<ip>" >> "$FILE"
 
 wordpress__fail2ban__filter_ddos:
   name: 'wordpress-ddos'

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.6.0
+------
+
+*Unreleased*
+
+- Fix issue with fail2ban permanant ban action not doing an exact check for IPs. [carlalexander]
+
 v0.5.1
 ------
 
