@@ -4,7 +4,7 @@ Changelog
 v0.6.0
 ------
 
-*Unreleased*
+*Released: 2019-07-10*
 
 - Rework project to fit new DebOps role architecture. [carlalexander]
 - Fix issue with fail2ban permanant ban action not doing an exact check for IPs. [carlalexander]
