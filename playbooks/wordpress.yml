@@ -82,8 +82,8 @@
     - role: debops.secret
       tags: [ 'role::secret', 'skip::secret', 'role::elasticsearch', 'role::pki', 'role::sysfs' ]
       secret_directories:
-        - '{{ pki_env_secret_directories }}'
-        - '{{ elasticsearch__secret__directories }}'
+        - '{{ pki_env_secret_directories | d([]) }}'
+        - '{{ elasticsearch__secret__directories | d([]) }}'
         - '{{ sysfs__secret__directories | d([]) }}'
         - '{{ wordpress__secret__directories }}'
 

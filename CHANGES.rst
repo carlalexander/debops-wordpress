@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.6.1
+------
+
+*Unreleased*
+
+- Give default values to all secret directories. [carlalexander]
+
 v0.6.0
 ------
 
