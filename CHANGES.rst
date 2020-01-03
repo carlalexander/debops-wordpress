@@ -4,7 +4,7 @@ Changelog
 v0.6.1
 ------
 
-*Unreleased*
+*Released: 2020-01-02*
 
 - Make `wordpress_ssl` on by default. [carlalexander]
 - Give default values to all secret directories. [carlalexander]
