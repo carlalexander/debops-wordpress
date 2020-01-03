@@ -6,6 +6,7 @@ v0.6.1
 
 *Unreleased*
 
+- Make `wordpress_ssl` on by default. [carlalexander]
 - Give default values to all secret directories. [carlalexander]
 
 v0.6.0

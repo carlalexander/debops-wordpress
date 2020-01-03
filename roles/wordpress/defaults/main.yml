@@ -495,7 +495,7 @@ wordpress__redis_server__auth_password: ''
 # .. envvar:: wordpress__ssl
 #
 # Whether our WordPress site is using SSL or not.
-wordpress__ssl: False
+wordpress__ssl: True
 
 # .. envvar:: wordpress__ssl_provider
 #
