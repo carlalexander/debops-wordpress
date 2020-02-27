@@ -162,7 +162,7 @@
       php__ini_post_max_size: '{{ wordpress__php__post_max_size }}'
 
     - role: debops.nginx
-      tags: [ 'role::nginx', 'skip::ngix' ]
+      tags: [ 'role::nginx', 'skip::nginx' ]
       nginx_acme: False
       nginx_acme_root: '{{ wordpress__nginx__acme_root }}'
       nginx__default_servers: []
