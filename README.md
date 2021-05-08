@@ -1,3 +1,9 @@
+# Status: unmaintained
+
+As much as I'd like, I currently don't have the time or energy to support this project at this time. The goal of this project was to make a good WordPress server available to everyone. The mission continues with [Ymir](https://ymirapp.com). Otherwise, there are a lot of good server management tools for WordPress now such as [Gridpane](https://gridpane.com) (which was inspired by this project) and [SpinupWP](https//spinupwp.com).
+
+---
+
 ![DebOps for WordPress](https://cldup.com/7ODJOzazxd-3000x3000.jpeg)
 
 # DebOps for WordPress
