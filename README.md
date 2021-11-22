@@ -2,7 +2,7 @@
 
 As much as I'd like, I currently don't have the time or energy to support this project at this time. The goal of this project was to make a good WordPress server available to everyone. The mission continues with [Ymir](https://ymirapp.com). 
 
-Otherwise, there are a lot of good server management tools for WordPress now. If you're looking for something free, you should take a look at [Sail](https://sailed.io/). It's only on DigitalOcean though. Otherwise, you can take a look at paid tools like [Gridpane](https://gridpane.com) (which was inspired by this project) and [SpinupWP](https//spinupwp.com).
+Otherwise, there are a lot of good server management tools for WordPress now. If you're looking for something free, you should take a look at [Sail](https://sailed.io/). It's only on DigitalOcean though. Otherwise, you can take a look at paid tools like [Gridpane](https://gridpane.com) (which was inspired by this project) and [SpinupWP](https://spinupwp.com).
 
 ---
 
